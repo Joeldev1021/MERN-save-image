@@ -1,9 +1,26 @@
-<div class="container col-4">
- <form action="/upload" method="POST" enctype="multipart/form-data">
+<div class="container col-4 mt-3 border p-3 rounded">
+  <form action="/img/upload" method="POST" enctype="multipart/form-data">
     <label for="formFile" class="form-label">upload image</label>
     <div class="mb-3">
       <input class="form-control form-control-sm" type="file" name="image" />
     </div>
-    <input type="submit" value="Upload Photo" />
-  </form>
+    <div class="mb-3">
+      <input
+        type="text"
+        name="title"
+        class="form-control"
+        placeholder="Title"
+      />
+    </div>
+    <div class="mb-3">  
+      <textarea
+         name="description"
+        class="form-control"
+        placeholder="description"
+        rows="3"
+      ></textarea>
+    </div>
+     <div class="col-auto">
+    <button type="submit" class="btn btn-primary mb-3">Confirm identity</button>
+  </div>
 </div>

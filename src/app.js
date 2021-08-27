@@ -19,7 +19,7 @@ const storage = multer.diskStorage({
 require('./service')
 
 //export router
-const routerIndex = require('./routes/index.routes')
+const imgRoutes = require('./routes/img.routes')
 
 //settings 
 app.set('views', path.join(__dirname, 'views'))
@@ -42,7 +42,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 //routes 
 
 
-app.use( routerIndex)
+app.use('/img', imgRoutes)
 
 //listen
 app.listen(3000, ()=>{

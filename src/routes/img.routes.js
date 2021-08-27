@@ -1,9 +1,13 @@
 const express = require('express')
 const router = express.Router()
 
-const {indexRouteImg, uploadImg} = require('../controllers/index.img.controllers')
+const {addImg, uploadImg, getImgs} = require('../controllers/index.img.controllers')
 
-router.get('/',indexRouteImg)
+router.get('/', getImgs)
+
+router.get('/addImg', addImg)
+
+router.post('/upload', uploadImg)
 
 
 router.get('/service',(req, res)=>{
@@ -14,7 +18,7 @@ router.get('/hola',(req, res)=>{
     res.json('hola')
 })
 
-router.post('/upload',uploadImg)
+
 
 
 module.exports = router

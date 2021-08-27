@@ -1,9 +1,9 @@
 const mongoose = require('mongoose')
 
-mongoose.connect('mongodb://localhost:3000/red-tools-image',{
+mongoose.connect('mongodb://localhost/red-img-tools',{
     useNewUrlParser: true,
     useUnifiedTopology:true,
-}).then(res=console.log('conect db'))
+}).then(()=>console.log('conect db'))
 
 
 module.exports = mongoose

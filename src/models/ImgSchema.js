@@ -1,19 +1,20 @@
 const mongoose = require('mongoose')
-const path = require('path')
-const {Schema} = mongoose
+const {Schema,model} = mongoose
 
-const imgSchema = new Schema({
+
+const ImgSchema = new Schema({
     title: String,
-    NameUser: String,
-    nameImg: String,
-    idUser: Schema.Types.ObjectId,
     description:String,
     originalname: String,
     path: String,
     filename: String,
-    imgExtname: path.extname(filename)
+    imgExtname: String,
+    //path.extname(filename)
+    UserId: { type: Schema.ObjectId, ref: "UserSchema" }
 }, {
     timestamps: {
         createdAt: 'created_at'
     }
 })
+
+module.exports = model('ImgSchema', ImgSchema)
