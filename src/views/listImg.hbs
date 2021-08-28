@@ -1,7 +1,17 @@
 <h1>list img</h1>
 
-<div>
+<div class="container">
+  <div class="row">
     {{#each imgs}}
-     <h1>{{{title}}}</h1>
+      <div class="card col m-2" style="width: 19rem;">
+        <img src="upload/img/{{filename}}" class="card-img-top" alt="..." />
+        <div class="card-body">
+          <h5 class="card-title">{{{title}}}</h5>
+          <p class="card-text">{{description}}</p>
+          <a href="img/update/{{_id}}" class="btn btn-primary">Edit</a>
+          <a href="img/delete/{{_id}}" class="btn btn-danger">deleted</a>
+        </div>
+      </div>
     {{/each}}
+  </div>
 </div>

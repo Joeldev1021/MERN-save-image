@@ -1,12 +1,13 @@
 const ctrlImg = {};
 const path = require('path')
+const fs = require('fs')
 
 const ImgSchema = require('../models/ImgSchema')
 
 
 ctrlImg.getImgs = async(req,res )=>{
     const imgs = await ImgSchema.find().lean()
-   
+
     res.render('listImg', {imgs})
 }
 
@@ -31,6 +32,21 @@ ctrlImg.uploadImg = async (req, res) => {
 
 };
 
+ctrlImg.deleteImg = async(req, res)=>{
+    const id = req.params.id
+    try {
+    const deleteImg = await ImgSchema.findByIdAndDelete(id);
+    await fs.unlink(deleteImg.path, ()=>console.log('deleted'))
+    } catch (error) {
+      console.log(error)
+    }
+    res.redirect('/')
+}
+
+ctrlImg.updateImg = async (req, res)=>{
+   console.log(req.params)
+    res.json('update')
+}
 
 
 module.exports = ctrlImg;
