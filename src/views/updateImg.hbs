@@ -1,0 +1,40 @@
+
+<div class="container mt-4">
+  <div class="row">
+    <div class="col d-flex">
+     <div class="card" style="width: 18rem;">
+      <img src="/upload/img/{{img.filename}}" class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="card-title">{{img.title}}</h5>
+        <p class="card-text">{{img.description}}</p>
+      </div>
+    </div>
+    <div class="col bg-light">
+
+     <div class="container col-6 mt-3 border p-3 rounded">
+  <form action="/img/update/{{img._id}}" method="POST" >
+    <label for="formFile" class="form-label">update image</label>
+    <div class="mb-3">
+      <input
+        type="text"
+        name="title"
+        class="form-control"
+        placeholder="Title"
+        value={{img.title}}
+      />
+    </div>
+    <div class="mb-3">  
+      <textarea
+         name="description"
+        class="form-control"
+        placeholder="description"
+        rows="3"
+      >{{img.description}}</textarea>
+    </div>
+     <div class="col-auto">
+    <button type="submit" class="btn btn-primary mb-3">update</button>
+  </div>
+</div>
+    </div>
+  </div>
+</div>
