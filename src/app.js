@@ -41,7 +41,6 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 //routes 
 
-
 app.use('/img', imgRoutes)
 
 //listen

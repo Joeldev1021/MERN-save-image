@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
-const {addImg, uploadImg, getImgs, deleteImg, updateImg} = require('../controllers/index.img.controllers')
+const {addImg, uploadImg, getImgs, deleteImg, editeImg, updateImg} = require('../controllers/index.img.controllers')
 
 router.get('/', getImgs)
 
@@ -11,7 +11,9 @@ router.post('/upload', uploadImg)
 
 router.get('/delete/:id', deleteImg)
 
-router.get('/update/:id', updateImg)
+router.get('/edite/:id', editeImg)
+
+router.post('/update/:id', updateImg)
 
 router.get('/service',(req, res)=>{
     res.json('service')

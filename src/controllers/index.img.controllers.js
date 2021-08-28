@@ -18,6 +18,7 @@ ctrlImg.addImg = (req, res) => {
 
 ctrlImg.uploadImg = async (req, res) => {
   const newImg = new ImgSchema()
+  console.log(req.file)
   newImg.title = req.body.title
   newImg.description = req.body.description
   newImg.originalname = req.file.originalname
@@ -40,12 +41,23 @@ ctrlImg.deleteImg = async(req, res)=>{
     } catch (error) {
       console.log(error)
     }
-    res.redirect('/')
+    res.redirect('/img')
 }
 
-ctrlImg.updateImg = async (req, res)=>{
-   console.log(req.params)
-    res.json('update')
+ctrlImg.editeImg = async(req, res)=> {
+   const id = req.params.id
+   console.log(id)
+   const img = await ImgSchema.findById(id).lean()
+  // console.log(img)
+    console.log(img)
+    res.render('updateImg', {img})
+}
+
+ctrlImg.updateImg = async(req, res)=>{
+  const id = req.params.id
+  const img = await ImgSchema.findByIdAndUpdate(id, req.body)
+  console.log(img)
+  res.redirect('/img')
 }
 
 
