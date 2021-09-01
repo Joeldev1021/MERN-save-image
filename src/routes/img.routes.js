@@ -13,8 +13,6 @@ router.get('/delete/:id', deleteImg)
 
 router.get('/edite/:id', editeImg)
 
-router.post('/update/:id', updateImg)
-
 router.get('/service',(req, res)=>{
     res.json('service')
 })

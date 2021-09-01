@@ -20,6 +20,7 @@ require('./service')
 
 //export router
 const imgRoutes = require('./routes/img.routes')
+const userRoutes = require('./routes/user.routes')
 
 //settings 
 app.set('views', path.join(__dirname, 'views'))
@@ -41,7 +42,9 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 //routes 
 
+app.use('/user', userRoutes)
 app.use('/img', imgRoutes)
+
 
 //listen
 app.listen(3000, ()=>{
