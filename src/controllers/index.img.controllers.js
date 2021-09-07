@@ -13,7 +13,7 @@ ctrlImg.getImgs = async(req,res )=>{
 
 ctrlImg.addImg = (req, res) => {
   res.render("index.hbs");
-
+  
 };
 
 ctrlImg.uploadImg = async (req, res) => {

@@ -35,11 +35,10 @@ app.engine('.hbs', exhbs ({
 app.set('view engine', '.hbs')
 //midleware 
 app.use(multer({dest:path.join(__dirname, 'public/upload/img') ,storage}).single('image'))
-
 app.use(morgan('dev'))
 app.use(express.urlencoded({extended:false}))
 app.use(express.static(path.join(__dirname, 'public')))
-
+app.use(express.json())
 //routes 
 
 app.use('/user', userRoutes)

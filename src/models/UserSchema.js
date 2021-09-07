@@ -1,11 +1,12 @@
 const mongoose = require('mongoose')
 const {Schema, model} = mongoose
+const bcrypt = require('bcrypt')
 
-const useSchema = new Schema({
+const userSchema = new Schema({
     username: {
        type: String,
     //    unique: true,
-    //    required: true,
+         required: true,
     },
     password: {
         type: String,
@@ -13,12 +14,15 @@ const useSchema = new Schema({
     }
 })
 
-useSchema.methods.encryPassword=()=>{
+userSchema.methods.encryPassword=(password)=>{
+    const newPassword = bcrypt.hash(password, 10)
+    return newPassword
+};
+
+userSchema.methods.comparedPassword=(password)=>{
+
+    return bcrypt.compare(password, this.password)
 
 }
 
-useSchema.methods.comparedPassword=()=>{
-
-}
-
-module.exports = model('useSchema', useSchema)
+module.exports = model('userSchema', userSchema)
