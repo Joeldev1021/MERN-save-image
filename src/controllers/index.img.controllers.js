@@ -7,7 +7,7 @@ const ImgSchema = require('../models/ImgSchema')
 
 ctrlImg.getImgs = async(req,res )=>{
     const imgs = await ImgSchema.find().lean()
-
+      
     res.render('listImg', {imgs})
 }
 
@@ -46,10 +46,8 @@ ctrlImg.deleteImg = async(req, res)=>{
 
 ctrlImg.editeImg = async(req, res)=> {
    const id = req.params.id
-   console.log(id)
    const img = await ImgSchema.findById(id).lean()
-  // console.log(img)
-    console.log(img)
+  // console.log(img) 
     res.render('updateImg', {img})
 }
 

@@ -8,9 +8,17 @@ const userSchema = new Schema({
     //    unique: true,
          required: true,
     },
+    email: {
+        type: String,
+        require:true
+    },
     password: {
         type: String,
         required: true
+    }
+}, {
+    timestamps :{
+        createdAt: 'created_at'
     }
 })
 
@@ -19,8 +27,9 @@ userSchema.methods.encryPassword=(password)=>{
     return newPassword
 };
 
-userSchema.methods.comparedPassword=(password)=>{
-
+userSchema.methods.comparedPassword = function (password){
+    console.log(this.password)
+    console.log(password)
     return bcrypt.compare(password, this.password)
 
 }

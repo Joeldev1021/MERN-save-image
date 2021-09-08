@@ -5,6 +5,7 @@ const exhbs = require('express-handlebars')
 const path = require('path')
 const multer = require('multer')
 const app = express()
+const dotenv = require('dotenv').config()
 
 //config multer
 const storage = multer.diskStorage({
