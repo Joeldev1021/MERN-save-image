@@ -1,11 +1,13 @@
 const jwt = require('jsonwebtoken')
 const User = require('../models/UserSchema')
 
-const veryToken =async(req, res,next)=>{
-    
-    const token = req.headers.authorization
+var LocalStorage = require('node-localstorage').LocalStorage,
+localStorage = new LocalStorage('./scratch');
 
-    if(!token) res.json('not token provided')
+const veryToken =async(req, res,next)=>{
+    const token =  localStorage.getItem('token')
+    //console.log(token)
+    if(!token) res.redirect('/user/signup')
     
      if(token){
        const userId =  jwt.verify(token, process.env.SECRET_TOKEN_KEY)

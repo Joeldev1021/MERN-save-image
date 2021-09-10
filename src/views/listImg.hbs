@@ -1,17 +1,20 @@
 <h1>list img</h1>
-
+{{#if img}}
+<h1>no tienes imagenes :(</h1>
+{{else}}
 <div class="container">
   <div class="row">
-    {{#each imgs}}
+    {{#each img}}
       <div class="card col m-2" style="width: 19rem;">
-        <img src="upload/img/{{filename}}" class="card-img-top" alt="..." />
+        <img src="/upload/img/{{filename}}" class="card-img-top" alt="..." />
         <div class="card-body">
           <h5 class="card-title">{{{title}}}</h5>
           <p class="card-text">{{description}}</p>
-          <a href="img/edite/{{_id}}" class="btn btn-primary">Edit</a>
-          <a href="img/delete/{{_id}}" class="btn btn-danger">deleted</a>
+          <a href="/user/img/edite/{{_id}}" class="btn btn-primary">Edit</a>
+          <a href="/user/img/delete/{{_id}}" class="btn btn-danger">deleted</a>
         </div>
       </div>
     {{/each}}
   </div>
 </div>
+{{/if}}

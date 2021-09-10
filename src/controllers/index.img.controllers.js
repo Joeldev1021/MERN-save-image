@@ -1,19 +1,23 @@
 const ctrlImg = {};
 const path = require('path')
+const jwt = require('jsonwebtoken')
 const fs = require('fs')
-
 const ImgSchema = require('../models/ImgSchema')
 
+var LocalStorage = require('node-localstorage').LocalStorage,
+localStorage = new LocalStorage('./scratch');
 
 ctrlImg.getImgs = async(req,res )=>{
-    const imgs = await ImgSchema.find().lean()
-      
-    res.render('listImg', {imgs})
+    const token = localStorage.getItem('token')
+    req.token = token
+    const userId =  jwt.verify(token, process.env.SECRET_TOKEN_KEY).id
+    const img = await ImgSchema.find().lean()   
+    res.render('listImg', {img})
 }
 
 ctrlImg.addImg = (req, res) => {
-  res.render("index.hbs");
-  
+  console.log('hola', req.token)
+  res.render("formImg");
 };
 
 ctrlImg.uploadImg = async (req, res) => {
@@ -27,9 +31,9 @@ ctrlImg.uploadImg = async (req, res) => {
   newImg.filename= req.file.filename
   newImg.imgExtname = path.extname(req.file.filename)
   console.log(newImg)
-  //const imgSave = await newImg.save()
+  const imgSave = await newImg.save()
    await newImg.save()
-   res.redirect('/img')
+   res.redirect('/user/img')
 
 };
 

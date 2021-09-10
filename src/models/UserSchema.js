@@ -15,7 +15,8 @@ const userSchema = new Schema({
     password: {
         type: String,
         required: true
-    }
+    },
+    noteId:{ type: Schema.Types.ObjectId, ref: "note" }
 }, {
     timestamps :{
         createdAt: 'created_at'
@@ -28,10 +29,7 @@ userSchema.methods.encryPassword=(password)=>{
 };
 
 userSchema.methods.comparedPassword = function (password){
-    console.log(this.password)
-    console.log(password)
     return bcrypt.compare(password, this.password)
-
 }
 
-module.exports = model('userSchema', userSchema)
+module.exports = model('user', userSchema)
