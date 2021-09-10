@@ -1,21 +1,35 @@
 const crltNote = {}
 
-crltNote.getNotes =(req, res)=>{
-    res.json('new Notes')
+const Note = require('../models/Note')
+
+crltNote.getNotes =async(req, res)=>{
+    const notes = await Note.find()
+    console.log(notes)
+    res.json(notes)
 }
 
-crltNote.createNote =(req, res)=>{
+crltNote.createNote= async(req, res)=>{
+    const note = await new Note(req.body)
+    await note.save()
     res.json('create Notes')
 }
-crltNote.getNoteById =(req, res)=>{
-    res.json('get notes by Id')
+
+crltNote.getNoteById =async(req, res)=>{
+    const note = await Note.findById(req.params.id)
+    res.json(note)
 }   
 
-crltNote.updateNoteById =(req, res)=>{
+crltNote.updateNoteById =async(req, res)=>{
+    const id = req.params.id
+    const note = await Note.findByIdAndUpdate(id, req.body)
+    console.log(note)
     res.json('update Note by Id')
 }
 
-crltNote.deleteNote =(req, res)=>{
+crltNote.deleteNote =async(req, res)=>{
+    const id = req.params.id
+    const note = await Note.findByIdAndDelete(id)
+    console.log(note)
     res.json('delete note by Id')
 }
 

@@ -5,8 +5,7 @@ const noteSchema = new Schema({
     title: String,
     description: String,
     important : Boolean,
-    userId: {type: Schema.Types.ObjectId, ref="user"  }
-
+    userId: {type: Schema.Types.ObjectId, ref: "User"  }
 })
 
 module.exports = model('notes', noteSchema)
