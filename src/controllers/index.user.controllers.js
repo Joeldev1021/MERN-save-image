@@ -24,7 +24,7 @@ ctrlUser.singUp = async (req, res)=> {
 ctrlUser.renderSingInForm = async(req, res)=> { 
     const user = await User.find()
     console.log(user) 
-    res.json('signIn')
+    res.json(user)
 }
 
 ctrlUser.singIn=async(req, res)=>{   
