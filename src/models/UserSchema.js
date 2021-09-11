@@ -24,7 +24,8 @@ const userSchema = new Schema({
 })
 
 userSchema.methods.encryPassword=(password)=>{
-    const newPassword = bcrypt.hash(password, 10)
+ 
+    const newPassword =  bcrypt.hash(password, 10)
     return newPassword
 };
 

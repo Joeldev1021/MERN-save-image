@@ -11,7 +11,7 @@ router.get('/signin', renderSingInForm)
 
 router.post('/signin', singIn)
 
-router.get('/logout', logout)
+router.post('/logout', logout)
 
 
 module.exports = router
