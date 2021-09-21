@@ -8,10 +8,15 @@ crltNote.getNotes =async(req, res)=> {
 }
 
 crltNote.createNote= async(req, res)=>{
-    const note = await new Note(req.body)
-    note.userId = req.user.id
-    await note.save()
-    res.json(note)
+    console.log(req.body)
+    if(req.body.title){
+        const note = await new Note(req.body)
+        note.userId = req.user.id
+        await note.save()
+        res.json(note)
+    }
+    res.json('required fields')
+
 }
 
 crltNote.getNoteById =async(req, res)=>{

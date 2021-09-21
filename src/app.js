@@ -1,11 +1,11 @@
 const express = require('express')
 const morgan = require('morgan')
-const hbs = require('handlebars')
-const exhbs = require('express-handlebars')
 const path = require('path')
 const multer = require('multer')
+const cors = require('cors')
 const app = express()
 const dotenv = require('dotenv').config()
+const port = process.env.PORT || 5000
 
 //config multer
 // const storage = multer.diskStorage({
@@ -24,20 +24,13 @@ require('./service')
 const userRoutes = require('./routes/user.routes')
 const noteRoutes = require('./routes/note.routes')
 
-//settings 
-// app.set('views', path.join(__dirname, 'views'))
-// app.engine('.hbs', exhbs ({
-//    defaultLayout: 'main',
-//    layoutsDir: path.join(__dirname, 'views/layouts'),
-//    partialsDir: path.join(__dirname, 'views/partials'),
-//    extname: '.hbs'
-// }))
 
 
 //app.set('view engine', '.hbs')
 //midleware 
 //app.use(multer({dest:path.join(__dirname, 'public/upload/img') ,storage}).single('image'))
 app.use(morgan('dev'))
+app.use(cors())
 app.use(express.urlencoded({extended:false}))
 //app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.json())
@@ -48,6 +41,6 @@ app.use(noteRoutes)
 
 
 //listen
-app.listen(3000, ()=>{
-    console.log('app listening at ', 3000)
+app.listen(port, ()=>{
+    console.log('app listening at ', port)
 })

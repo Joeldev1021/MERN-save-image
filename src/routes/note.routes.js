@@ -5,7 +5,7 @@ const verifyToken = require('../middleware/verifyToken')
 
 const {getNotes, getNoteById, updateNoteById, deleteNote, createNote} = require('../controllers/index.note.controllers')
 
-router.get('/note', getNotes)
+router.get('/notes', getNotes)
 
 router.post('/note/add',verifyToken,  createNote)
 

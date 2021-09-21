@@ -1,6 +1,8 @@
 const mongoose = require('mongoose')
 
-mongoose.connect('mongodb://localhost/red-img-tools',{
+const API_URI=` mongodb+srv://joeluser:${process.env.PASSWORD_DB}@cluster0.m8z6c.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`
+
+mongoose.connect(API_URI,{
     useNewUrlParser: true,
     useUnifiedTopology:true,
     useFindAndModify:true

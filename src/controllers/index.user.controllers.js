@@ -5,7 +5,7 @@ const User = require('../models/UserSchema')
 
 ctrlUser.renderSignUpForm =async(req, res) =>{
    // res.json("signup")//singUp is first user in the application
-  
+   
    res.json('form')
 }
 
@@ -16,6 +16,7 @@ ctrlUser.singUp = async (req, res)=> {
         const user = await new User({username, email})
         user.password = await user.encryPassword(password)
         await user.save()
+        console.log(user)
         return res.json(user)
     }
     res.json('username already exists')
