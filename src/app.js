@@ -39,6 +39,15 @@ app.use(express.json())
 app.use(userRoutes)
 app.use(noteRoutes)
 
+//error
+app.use((err, req, res, next) => {
+   
+    res.status(err.status|| 500)
+    res.send({ 
+        status: err.status|| 500,
+        message: err.message
+    })
+})
 
 //listen
 app.listen(port, ()=>{
