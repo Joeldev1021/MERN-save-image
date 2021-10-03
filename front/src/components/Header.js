@@ -49,19 +49,19 @@ function Header() {
             </button>
             <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
               <li>
-                <a className="dropdown-item" href="#!">
+                <Link className="dropdown-item" to="/auth/signin">
                   Singin
-                </a>
+                </Link>
               </li>
               <li>
-                <a className="dropdown-item" href="#!">
+                <Link className="dropdown-item" to="/auth/signup">
                  Signup
-                </a>
+                </Link>
               </li>
               <li>
-                <a className="dropdown-item" href="#!">
+                <Link className="dropdown-item" to="/logout">
                   Logout
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

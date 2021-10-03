@@ -5,8 +5,9 @@ const User = require('../models/UserSchema')
 
 ctrlUser.renderSignUpForm =async(req, res) =>{
    // res.json("signup")//singUp is first user in the application
-   
-   res.json('form')
+   const users = await User.find()
+   console.log(users)
+   res.json(users)
 }
 
 ctrlUser.singUp = async (req, res)=> {
@@ -15,9 +16,9 @@ ctrlUser.singUp = async (req, res)=> {
     if(!user) {
         const user = await new User({username, email})
         user.password = await user.encryPassword(password)
-        await user.save()
-        console.log(user)
-        return res.json(user)
+        const userSave = await user.save()
+        const token = jwt.sign({userSave}, process.env.SECRET_TOKEN_KEY, {expiresIn: '1d'})
+        return  res.json({token})
     }
     res.json('username already exists')
 }
@@ -36,7 +37,7 @@ ctrlUser.singIn=async(req, res)=>{
       const validatePassword = await user.comparedPassword(req.body.password)
       console.log(validatePassword)
        if(validatePassword){
-        const token = jwt.sign({id:user.id}, process.env.SECRET_TOKEN_KEY, {expiresIn: '1d'})
+        const token = jwt.sign({user}, process.env.SECRET_TOKEN_KEY, {expiresIn: '1d'})
         return  res.json({token: token})
        } 
        return res.json('username or password is incorret')
