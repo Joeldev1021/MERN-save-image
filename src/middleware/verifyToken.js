@@ -11,7 +11,7 @@ const veryToken = async (req, res, next) => {
   if (token) {
     try {
       const userId = jwt.verify(token, process.env.SECRET_TOKEN_KEY);
-      const user = await User.findById(userId.id);
+      const user = await User.findById(userId.id,{password:0})
       if (!user) {
         return res.json("error token");
       }else {

@@ -1,7 +1,15 @@
-import React from 'react';
-import {  Link } from "react-router-dom";
+import { useContext } from "react";
+import { Link } from "react-router-dom";
+import { GlobalUserContext } from "../context/provider/GobalUserProvider";
 
 function Header() {
+  const { isLogined } = useContext(GlobalUserContext);
+
+  const handleLogout=(e)=> {
+    e.preventDefault();
+    localStorage.clear();  
+  }
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark ">
       <div className="container">
@@ -31,11 +39,13 @@ function Header() {
                 Note
               </Link>
             </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/add">
-                Create Note
-              </Link>
-            </li>
+            {isLogined && (
+              <li className="nav-item">
+                <Link className="nav-link" to="/add">
+                  Create Note
+                </Link>
+              </li>
+            )}
           </ul>
           <div className="dropdown">
             <button
@@ -45,24 +55,29 @@ function Header() {
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
-             Login
+              Login
             </button>
             <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-              <li>
-                <Link className="dropdown-item" to="/auth/signin">
-                  Singin
-                </Link>
-              </li>
-              <li>
-                <Link className="dropdown-item" to="/auth/signup">
-                 Signup
-                </Link>
-              </li>
-              <li>
-                <Link className="dropdown-item" to="/logout">
-                  Logout
-                </Link>
-              </li>
+              {isLogined ? (
+                <li>
+                  <a className="dropdown-item" href="/auth/signup" onClick={(e)=> handleLogout(e)}>
+                    Logout
+                  </a>
+                </li>
+              ) : (
+                <>
+                  <li>
+                    <Link className="dropdown-item" to="/auth/signin">
+                      Singin
+                    </Link>
+                  </li>
+                  <li>
+                    <Link className="dropdown-item" to="/auth/signup">
+                      Signup
+                    </Link>
+                  </li>
+                </>
+              )}
             </ul>
           </div>
         </div>

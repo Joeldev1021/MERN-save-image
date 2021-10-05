@@ -1,0 +1,6 @@
+export const ActionsUser = {
+    SIGN_IN_USER: "SIGN_IN_USER",
+    SIGN_IN_ERROR: "SIGN_IN_ERROR",
+    SIGN_UP_USER: "SIGN_UP_USER",
+    SIGN_UP_ERROR: "SIGN_UP_ERROR",
+}

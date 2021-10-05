@@ -1,13 +1,12 @@
 const ctrlUser = {}
 const jwt = require('jsonwebtoken')
+const createError = require('http-errors')
 const User = require('../models/UserSchema')
 
 
-ctrlUser.renderSignUpForm =async(req, res) =>{
+ctrlUser.getProfile =async(req, res) =>{
    // res.json("signup")//singUp is first user in the application
-   const users = await User.find()
-   console.log(users)
-   res.json(users)
+    res.json({user:req.user})
 }
 
 ctrlUser.singUp = async (req, res)=> {
@@ -17,7 +16,7 @@ ctrlUser.singUp = async (req, res)=> {
         const user = await new User({username, email})
         user.password = await user.encryPassword(password)
         const userSave = await user.save()
-        const token = jwt.sign({userSave}, process.env.SECRET_TOKEN_KEY, {expiresIn: '1d'})
+        const token = jwt.sign({id: userSave._id}, process.env.SECRET_TOKEN_KEY, {expiresIn: '1d'})
         return  res.json({token})
     }
     res.json('username already exists')
@@ -29,19 +28,23 @@ ctrlUser.renderSingInForm = async(req, res)=> {
     res.json(user)
 }
 
-ctrlUser.singIn=async(req, res)=>{   
-    const user = await User.findOne({username :req.body.username})
-    if(!user) res.json('user not found')
+ctrlUser.singIn=async(req, res, next)=>{   
+    try {
+        const user = await User.findOne({username :req.body.username})
+        if(!user) throw createError.Unauthorized("the user does not exists")
+    
+        if(user){
+          const validatePassword = await user.comparedPassword(req.body.password)
 
-    if(user){
-      const validatePassword = await user.comparedPassword(req.body.password)
-      console.log(validatePassword)
-       if(validatePassword){
-        const token = jwt.sign({user}, process.env.SECRET_TOKEN_KEY, {expiresIn: '1d'})
-        return  res.json({token: token})
-       } 
-       return res.json('username or password is incorret')
-    }  
+           if(!validatePassword) throw createError.Unauthorized("invalid Password")
+
+            const token = jwt.sign({id: user.id}, process.env.SECRET_TOKEN_KEY, {expiresIn: '1d'})
+            return  res.json({token: token})
+        }   
+    } catch (error) {
+        next(error)
+    }
+      
 }
 
 ctrlUser.logout=async(req, res)=>{
