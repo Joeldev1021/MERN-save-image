@@ -16,6 +16,12 @@ export default function notesReducer(state, action) {
           notes: [...state.notes, action.payload]
       };
 
+    case ActionNotes.ADD_NOTES_ERROR: 
+    return {
+      ...state,
+      errorNoteMessage: action.payload.message
+    }
+
     case ActionNotes.DELETE_NOTES:
       return { 
           ...state, notes: state.notes.filter(note=> note._id !== action.payload)

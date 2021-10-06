@@ -7,12 +7,12 @@ const {getNotes, getNoteById, updateNoteById, deleteNote, createNote} = require(
 
 router.get('/note', getNotes)
 
-router.post('/note/add', createNote)
+router.post('/note/add',verifyToken, createNote)
 
 router.get('/note/:id', getNoteById)
 
-router.put('/note/edite/:id', updateNoteById)
+router.put('/note/edite/:id',verifyToken, updateNoteById)
 
-router.delete('/note/delete/:id', deleteNote)
+router.delete('/note/delete/:id',verifyToken, deleteNote)
 
 module.exports = router

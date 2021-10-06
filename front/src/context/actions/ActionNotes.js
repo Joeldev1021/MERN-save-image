@@ -1,6 +1,7 @@
 export const ActionNotes = {
     GET_NOTES: "GET_NOTES",
     ADD_NOTES: "ADD_NOTES",
+    ADD_NOTES_ERROR: "ADD_NOTES_ERROR",
     DELETE_NOTES: "DELETE_NOTES",
     EDITE_NOTES: "EDITE_NOTES",
 }

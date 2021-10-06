@@ -9,6 +9,7 @@ import GlobalNotesProvider from "./context/provider/GlobalNotesProvider";
 import GobalUserProvider from "./context/provider/GobalUserProvider";
 import Signin from "./pages/auth/Signin";
 import Signup from "./pages/auth/Signup";
+import Profile from "./pages/Profile";
 
 function App() {
   return (
@@ -19,24 +20,13 @@ function App() {
             <Header />
             <div className="container">
               <Switch>
-                <Route path="/note/edite/:id">
-                  <NotesForm />
-                </Route>
-                <Route path="/notes">
-                  <NotesPages />
-                </Route>
-                <Route path="/auth/signin">
-                  <Signin/>
-                </Route>
-                <Route path="/auth/signup">
-                <Signup />
-                </Route>
-                <Route path="/add">
-                  <NotesForm />
-                </Route>
-                <Route path="/">
-                  <Home />
-                </Route>
+                <Route component={NotesForm} path="/note/edite/:id" />
+                <Route component={NotesPages} path="/notes"/>
+                <Route component={Signin} path="/auth/signin"/>
+                <Route component={Signup} path="/auth/signup"/>
+                <Route component={Profile} path="/profile"/>
+                <Route component={NotesForm} path="/add"/>
+                <Route component={Home} path="/"/>
               </Switch>
             </div>
           </div>

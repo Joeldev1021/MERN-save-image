@@ -20,7 +20,6 @@ const GobalUserProvider = ({ children }) => {
   const [state, dispatch] = useReducer(userReducer, initialValues);
 
   const signUpUser = async (user) => {
-
     try {
       const token = await authSignUpApi(user)
         if(token){
@@ -39,7 +38,11 @@ const GobalUserProvider = ({ children }) => {
           history.push('/')
         }
     } catch (error) {
-      console.log(error)
+      
+      dispatch({ 
+        type: ActionsUser.SIGN_UP_ERROR,
+        payload: error.response.data
+      })
     }
   
   };
@@ -70,6 +73,7 @@ const GobalUserProvider = ({ children }) => {
         type: ActionsUser.SIGN_IN_ERROR,
         payload: error.response.data
       })
+     
     }
   };
 

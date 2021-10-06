@@ -9,11 +9,11 @@ crltNote.getNotes = async (req, res) => {
 };
 
 crltNote.createNote = async (req, res) => {
-  console.log(req.body);
-  
+
+  console.log(req.user)
     try {
       const note = await new Note(req.body);
-      // note.userId = req.user.id
+      note.userId = req.user.id
       console.log(note);
       await note.save();
       res.json(note);

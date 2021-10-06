@@ -11,7 +11,7 @@ const Signup = () => {
     token: ''
   })
 
-  const {signUpUser} = useContext(GlobalUserContext)
+  const {signUpUser, errorMessage} = useContext(GlobalUserContext)
 
   const handleChange=(e)=> {
     setUser({
@@ -29,6 +29,14 @@ const Signup = () => {
     <div className="d-flex justify-content-center ">
       <div className="row justify-content-md-center col-md-4">
         <h1>SingUp</h1>
+        {errorMessage && (
+          <div
+            className="alert alert-danger text-center rounded-0"
+            role="alert"
+          >
+            {errorMessage}
+          </div>
+        )}
         <form onSubmit={handleSubmit} >
           <div className="mb-3">
             <label htmlFor="username" className="form-label">

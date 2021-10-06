@@ -1,12 +1,14 @@
 import { useContext, useEffect, useState } from "react";
-import { useHistory, useParams } from "react-router";
+import {  useParams } from "react-router";
 import { GlobalNotesContext } from "../context/provider/GlobalNotesProvider";
+import { GlobalUserContext } from "../context/provider/GobalUserProvider";
 
 
 const FormNotes = () => {
-  const { addNote, notes, editeNote } = useContext(GlobalNotesContext);
+  const { addNote, notes, editeNote, errorNoteMessage } = useContext(GlobalNotesContext);
+  const { token,  } = useContext(GlobalUserContext);
 
-  const history = useHistory();
+  
   const params = useParams();
   const [note, setNote] = useState({
     title: "",
@@ -20,6 +22,7 @@ const FormNotes = () => {
     }
   }, [params.id]);
 
+
   const handleChange = (e) => {
     setNote({
       ...note,
@@ -32,9 +35,8 @@ const FormNotes = () => {
     if (params.id) {
       editeNote(note);
     } else {
-      addNote(note);
+      addNote(note, token);
     }
-    history.push("/notes");
   };
 
   return (
@@ -45,6 +47,14 @@ const FormNotes = () => {
           <label htmlFor="title" className="form-label">
             Title Note
           </label>
+          {errorNoteMessage && (
+          <div
+            className="alert alert-danger text-center rounded-0"
+            role="alert"
+          >
+            {errorNoteMessage}
+          </div>
+        )}
           <input
             type="text"
             value={note.title}

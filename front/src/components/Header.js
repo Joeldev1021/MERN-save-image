@@ -16,6 +16,7 @@ function Header() {
         <Link className="navbar-brand color-white" to="/">
           RedToolsImg
         </Link>
+        
         <button
           className="navbar-toggler"
           type="button"
@@ -46,6 +47,14 @@ function Header() {
                 </Link>
               </li>
             )}
+          </ul>
+          <div className="d-flex">
+          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+            <li className="nav-item">
+              <Link className="nav-link active" aria-current="page" to="/profile">
+                Profile
+              </Link>
+            </li>
           </ul>
           <div className="dropdown">
             <button
@@ -79,6 +88,8 @@ function Header() {
                 </>
               )}
             </ul>
+          </div>
+
           </div>
         </div>
       </div>
