@@ -10,6 +10,7 @@ import GobalUserProvider from "./context/provider/GobalUserProvider";
 import Signin from "./pages/auth/Signin";
 import Signup from "./pages/auth/Signup";
 import Profile from "./pages/Profile";
+import FormImg from "./components/FormImg";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
                 <Route component={Signup} path="/auth/signup"/>
                 <Route component={Profile} path="/profile"/>
                 <Route component={NotesForm} path="/add"/>
+                <Route component={FormImg} path="/upload"/>
                 <Route component={Home} path="/"/>
               </Switch>
             </div>

@@ -4,17 +4,17 @@ const router = express.Router()
 const verifyToken = require('../middleware/verifyToken')
 const {addImg, uploadImg, getImgs, deleteImg, editeImg, updateImg} = require('../controllers/index.img.controllers')
 
-router.get('/user/img', getImgs)
+router.get('/img', getImgs)
 
-router.get('/user/add', verifyToken, addImg)
+router.get('/add', addImg)
 
-router.post('/user/img/upload',verifyToken, uploadImg)
+router.post('/img/upload', verifyToken, uploadImg)
 
-router.get('/user/img/delete/:id',verifyToken,deleteImg)
+router.get('/img/delete/:id', deleteImg)
 
-router.get('/user/img/edite/:id',verifyToken, editeImg)
+router.get('/img/edite/:id', editeImg)
 
-router.get('/user/img/edite/:id',verifyToken, updateImg)
+router.get('/img/edite/:id', updateImg)
 
 router.get('/service',(req, res)=>{
     res.json('service')
