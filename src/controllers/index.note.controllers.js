@@ -4,13 +4,13 @@ const Note = require("../models/Note");
 
 crltNote.getNotes = async (req, res) => {
 //   const notes = await Note.find() .populate("userId");
-  const notes = await Note.find()
+  
+  const notes = await Note.find({ userId: req.user.id})
   res.json(notes);
 };
 
 crltNote.createNote = async (req, res) => {
 
-  console.log(req.user)
     try {
       const note = await new Note(req.body);
       note.userId = req.user.id

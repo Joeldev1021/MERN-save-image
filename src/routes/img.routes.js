@@ -2,11 +2,9 @@ const express = require('express')
 const router = express.Router()
 
 const verifyToken = require('../middleware/verifyToken')
-const {addImg, uploadImg, getImgs, deleteImg, editeImg, updateImg} = require('../controllers/index.img.controllers')
+const { uploadImg, getImgs, deleteImg, editeImg, updateImg} = require('../controllers/index.img.controllers')
 
-router.get('/img', getImgs)
-
-router.get('/add', addImg)
+router.get('/img',verifyToken, getImgs)
 
 router.post('/img/upload', verifyToken, uploadImg)
 

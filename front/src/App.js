@@ -11,18 +11,22 @@ import Signin from "./pages/auth/Signin";
 import Signup from "./pages/auth/Signup";
 import Profile from "./pages/Profile";
 import FormImg from "./components/FormImg";
+import ImgProvider from "./context/provider/ImgProvider";
+import ImgPages from "./pages/ImgPages";
 
 function App() {
   return (
     <Router>
       <GobalUserProvider>
         <GlobalNotesProvider>
+          <ImgProvider>
           <div className="App">
             <Header />
             <div className="container">
               <Switch>
                 <Route component={NotesForm} path="/note/edite/:id" />
                 <Route component={NotesPages} path="/notes"/>
+                <Route component={ImgPages} path="/images"/>
                 <Route component={Signin} path="/auth/signin"/>
                 <Route component={Signup} path="/auth/signup"/>
                 <Route component={Profile} path="/profile"/>
@@ -32,6 +36,7 @@ function App() {
               </Switch>
             </div>
           </div>
+          </ImgProvider>
         </GlobalNotesProvider>
       </GobalUserProvider>
     </Router>

@@ -1,0 +1,8 @@
+export const ActionImg = {
+    GET_IMG: "GET_IMG",
+    ADD_IMG: "ADD_IMG",
+    ADD_IMG_ERROR: "ADD_IMG_ERROR",
+    DELETE_IMG: "DELETE_IMG",
+    EDITE_IMG: "EDITE_NOTES",
+    EDITE_IMG__ERROR: "EDITE_IMG__ERROR"
+}

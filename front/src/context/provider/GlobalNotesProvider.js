@@ -1,8 +1,9 @@
 import axios from "axios";
-import { createContext, useEffect, useReducer } from "react";
+import { createContext, useContext, useEffect, useReducer } from "react";
 import { useHistory } from "react-router";
 import { ActionNotes } from "../actions/ActionNotes";
 import notesReducer from "../reducer/notesReducer";
+import { GlobalUserContext } from "./GobalUserProvider";
 
 export const GlobalNotesContext = createContext();
 
@@ -12,13 +13,22 @@ const initialValues = {
   errorNoteMessage: null,
 };
 
+
+
 const GlobalNotesProvider = ({ children }) => {
   const [state, dispatch] = useReducer(notesReducer, initialValues);
 
   const history = useHistory();
+  const { token } = useContext(GlobalUserContext);
 
   const getNotes = async () => {
-    const res = await axios("http://localhost:4000/note");
+    const res = await axios({
+      headers: {
+        "content-type": "application/json",
+        Authorization: token,
+      },
+      url: "http://localhost:4000/note",
+    });
     dispatch({
       type: ActionNotes.GET_NOTES,
       payload: res.data,
@@ -26,7 +36,6 @@ const GlobalNotesProvider = ({ children }) => {
   };
 
   const addNote = async (newNote, token) => {
-    console.log(token);
     try {
       const note = await axios({
         method: "POST",

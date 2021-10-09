@@ -1,8 +1,12 @@
-import React, {useState} from 'react';
-import axios from "axios";
+import React, {useContext, useState} from 'react';
+import  { ImgContext } from '../context/provider/ImgProvider';
+import { GlobalUserContext } from '../context/provider/GobalUserProvider';
 
 
 const FormImg = () => { 
+
+    const {uploadImg} = useContext(ImgContext)
+    const {token} = useContext(GlobalUserContext)
 
     const [selectImg, setselectImg] = useState(null)
     const [infoImg, setInfoImg] = useState({
@@ -26,10 +30,8 @@ const FormImg = () => {
       formData.append("description", infoImg.description)
       formData.append("image", selectImg)
 
-      const res = await axios.post( "http://localhost:4000/img/upload",formData, {
-        headers: { "content-type": "multipart/form-data" },
-      });
-      console.log(res)
+   
+     uploadImg(formData, token)
   };
  
 

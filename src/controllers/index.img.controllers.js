@@ -11,15 +11,14 @@ const ImgSchema = require('../models/ImgSchema')
 
 ctrlImg.getImgs = async(req,res )=>{
     // req.token = token
-    // const userId =  jwt.verify(token, process.env.SECRET_TOKEN_KEY).id
-    // const img = await ImgSchema.find().lean()   
-    // res.render('listImg', {img})
+    try {
+      const imgs = await ImgSchema.find({ userId: req.user.id}) 
+      res.json(imgs);
+      
+    } catch (error) {
+      next(error)
+    }
 }
-
-ctrlImg.addImg = (req, res) => {
-  // console.log('hola', req.token)
-  // res.render("formImg");
-};
 
 ctrlImg.uploadImg = async (req, res, next) => {
   const img = await new ImgSchema()
@@ -30,9 +29,9 @@ ctrlImg.uploadImg = async (req, res, next) => {
     img.description = req.body.description
     img.userId = req.user.id
     img.imgUrl = imgCloud.url
-    await img.save();
+    const imgSave = await img.save();
     await fs.unlink(req.files.image.tempFilePath, ()=>console.log('deleted'))
-    res.json("img")   
+    res.json(imgSave)   
   } catch (error) {
      next(error)
   }

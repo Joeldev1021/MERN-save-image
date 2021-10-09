@@ -1,9 +1,15 @@
-const Profile = () => {
-    return (
-        <div>
-           <h1>profile</h1> 
-        </div>
-    )
-}
+import { useContext } from "react";
+import { GlobalUserContext } from "../context/provider/GobalUserProvider";
 
-export default Profile
+const Profile = () => {
+  const { user } = useContext(GlobalUserContext);
+  console.log(user);
+  return (
+    <div>
+      <h4>username: {user.user.username}</h4>
+      <h4>email: {user.user.email}</h4>
+    </div>
+  );
+};
+
+export default Profile;

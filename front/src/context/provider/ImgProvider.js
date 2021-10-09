@@ -1,0 +1,76 @@
+import axios from "axios";
+import { createContext, useContext, useEffect, useReducer } from "react";
+import { useHistory } from "react-router";
+import {apiUploadImg, getApiImg} from "../../api/imgApi";
+import { ActionImg } from "../actions/ActionImg";
+import imgReducer from "../reducer/imgReducer";
+import { GlobalUserContext } from "./GobalUserProvider";
+
+export const ImgContext = createContext();
+
+const initialValues = {
+  images: [],
+  errorImgMessage: null,
+};
+
+
+
+const ImgProvider = ({ children }) => {
+  const [state, dispatch] = useReducer(imgReducer, initialValues);
+
+  const history = useHistory();
+  const { token, isLogined  } = useContext(GlobalUserContext);
+
+  const getImg = async () => {
+    try {
+      const img = await getApiImg(token)
+    
+      dispatch({
+        type: ActionImg.GET_IMG,
+        payload: img.data
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  };
+
+  const uploadImg = async (data, token) => {
+    try {
+     const img = await apiUploadImg(data, token)  
+      dispatch({ 
+        type: ActionImg.ADD_IMG,
+         payload:img.data
+        })
+    } catch (error) {
+      console.log(error)
+    }
+  };
+
+  const editeImg = async (img) => {
+    
+  };
+
+  const deleteImg = async (id) => {
+   
+  };
+
+  useEffect(() => {
+    getImg();
+  }, []);
+
+  return (
+    <ImgContext.Provider
+      value={{
+        ...state,
+        uploadImg,
+        editeImg,
+        deleteImg
+      }}
+    >
+      {children}
+    </ImgContext.Provider>
+  );
+};
+
+export default ImgProvider;
+
