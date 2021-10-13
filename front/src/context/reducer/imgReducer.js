@@ -22,9 +22,9 @@ export default function imgReducer(state, action) {
       errorNoteMessage: action.payload.message
     }
 
-    case ActionImg.EDITE_IMG:
+    case ActionImg.DELETE_IMG:
       return { 
-          ...state, notes: state.notes.filter(note=> note._id !== action.payload)
+          ...state, images: state.images.filter(img=> img._id !== action.payload)
        };
 
     case ActionImg.EDITE_IMG__ERROR:

@@ -8,7 +8,7 @@ router.get('/img',verifyToken, getImgs)
 
 router.post('/img/upload', verifyToken, uploadImg)
 
-router.get('/img/delete/:id', deleteImg)
+router.delete('/img/delete/:id',verifyToken, deleteImg)
 
 router.get('/img/edite/:id', editeImg)
 

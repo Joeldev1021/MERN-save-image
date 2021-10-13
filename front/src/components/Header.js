@@ -8,6 +8,7 @@ function Header() {
   const handleLogout = (e) => {
     e.preventDefault();
     localStorage.clear();
+    window.location.reload()
   };
 
   return (
@@ -64,7 +65,7 @@ function Header() {
               </ul>
             </div>
            
-            <div className="dropdown ms-2">
+            <div className="dropdown">
               <button
                 className="btn btn-outline-light dropdown-toggle"
                 type="button"

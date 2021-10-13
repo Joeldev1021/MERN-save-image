@@ -1,7 +1,7 @@
 import axios from "axios";
 import { createContext, useContext, useEffect, useReducer } from "react";
 import { useHistory } from "react-router";
-import {apiUploadImg, getApiImg} from "../../api/imgApi";
+import {apiUploadImg, getApiImg, getApiDeleteImg} from "../../api/imgApi";
 import { ActionImg } from "../actions/ActionImg";
 import imgReducer from "../reducer/imgReducer";
 import { GlobalUserContext } from "./GobalUserProvider";
@@ -51,12 +51,20 @@ const ImgProvider = ({ children }) => {
   };
 
   const deleteImg = async (id) => {
-   
+      try {
+        const imgDelete = await getApiDeleteImg(id, token)
+        dispatch({ 
+          type: ActionImg.DELETE_IMG,
+          payload: imgDelete.data._id
+        })
+      } catch (error) {
+        
+      }
   };
 
   useEffect(() => {
     getImg();
-  }, []);
+  }, [isLogined]);
 
   return (
     <ImgContext.Provider
