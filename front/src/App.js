@@ -32,6 +32,7 @@ function App() {
                 <Route component={Profile} path="/profile"/>
                 <Route component={NotesForm} path="/add"/>
                 <Route component={FormImg} path="/upload"/>
+                <Route component={FormImg} path="/img/edite/:id"/>
                 <Route component={Home} path="/"/>
               </Switch>
             </div>

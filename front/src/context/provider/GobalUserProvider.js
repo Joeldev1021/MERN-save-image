@@ -26,8 +26,7 @@ const GobalUserProvider = ({ children }) => {
 
           localStorage.setItem('token', token)
           const resUser = await getProfileUser(token)
-
-          localStorage.setItem('user', JSON.stringify(resUser.data))
+          localStorage.setItem('user', JSON.stringify(resUser.data.user))
           dispatch({
             type: ActionsUser.SIGN_UP_USER,
             payload: {
@@ -50,13 +49,12 @@ const GobalUserProvider = ({ children }) => {
   const signInUser = async (user) => {
     try {
       const res = await authSignInApi(user)
-      console.log(res)
       const {token} = res.data
         if(token){
           localStorage.setItem('token', token)
           const resUser = await getProfileUser(token)
           console.log(resUser)
-          localStorage.setItem('user', JSON.stringify(resUser.data))
+          localStorage.setItem('user', JSON.stringify(resUser.data.user))
           dispatch({
             type: ActionsUser.SIGN_IN_USER,
             payload: {

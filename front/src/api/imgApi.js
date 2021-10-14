@@ -28,3 +28,22 @@ export async function getApiDeleteImg(id, token) {
   });
   return res;
 }
+
+export async function apiUpdateImg(img, token) {
+  const res = await axios({
+    method: "PUT",
+    data: {
+      title:img.title,
+      description: img.description,
+    },
+    headers: {
+       Authorization: token,
+    },
+    url: `http://localhost:4000/img/update/${img._id}`
+  });
+  return res;
+}
+
+
+
+

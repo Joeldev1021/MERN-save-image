@@ -13,13 +13,11 @@ const initialValues = {
   errorNoteMessage: null,
 };
 
-
-
 const GlobalNotesProvider = ({ children }) => {
   const [state, dispatch] = useReducer(notesReducer, initialValues);
 
   const history = useHistory();
-  const { token } = useContext(GlobalUserContext);
+  const { token, isLogined } = useContext(GlobalUserContext);
 
   const getNotes = async () => {
     const res = await axios({
@@ -56,18 +54,20 @@ const GlobalNotesProvider = ({ children }) => {
       });
       history.push("/notes");
     } catch (error) {
-      if(error.response.status === 500) {
-         dispatch({
-        type: ActionNotes.ADD_NOTES_ERROR,
-        payload: {message: 'not authorize' }
-      })
+      if (error.response.status === 500) {
+        dispatch({
+          type: ActionNotes.ADD_NOTES_ERROR,
+          payload: { message: "not authorize" },
+        });
       }
     }
   };
 
   const editeNote = async (note) => {
-    await axios({
+  try {
+    const noteUpdate = await axios({
       method: "PUT",
+      headers: {Authorization:token},
       data: {
         title: note.title,
         description: note.description,
@@ -78,22 +78,32 @@ const GlobalNotesProvider = ({ children }) => {
       type: ActionNotes.EDITE_NOTES,
       payload: note,
     });
+    
+  } catch (error) {
+    console.log(error.response.massage)
+  }
   };
 
-  const deleteNote = async (id) => {
-    await axios({
-      method: "DELETE",
-      url: `http://localhost:4000/note/delete/${id}`,
-    });
-    dispatch({
-      type: ActionNotes.DELETE_NOTES,
-      payload: id,
-    });
+  const deleteNote = async (id, token) => {
+    try {
+      const note = await await axios({
+        method: "DELETE",
+        headers: { Authorization: token },
+        url: `http://localhost:4000/note/delete/${id}`,
+      });
+      console.log(note);
+      dispatch({
+        type: ActionNotes.DELETE_NOTES,
+        payload: id,
+      });
+    } catch (error) {
+      console.log(error.response.message)
+    }
   };
 
   useEffect(() => {
     getNotes();
-  }, []);
+  }, [isLogined]);
 
   return (
     <GlobalNotesContext.Provider
@@ -102,7 +112,6 @@ const GlobalNotesProvider = ({ children }) => {
         addNote,
         editeNote,
         deleteNote,
-        
       }}
     >
       {children}

@@ -6,8 +6,8 @@ const Profile = () => {
   console.log(user);
   return (
     <div>
-      <h4>username: {user.user.username}</h4>
-      <h4>email: {user.user.email}</h4>
+      <h4>username: {user.username}</h4>
+      <h4>email: {user.email}</h4>
     </div>
   );
 };

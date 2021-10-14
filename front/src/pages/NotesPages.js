@@ -1,17 +1,15 @@
 import { useContext } from 'react';
 import {useHistory} from 'react-router-dom'
 import { GlobalNotesContext } from '../context/provider/GlobalNotesProvider';
+import { GlobalUserContext } from '../context/provider/GobalUserProvider';
 
 
 const Notes = () => {
 
   const history = useHistory()
   const {notes, deleteNote, editeNote} = useContext(GlobalNotesContext)
+  const { token } = useContext(GlobalUserContext);
  
- const handleDelete =(e, id) => {
-    e.preventDefault();
-    deleteNote(id)
- }
 
  const handleEdite=(e, id) => {
    e.preventDefault();
@@ -29,12 +27,12 @@ const Notes = () => {
               <p className="card-text">
                   {item.description}
               </p>
-              <a href="#!" className="btn btn-danger" onClick={(e)=>handleDelete(e, item._id)}>
+              <button className="btn btn-danger" onClick={(e)=> deleteNote(item._id, token)}>
                 delete
-              </a>
-              <a href="#!" className="btn btn-primary" onClick={(e)=>handleEdite(e, item._id)}>
+              </button>
+              <button className="btn btn-primary" onClick={(e)=>handleEdite(e, item._id)}>
                 edite
-              </a>
+              </button>
             </div>
           </div>
         );

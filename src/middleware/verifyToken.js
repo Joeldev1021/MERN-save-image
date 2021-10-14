@@ -9,7 +9,7 @@ const veryToken = async (req, res, next) => {
       const userId = jwt.verify(token, process.env.SECRET_TOKEN_KEY);
       const user = await User.findById(userId.id, { password: 0 });
       if (!user) throw createError.NotFound("token invalid or expired");
-      console.log("very token");
+      
       req.user = user;
       next();
     } catch (error) {

@@ -17,6 +17,7 @@ export default function userReducer(state, action) {
     case ActionsUser.SIGN_UP_ERROR:
       return { 
         ...state,
+        isLogined: false,
         errorMessage: action.payload.message,
       }
 
@@ -36,6 +37,7 @@ export default function userReducer(state, action) {
     return {
       ...state,
       errorMessage: action.payload.message,
+      isLogined: false
     }
     
     default:

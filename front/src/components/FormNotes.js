@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import {  useParams } from "react-router";
+import {  useHistory, useParams } from "react-router";
 import { GlobalNotesContext } from "../context/provider/GlobalNotesProvider";
 import { GlobalUserContext } from "../context/provider/GobalUserProvider";
 
@@ -8,7 +8,7 @@ const FormNotes = () => {
   const { addNote, notes, editeNote, errorNoteMessage } = useContext(GlobalNotesContext);
   const { token,  } = useContext(GlobalUserContext);
 
-  
+  const history = useHistory()
   const params = useParams();
   const [note, setNote] = useState({
     title: "",
@@ -37,6 +37,7 @@ const FormNotes = () => {
     } else {
       addNote(note, token);
     }
+    history.push('/notes')
   };
 
   return (

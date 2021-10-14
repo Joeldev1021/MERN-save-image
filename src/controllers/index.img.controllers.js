@@ -54,10 +54,11 @@ ctrlImg.deleteImg = async (req, res, next) => {
   }
 };
 
-ctrlImg.editeImg = async (req, res, next) => {
+ctrlImg.updateImg = async (req, res, next) => {
   const id = req.params.id;
+  console.log(req.body)
   try {
-    const img = await ImgSchema.findById(id);
+    const img = await ImgSchema.findByIdAndUpdate(id, req.body);
     if (!img) throw createError.BadRequest("image not found");
     return res.json(img);
   } catch (error) {

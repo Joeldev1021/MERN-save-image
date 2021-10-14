@@ -1,6 +1,7 @@
 const crltNote = {};
 
 const Note = require("../models/Note");
+const createError = require("http-errors");
 
 crltNote.getNotes = async (req, res) => {
 //   const notes = await Note.find() .populate("userId");
@@ -10,17 +11,14 @@ crltNote.getNotes = async (req, res) => {
 };
 
 crltNote.createNote = async (req, res) => {
-
     try {
       const note = await new Note(req.body);
       note.userId = req.user.id
-      console.log(note);
       await note.save();
       res.json(note);
     } catch (error) {
         console.log(error)
     } 
-  
 };
 
 crltNote.getNoteById = async (req, res) => {
@@ -28,33 +26,27 @@ crltNote.getNoteById = async (req, res) => {
   res.json(note);
 };
 
-crltNote.updateNoteById = async (req, res) => {
+crltNote.updateNoteById = async (req, res, next) => {
   const id = req.params.id;
-  const note = await Note.findById(id);
-  console.log(req.body)
-//   if (req.user.id == note.userId) {
-if(note){
+   try {
     const noteUpdate = await Note.findByIdAndUpdate(id, req.body);
-    return res.json("update note");
-  } else {
-    res.json("note not found");
-  }
+    if(!noteUpdate) throw createError.NotFound('note not found')
+    return res.json(noteUpdate);
+   } catch (error) {
+     next(error)
+   }
+   
 };
 
-crltNote.deleteNote = async (req, res) => {
+crltNote.deleteNote = async (req, res, next) => {
   const id = req.params.id;
   try {
-    const note = await Note.findById(id);
-    //   if (req.user.id == note.userId) {
-       if(note){
         const noteDelete = await Note.findByIdAndDelete(id);
-        return res.json("delete note");
-      } else {
-        res.json("note not found");
-      }
+        if(!noteDelete) throw createError.NotFound('note not found')
+        return res.json(noteDelete);
+        
   } catch (error) {
-      
-      console.log(error)
+      next(error)
   }
 
 };
