@@ -60,6 +60,7 @@ ctrlImg.updateImg = async (req, res, next) => {
   try {
     const img = await ImgSchema.findByIdAndUpdate(id, req.body);
     if (!img) throw createError.BadRequest("image not found");
+    
     return res.json(img);
   } catch (error) {
     next(error)

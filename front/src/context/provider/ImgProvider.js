@@ -48,9 +48,12 @@ const ImgProvider = ({ children }) => {
   const editeImg = async (img, token) => {
      try {
        const imgUpdate = await apiUpdateImg(img, token)
-       console.log(imgUpdate)
+       dispatch({
+         type: ActionImg.UPDATE_IMG,
+         payload:img
+       })
      } catch (error) {
-       
+       console.log(error)
      }
   };
 

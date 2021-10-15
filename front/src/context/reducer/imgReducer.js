@@ -27,7 +27,13 @@ export default function imgReducer(state, action) {
           ...state, images: state.images.filter(img=> img._id !== action.payload)
        };
 
-    case ActionImg.EDITE_IMG__ERROR:
+    case ActionImg.UPDATE_IMG: 
+      return { 
+        ...state,
+        images: state.images.map(img => img._id === action.payload._id? action.payload : img)
+      }
+
+    case ActionImg.UPDATE_IMG__ERROR:
       return { 
           ...state, 
           errorNoteMessage: action.payload.message

@@ -1,23 +1,24 @@
 import React, { useContext, useEffect, useState } from "react";
 import { ImgContext } from "../context/provider/ImgProvider";
 import { GlobalUserContext } from "../context/provider/GobalUserProvider";
-import { useParams } from "react-router";
+import { useHistory, useParams } from "react-router";
 
 const FormImg = () => {
   const { id } = useParams();
+  const history = useHistory()
 
   const { uploadImg, images, editeImg } = useContext(ImgContext);
   const { token } = useContext(GlobalUserContext);
 
   const [selectImg, setselectImg] = useState(null);
   const [infoImg, setInfoImg] = useState({
-    title: "",
+    title : "",
     description: "",
     imgUrl: "",
   });
 
   useEffect(() => {
-    if (images.length > 0) {
+    if (images.length > 0 && id) {
       const img = images.filter((img) => img._id == id);
       setInfoImg(img[0]);
     }
@@ -42,6 +43,7 @@ const FormImg = () => {
     } else {
       editeImg(infoImg, token)
     }
+    history.push('/images')
   };
 
   return (
