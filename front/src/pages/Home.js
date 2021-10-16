@@ -1,5 +1,13 @@
+import { useContext } from "react";
+import ListOfImg from "../components/ListOfImg";
+import { GlobalUserContext } from "../context/provider/GobalUserProvider";
+
 const Home = () => {
+
+  const { isLogined } = useContext(GlobalUserContext);
+
   return (
+    <>
     <div className="container text-center pt-5 col-md-4">
       <h1>home</h1>
       <p >
@@ -9,6 +17,12 @@ const Home = () => {
         quae?
       </p>
     </div>
+    {
+        isLogined && (
+        <ListOfImg />
+        ) 
+      }
+    </>
   );
 };
 

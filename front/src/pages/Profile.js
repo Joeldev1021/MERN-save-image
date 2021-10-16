@@ -6,8 +6,13 @@ const Profile = () => {
   console.log(user);
   return (
     <div>
-      <h4>username: {user.username}</h4>
+      {user ? (
+        <>
+        <h4>username: {user.username}</h4>
       <h4>email: {user.email}</h4>
+        </>
+      ): <h4>I need login</h4>}
+      
     </div>
   );
 };

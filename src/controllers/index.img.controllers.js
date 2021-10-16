@@ -4,12 +4,12 @@ const jwt = require("jsonwebtoken");
 const fs = require("fs");
 const createError = require("http-errors");
 
-const { cloudinaryFunc } = require("../helper/cloudinary");
+const { cloudinaryAdd, cloudinaryDelete } = require("../helper/cloudinary");
 
 //Schema Image
 const ImgSchema = require("../models/ImgSchema");
 
-ctrlImg.getImgs = async (req, res) => {
+ctrlImg.getImgs = async (req, res,next) => {
   // req.token = token
   try {
     const imgs = await ImgSchema.find({ userId: req.user.id });
@@ -21,6 +21,18 @@ ctrlImg.getImgs = async (req, res) => {
   }
 };
 
+ctrlImg.getAllImg = async (req, res, next) => {
+  
+  try {
+    const img = await ImgSchema.find().populate("userId",{ password: 0 });
+    if(!img) throw createError.BadRequest("not found images")
+    return res.json(img)
+  } catch (error) {
+    next(error)
+  }
+}
+
+
 ctrlImg.uploadImg = async (req, res, next) => {
   const img = await new ImgSchema();
 
@@ -28,7 +40,7 @@ ctrlImg.uploadImg = async (req, res, next) => {
     if (!req.files) throw createError.BadRequest();
     if (!req.body.title || !req.body.description)
       throw createError.Unauthorized("you have complete form");
-    const imgCloud = await cloudinaryFunc(req.files.image.tempFilePath);
+    const imgCloud = await cloudinaryAdd(req.files.image.tempFilePath);
     if (!imgCloud) throw createError.Unauthorized("not provided image");
     img.title = req.body.title;
     img.description = req.body.description;
@@ -45,10 +57,15 @@ ctrlImg.uploadImg = async (req, res, next) => {
 ctrlImg.deleteImg = async (req, res, next) => {
   const id = req.params.id;
   try {
-    const deleteImg = await ImgSchema.findByIdAndRemove(id);
-    if (!deleteImg) throw createError.BadRequest("image not found");
 
-    return res.json(deleteImg);
+     const img = await ImgSchema.findByIdAndRemove(id);
+     if (!img) throw createError.BadRequest("image not found");
+     //cut url 
+    const imgCut = img.imgUrl.split("/")[7].split('.')[0]
+    //delete img cloudinary
+    const imgDelete = await cloudinaryDelete(imgCut)
+    
+    return res.json(img);
   } catch (error) {
     next(error);
   }

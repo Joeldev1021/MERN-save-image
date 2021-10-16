@@ -7,11 +7,15 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET
 })
 
-const cloudinaryFunc = async (img)=> {
+const cloudinaryAdd = async (img)=> {
    const res = await cloudinary.uploader.upload(img)
    return res
 }
 
-module.exports ={
-    cloudinaryFunc
+const cloudinaryDelete = async (img)=> {
+   const res= await cloudinary.uploader.destroy(img);
+   return res
 }
+
+
+module.exports ={cloudinaryAdd, cloudinaryDelete}

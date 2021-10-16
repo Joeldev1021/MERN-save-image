@@ -1,7 +1,7 @@
 import axios from "axios";
 import { createContext, useContext, useEffect, useReducer } from "react";
 import { useHistory } from "react-router";
-import {apiUploadImg, getApiImg, getApiDeleteImg, apiUpdateImg} from "../../api/imgApi";
+import {apiUploadImg, getApiImg, getApiDeleteImg, apiUpdateImg, getAllApiImg} from "../../api/imgApi";
 import { ActionImg } from "../actions/ActionImg";
 import imgReducer from "../reducer/imgReducer";
 import { GlobalUserContext } from "./GobalUserProvider";
@@ -10,6 +10,7 @@ export const ImgContext = createContext();
 
 const initialValues = {
   images: [],
+  allImg: [],
   errorImgMessage: null,
 };
 
@@ -26,6 +27,18 @@ const ImgProvider = ({ children }) => {
       const img = await getApiImg(token)
       dispatch({
         type: ActionImg.GET_IMG,
+        payload: img.data
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  };
+  const getAllImg = async () => {
+    try {
+      const img = await getAllApiImg(token)
+      console.log(img)
+      dispatch({
+        type: ActionImg.GET_ALL_IMG,
         payload: img.data
       })
     } catch (error) {
@@ -71,6 +84,7 @@ const ImgProvider = ({ children }) => {
 
   useEffect(() => {
     getImg();
+    getAllImg()
   }, [isLogined]);
 
   return (

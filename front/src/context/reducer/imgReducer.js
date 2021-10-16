@@ -9,6 +9,11 @@ export default function imgReducer(state, action) {
           ...state, 
           images: action.payload
           };
+    case ActionImg.GET_ALL_IMG: 
+      return { 
+        ...state, 
+        allImg: [...action.payload]
+      }
 
     case ActionImg.ADD_IMG:
       return { 

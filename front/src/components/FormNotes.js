@@ -2,10 +2,11 @@ import { useContext, useEffect, useState } from "react";
 import {  useHistory, useParams } from "react-router";
 import { GlobalNotesContext } from "../context/provider/GlobalNotesProvider";
 import { GlobalUserContext } from "../context/provider/GobalUserProvider";
+import Snniper from "./Snniper";
 
 
 const FormNotes = () => {
-  const { addNote, notes, editeNote, errorNoteMessage } = useContext(GlobalNotesContext);
+  const { addNote, notes, editeNote, errorNoteMessage, isLoadNote } = useContext(GlobalNotesContext);
   const { token,  } = useContext(GlobalUserContext);
 
   const history = useHistory()
@@ -15,12 +16,15 @@ const FormNotes = () => {
     description: "",
   });
 
+  
   useEffect(() => {
     if (params.id) {
       const note = notes.filter((note) => note._id === params.id);
       setNote(note[0]);
     }
   }, [params.id]);
+
+ 
 
 
   const handleChange = (e) => {
@@ -30,14 +34,21 @@ const FormNotes = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit =async (e) => {
     e.preventDefault();
     if (params.id) {
-      editeNote(note);
+      const newNote = await editeNote(note);
+       if(newNote){
+        history.push('/notes')
+      }
     } else {
-      addNote(note, token);
+     const newNote = await addNote(note, token);
+     if(newNote){
+       history.push('/notes')
+     }
     }
-    history.push('/notes')
+  
+    
   };
 
   return (
@@ -81,7 +92,9 @@ const FormNotes = () => {
           ></textarea>
           <div className="col-auto mt-2">
             <button type="submit" className="btn btn-primary mb-3">
-              {params.id ? "Edite Note" : "Create Note"}
+              {isLoadNote? (
+                <Snniper/>
+              ): params.id ? "Edite Note" : "Create Note"}
             </button>
           </div>
         </div>

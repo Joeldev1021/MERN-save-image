@@ -18,7 +18,7 @@ const Notes = () => {
 
   return (
     <div className="row">
-      {notes.map((item) => {
+      {notes.length > 0 ? notes.map((item) => {
         return (
           <div className="card mt-3 d-grid m-3" style={{ width: "18rem" }} key={item._id}>
             {/* <img src="..." className="card-img-top" alt="..." /> */}
@@ -36,7 +36,7 @@ const Notes = () => {
             </div>
           </div>
         );
-      })}
+      }): <h2>not notes</h2>}
     </div>
   );
 };

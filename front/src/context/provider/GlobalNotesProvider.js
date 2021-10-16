@@ -1,6 +1,7 @@
 import axios from "axios";
 import { createContext, useContext, useEffect, useReducer } from "react";
 import { useHistory } from "react-router";
+import { apiAddNotes, apiDeleteNotes, apiEditeNotes, apiGetNotes,  } from "../../api/noteApi";
 import { ActionNotes } from "../actions/ActionNotes";
 import notesReducer from "../reducer/notesReducer";
 import { GlobalUserContext } from "./GobalUserProvider";
@@ -9,7 +10,7 @@ export const GlobalNotesContext = createContext();
 
 const initialValues = {
   notes: [],
-  userId: null,
+  isLoadNote: false,
   errorNoteMessage: null,
 };
 
@@ -20,39 +21,32 @@ const GlobalNotesProvider = ({ children }) => {
   const { token, isLogined } = useContext(GlobalUserContext);
 
   const getNotes = async () => {
-    const res = await axios({
-      headers: {
-        "content-type": "application/json",
-        Authorization: token,
-      },
-      url: "http://localhost:4000/note",
-    });
-    dispatch({
-      type: ActionNotes.GET_NOTES,
-      payload: res.data,
-    });
+    dispatch({type: ActionNotes.GET_NOTES_LOAD})
+    try {
+      const res = await apiGetNotes(token)
+      dispatch({
+        type: ActionNotes.GET_NOTES,
+        payload: res.data,
+      });
+      
+    } catch (error) {
+      dispatch({
+        type: ActionNotes.GET_NOTES_ERROR,
+        payload: error.response.message
+      })
+    }
+   
   };
 
   const addNote = async (newNote, token) => {
+    dispatch({type: ActionNotes.ADD_NOTES_LOAD})
     try {
-      const note = await axios({
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-          Authorization: token,
-        },
-        data: {
-          title: newNote.title,
-          description: newNote.description,
-        },
-        url: "http://localhost:4000/note/add",
-      });
-
+      const note = await apiAddNotes(newNote, token)
       dispatch({
         type: ActionNotes.ADD_NOTES,
         payload: note.data,
       });
-      history.push("/notes");
+      return note
     } catch (error) {
       if (error.response.status === 500) {
         dispatch({
@@ -64,33 +58,27 @@ const GlobalNotesProvider = ({ children }) => {
   };
 
   const editeNote = async (note) => {
+    dispatch({type: ActionNotes.EDITE_NOTES_LOAD})
   try {
-    const noteUpdate = await axios({
-      method: "PUT",
-      headers: {Authorization:token},
-      data: {
-        title: note.title,
-        description: note.description,
-      },
-      url: `http://localhost:4000/note/edite/${note._id}`,
-    });
+    const noteUpdate = await apiEditeNotes(note, token)
     dispatch({
       type: ActionNotes.EDITE_NOTES,
       payload: note,
     });
-    
+    return noteUpdate
   } catch (error) {
     console.log(error.response.massage)
+    dispatch({
+      type: ActionNotes.EDITE_NOTES_ERROR,
+      payload: error.response.message
+    })
+    
   }
   };
 
   const deleteNote = async (id, token) => {
     try {
-      const note = await await axios({
-        method: "DELETE",
-        headers: { Authorization: token },
-        url: `http://localhost:4000/note/delete/${id}`,
-      });
+      const note = await apiDeleteNotes(id, token)
       console.log(note);
       dispatch({
         type: ActionNotes.DELETE_NOTES,
