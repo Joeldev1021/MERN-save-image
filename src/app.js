@@ -15,6 +15,7 @@ require('./service')
 const imgRoutes = require('./routes/img.routes')
 const userRoutes = require('./routes/user.routes')
 const noteRoutes = require('./routes/note.routes')
+const likeRoutes = require('./routes/like.routes')
 
 
 //midleware 
@@ -34,6 +35,7 @@ app.use(fileUpload({
 app.use(userRoutes)
 app.use(noteRoutes)
 app.use(imgRoutes)
+app.use(likeRoutes)
 //error
 app.use((err, req, res, next) => {
     res.status(err.status|| 500)
