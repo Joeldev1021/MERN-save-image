@@ -7,9 +7,9 @@ const { verify } = require('jsonwebtoken')
 
 router.get('/like',verifyToken, getLikes)
 
-router.get('/like/all', verifyToken, getAllLikes)
+router.get('/img/like/all', verifyToken, getAllLikes)
 
-router.post('/like', verifyToken, addLike)
+router.post('/img/like/add/:id', verifyToken, addLike)
 
 router.post('/like/delete', verifyToken, deleteLikes)
 

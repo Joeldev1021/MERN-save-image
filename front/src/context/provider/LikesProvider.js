@@ -1,6 +1,7 @@
 import axios from "axios";
 import { createContext, useContext, useEffect, useReducer } from "react";
 import { useHistory } from "react-router";
+import { apiAddLikes } from "../../api/likeApi";
 
 import { ActionNotes } from "../actions/ActionNotes";
 import likeReducer from "../reducer/LikeReducer";
@@ -20,8 +21,12 @@ const LikesProvider = ({ children }) => {
   const history = useHistory();
   const { token, isLogined } = useContext(GlobalUserContext);
 
- const addLike =(id)=> {
-    console.log(id)
+ const addLike =async(id)=> {
+    try {
+      const like =await apiAddLikes(id, token)
+    } catch (error) {
+      
+    }
  }
 
 

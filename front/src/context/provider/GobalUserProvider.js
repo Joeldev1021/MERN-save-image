@@ -53,7 +53,6 @@ const GobalUserProvider = ({ children }) => {
         if(token){
           localStorage.setItem('token', token)
           const resUser = await getProfileUser(token)
-          console.log(resUser)
           localStorage.setItem('user', JSON.stringify(resUser.data.user))
           dispatch({
             type: ActionsUser.SIGN_IN_USER,

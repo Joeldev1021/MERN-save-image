@@ -9,10 +9,11 @@ import { LikesContext } from "../context/provider/LikesProvider";
 
 const ListOfImg = () => {
   const { images, allImg } = useContext(ImgContext);
-  const { addLike } = useContext(LikesContext);
+  const { addLike, likes } = useContext(LikesContext);
 
   const history = useHistory();
   console.log(allImg);
+  console.log('likes ', likes)
 
   return (
     <div className="row">

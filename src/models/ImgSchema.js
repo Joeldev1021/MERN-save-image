@@ -6,7 +6,8 @@ const ImgSchema = new Schema({
     title: String,
     description:String,
     imgUrl: String,
-    userId: { type: Schema.ObjectId, ref: "User" }
+    userId: { type: Schema.ObjectId, ref: "User" },
+    
 }, {
     timestamps: {
         createdAt: 'created_at'
