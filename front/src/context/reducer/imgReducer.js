@@ -43,6 +43,11 @@ export default function imgReducer(state, action) {
           ...state, 
           errorNoteMessage: action.payload.message
        };
+    case ActionImg.LIKE_IMG: 
+      return {
+        ...state,
+        
+      }
 
     default:
       return { massage: "default" };

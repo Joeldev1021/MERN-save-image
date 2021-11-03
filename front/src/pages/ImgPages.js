@@ -11,7 +11,7 @@ const ImgPages = () => {
   const handleEditeId= (id) => {
     history.push(`/img/edite/${id}`)
   }
-
+  
   return (
     <div className="row">
       {images.length > 0 &&

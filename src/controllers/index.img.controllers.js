@@ -24,8 +24,9 @@ ctrlImg.getImgs = async (req, res,next) => {
 ctrlImg.getAllImg = async (req, res, next) => {
   
   try {
-    const img = await ImgSchema.find().populate("userId",{ password: 0 });
+    const img = await ImgSchema.find().populate("userId",{ password: 0 })
     if(!img) throw createError.BadRequest("not found images")
+
     return res.json(img)
   } catch (error) {
     next(error)

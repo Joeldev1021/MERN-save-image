@@ -3,11 +3,11 @@ const {Schema,model} = mongoose
 
 
 
-const likeSchema = new Schema({
-    content: { type: String, required: false },
-    authorId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-    postId: { type: mongoose.Schema.Types.ObjectId, ref: "Img", required: function() { return this.commentId? false : true } },
-    commentId: { type: mongoose.Schema.Types.ObjectId, ref: "Comment", required: function() { return this.postId? false : true } }
+const LikeSchema = new Schema({
+    like: { type: String, required: false },
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+    imgId: { type: mongoose.Schema.Types.ObjectId, ref: "Img", required: true },
+    commentId: { type: mongoose.Schema.Types.ObjectId, ref: "Comment"}
 });
 
 

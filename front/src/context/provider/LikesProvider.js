@@ -1,11 +1,9 @@
 import axios from "axios";
 import { createContext, useContext, useEffect, useReducer } from "react";
 import { useHistory } from "react-router";
-import { apiAddLikes } from "../../api/likeApi";
 
-import { ActionNotes } from "../actions/ActionNotes";
-import likeReducer from "../reducer/LikeReducer";
-import notesReducer from "../reducer/notesReducer";
+import likeReducer from "../reducer/likeReducer";
+
 import { GlobalUserContext } from "./GobalUserProvider";
 
 export const LikesContext = createContext();
@@ -21,20 +19,22 @@ const LikesProvider = ({ children }) => {
   const history = useHistory();
   const { token, isLogined } = useContext(GlobalUserContext);
 
- const addLike =async(id)=> {
-    try {
-      const like =await apiAddLikes(id, token)
-    } catch (error) {
-      
-    }
- }
+//  const addLike =async(id)=> {
+   
+//     try {
+//       const like =await apiAddLikes(id, token)
+//       console.log(like)
+//     } catch (error) {
+//       console.log(error)
+//     }
+//  }
 
 
   return (
     <LikesContext.Provider
       value={{
         ...state,
-        addLike,
+      
         // removeLikes,
         // getAllLikes,
         // getLike

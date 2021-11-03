@@ -6,6 +6,7 @@ const ImgSchema = new Schema({
     title: String,
     description:String,
     imgUrl: String,
+    likes: [{type: Schema.Types.ObjectId, ref: 'User'}],
     userId: { type: Schema.ObjectId, ref: "User" },
     
 }, {

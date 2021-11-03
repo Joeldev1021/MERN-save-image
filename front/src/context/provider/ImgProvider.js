@@ -2,6 +2,7 @@ import axios from "axios";
 import { createContext, useContext, useEffect, useReducer } from "react";
 import { useHistory } from "react-router";
 import {apiUploadImg, getApiImg, getApiDeleteImg, apiUpdateImg, getAllApiImg} from "../../api/imgApi";
+import { apiAddLikes } from "../../api/likeApi";
 import { ActionImg } from "../actions/ActionImg";
 import imgReducer from "../reducer/imgReducer";
 import { GlobalUserContext } from "./GobalUserProvider";
@@ -82,6 +83,24 @@ const ImgProvider = ({ children }) => {
       }
   };
 
+  const addLike =async(id, userId)=> {
+    try {
+      console.log(id)
+      const like =await apiAddLikes(id, token)
+       dispatch({
+          type: ActionImg.LIKE_IMG,
+          payload: {
+            id,
+            userId
+          }
+       })
+       
+    } catch (error) {
+      console.log(error)
+    }
+ }
+
+
   useEffect(() => {
     getImg();
     getAllImg()
@@ -93,7 +112,8 @@ const ImgProvider = ({ children }) => {
         ...state,
         uploadImg,
         editeImg,
-        deleteImg
+        deleteImg,
+        addLike
       }}
     >
       {children}

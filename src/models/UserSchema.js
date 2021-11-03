@@ -16,7 +16,7 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
-    noteId:{ type: Schema.Types.ObjectId, ref: "notes" }
+    noteId:{ type: Schema.Types.ObjectId, ref: "notes" },
 }, {
     timestamps :{
         createdAt: 'created_at'

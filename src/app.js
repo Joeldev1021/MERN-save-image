@@ -31,12 +31,12 @@ app.use(fileUpload({
 
 
 //routes 
-
 app.use(userRoutes)
 app.use(noteRoutes)
 app.use(imgRoutes)
 app.use(likeRoutes)
 //error
+
 app.use((err, req, res, next) => {
     res.status(err.status|| 500)
     res.send({ 
