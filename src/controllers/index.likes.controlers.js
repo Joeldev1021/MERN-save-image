@@ -16,8 +16,7 @@ crltLikes.getAllLikes = async (req, res) => {
 crltLikes.addLike = async (req, res) => {
 
     const {id} = req.params;
-    if(!id) throw createError.NotFound("not found img")
-    ///
+    if(!id) throw createError.NotFound("not found img");
     const img = await ImgSchema.findById(id)
     
     if(img) {
@@ -25,17 +24,15 @@ crltLikes.addLike = async (req, res) => {
         img.likes = img.likes.concat(req.user._id)
         await img.save()
       }else {
-        console.log("already you like")
+        img.likes = img.likes.filter(like => like.toString() !== req.user._id.toString())
+        await img.save()
       }
-      console.log(img)
       res.json(img)
     }
      
 };
 
 
-crltLikes.deleteLikes = async (req, res, next) => {
-    
-};
+
 
 module.exports = crltLikes;

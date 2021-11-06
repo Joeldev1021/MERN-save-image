@@ -6,9 +6,9 @@ const ImgSchema = new Schema({
     title: String,
     description:String,
     imgUrl: String,
-    likes: [{type: Schema.Types.ObjectId, ref: 'User'}],
+    likes: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     userId: { type: Schema.ObjectId, ref: "User" },
-    
+    //user post img
 }, {
     timestamps: {
         createdAt: 'created_at'

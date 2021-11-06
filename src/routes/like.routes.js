@@ -11,7 +11,7 @@ router.get('/img/like/all', verifyToken, getAllLikes)
 
 router.post('/img/like/add/:id', verifyToken, addLike)
 
-router.post('/like/delete', verifyToken, deleteLikes)
+
 
 
 

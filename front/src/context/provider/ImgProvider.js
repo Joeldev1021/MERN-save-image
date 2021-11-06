@@ -83,14 +83,13 @@ const ImgProvider = ({ children }) => {
       }
   };
 
-  const addLike =async(id, userId)=> {
+  const addLike =async(imgId, userId)=> {
     try {
-      console.log(id)
-      const like =await apiAddLikes(id, token)
+      const like =await apiAddLikes(imgId, token)
        dispatch({
           type: ActionImg.LIKE_IMG,
           payload: {
-            id,
+            imgId,
             userId
           }
        })

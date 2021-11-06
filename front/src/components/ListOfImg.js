@@ -13,7 +13,7 @@ const ListOfImg = () => {
   const { user } = useContext(GlobalUserContext);
 
   const history = useHistory();
-  console.log(allImg)
+  console.log("all images", allImg)
   return (
     <div className="row">
       {allImg.length > 0 &&

@@ -12,7 +12,7 @@ export default function imgReducer(state, action) {
     case ActionImg.GET_ALL_IMG: 
       return { 
         ...state, 
-        allImg: [...action.payload]
+        allImg: [...action.payload],
       }
 
     case ActionImg.ADD_IMG:
@@ -43,10 +43,25 @@ export default function imgReducer(state, action) {
           ...state, 
           errorNoteMessage: action.payload.message
        };
+
     case ActionImg.LIKE_IMG: 
       return {
         ...state,
-        
+        allImg: state.allImg.map((img) => {
+          if (img._id === action.payload.imgId) {
+            if(img.likes.includes(action.payload.userId)) {
+               return {
+                ...img,
+                likes: img.likes.filter(like => like !== action.payload.userId)
+               }
+            }
+            return {
+              ...img,
+              likes: [...img.likes, action.payload.userId],
+            };
+          }
+          return img;
+        }),     
       }
 
     default:
