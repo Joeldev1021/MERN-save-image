@@ -13,7 +13,7 @@ import Profile from "./pages/Profile";
 import FormImg from "./components/FormImg";
 import ImgProvider from "./context/provider/ImgProvider";
 import ImgPages from "./pages/ImgPages";
-import LikesProvider from "./context/provider/LikesProvider";
+
 
 function App() {
   return (
@@ -21,7 +21,6 @@ function App() {
       <GobalUserProvider>
         <GlobalNotesProvider>
           <ImgProvider>
-          <LikesProvider>
           <div className="App">
             <Header />
             <div className="container">
@@ -39,7 +38,6 @@ function App() {
               </Switch>
             </div>
           </div>
-          </LikesProvider>
           </ImgProvider>
         </GlobalNotesProvider>
       </GobalUserProvider>
