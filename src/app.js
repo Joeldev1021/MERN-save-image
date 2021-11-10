@@ -16,7 +16,7 @@ const imgRoutes = require('./routes/img.routes')
 const userRoutes = require('./routes/user.routes')
 const noteRoutes = require('./routes/note.routes')
 const likeRoutes = require('./routes/like.routes')
-
+const comentRoutes = require('./routes/coment.routes')
 
 //midleware 
 app.use(morgan('dev'))

@@ -2,8 +2,6 @@ const crltLikes = {};
 
 const createError = require("http-errors");
 const ImgSchema = require('../models/ImgSchema')
-const LikeSchema = require("../models/LikeSchema");
-
 
 
 crltLikes.addLike = async (req, res, next) => {
@@ -27,7 +25,6 @@ crltLikes.addLike = async (req, res, next) => {
       next(error)
     }
 };
-
 
 
 

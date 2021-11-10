@@ -5,15 +5,13 @@ import { useHistory } from "react-router";
 import { ImgContext } from "../context/provider/ImgProvider";
 import TimeAgo from "timeago-react";
 import vi from "timeago.js/lib/lang/vi";
-import { LikesContext } from "../context/provider/LikesProvider";
 import { GlobalUserContext } from "../context/provider/GobalUserProvider";
 
 const ListOfImg = () => {
-  const { images, allImg, addLike } = useContext(ImgContext);
+  const { images, allImg, addLike, addComment } = useContext(ImgContext);
   const { user } = useContext(GlobalUserContext);
 
   const history = useHistory();
-  console.log("all images", allImg)
   return (
     <div className="row">
       {allImg.length > 0 &&
@@ -47,7 +45,7 @@ const ListOfImg = () => {
                   )}
                   <span className="ml-2">{image.likes.length} likes</span>
                 </div>
-                <button type="button" className="btn btn-ligth border">
+                <button type="button" className="btn btn-ligth border" onClick={()=> addComment(image._id)}>
                   <FaComment />
                 </button>
               </div>

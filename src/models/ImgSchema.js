@@ -7,6 +7,7 @@ const ImgSchema = new Schema({
     description:String,
     imgUrl: String,
     likes: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    comments: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     userId: { type: Schema.ObjectId, ref: "User" },
     //user post img
 }, {

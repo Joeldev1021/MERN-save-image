@@ -1,6 +1,7 @@
 import axios from "axios";
 import { createContext, useContext, useEffect, useReducer } from "react";
 import { useHistory } from "react-router";
+import { commentApi } from "../../api/commentApi";
 import {apiUploadImg, getApiImg, getApiDeleteImg, apiUpdateImg, getAllApiImg} from "../../api/imgApi";
 import { apiAddLikes } from "../../api/likeApi";
 import { ActionImg } from "../actions/ActionImg";
@@ -83,6 +84,7 @@ const ImgProvider = ({ children }) => {
       }
   };
 
+  ///add likes img
   const addLike =async(imgId, userId)=> {
     try {
       const like =await apiAddLikes(imgId, token)
@@ -99,6 +101,15 @@ const ImgProvider = ({ children }) => {
     }
  }
 
+ const addComment =async(imgId)=> {
+   console.log(imgId)
+   try {
+    const img = await commentApi(imgId, token)
+    console.log(img)
+   } catch (error) {
+     console.log(error)
+   }
+ }
 
   useEffect(() => {
     getImg();
@@ -112,6 +123,7 @@ const ImgProvider = ({ children }) => {
         uploadImg,
         editeImg,
         deleteImg,
+        addComment,
         addLike
       }}
     >
