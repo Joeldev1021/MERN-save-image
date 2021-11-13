@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { FaComment } from "react-icons/fa";
 import { BsHeart, BsHeartFill } from "react-icons/bs";
 import { useHistory } from "react-router";
@@ -6,13 +6,21 @@ import { ImgContext } from "../context/provider/ImgProvider";
 import TimeAgo from "timeago-react";
 import vi from "timeago.js/lib/lang/vi";
 import { GlobalUserContext } from "../context/provider/GobalUserProvider";
+import ModalComent from "./ModalComent";
 
 const ListOfImg = () => {
-  const { images, allImg, addLike, addComment } = useContext(ImgContext);
+  const { allImg, addLike, addComment } = useContext(ImgContext);
   const { user } = useContext(GlobalUserContext);
 
-  const history = useHistory();
+  const [showModal, setShowModal] = useState(false)
+
+ const handleShowModal = () => {
+     setShowModal(!showModal)
+  }
+
   return (
+    <>
+    <ModalComent show={showModal} handleShowModal={handleShowModal}/>
     <div className="row">
       {allImg.length > 0 &&
         allImg.map((image) => {
@@ -45,7 +53,7 @@ const ListOfImg = () => {
                   )}
                   <span className="ml-2">{image.likes.length} likes</span>
                 </div>
-                <button type="button" className="btn btn-ligth border" onClick={()=> addComment(image._id)}>
+                <button type="button" className="btn btn-ligth border" onClick={()=> handleShowModal()}>
                   <FaComment />
                 </button>
               </div>
@@ -53,10 +61,12 @@ const ListOfImg = () => {
                 <span>{image.userId.username}</span> {"  "}
                 <TimeAgo datetime={image.created_at} locale="vi" />
               </div>
+
             </div>
           );
         })}
     </div>
+    </>
   );
 };
 

@@ -1,4 +1,3 @@
-import axios from "axios";
 import { createContext, useContext, useEffect, useReducer } from "react";
 import { useHistory } from "react-router";
 import { commentApi } from "../../api/commentApi";
@@ -87,7 +86,8 @@ const ImgProvider = ({ children }) => {
   ///add likes img
   const addLike =async(imgId, userId)=> {
     try {
-      const like =await apiAddLikes(imgId, token)
+     
+       await apiAddLikes(imgId, token)
        dispatch({
           type: ActionImg.LIKE_IMG,
           payload: {
@@ -101,8 +101,9 @@ const ImgProvider = ({ children }) => {
     }
  }
 
- const addComment =async(imgId)=> {
+ const addComment = async(imgId)=> {
    console.log(imgId)
+   console.log('hola')
    try {
     const img = await commentApi(imgId, token)
     console.log(img)

@@ -1,7 +1,5 @@
 const crltComent = {};
 
-const Note = require("../models/Note");
-
 const createError = require("http-errors");
 const ImgSchema = require('../models/ImgSchema')
 
@@ -14,7 +12,7 @@ crltComent.getAllComent = async (req, res) => {
 };
 
 
-crltComent.addComment = async (req, res, next) => {
+crltComent.addComment = async (req, res) => {
     console.log(req.body)
     console.log('hola')
     res.json({
