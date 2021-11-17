@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import ListOfImg from "../components/ListOfImg";
-import ModalComent from "../components/ModalComent";
+import ModalComent from "../components/ModalComment";
 import { GlobalUserContext } from "../context/provider/GobalUserProvider";
 
 const Home = () => {

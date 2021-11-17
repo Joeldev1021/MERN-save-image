@@ -43,7 +43,7 @@ export default function imgReducer(state, action) {
           ...state, 
           errorNoteMessage: action.payload.message
        };
-
+   //add likes and delete likes
     case ActionImg.LIKE_IMG: 
       return {
         ...state,
@@ -63,6 +63,21 @@ export default function imgReducer(state, action) {
           return img;
         }),     
       }
+    //commets 
+    case ActionImg.COMMENT_IMG: 
+       return {
+         ...state,
+         allImg: state.allImg.map(img => {
+           if(img._id === action.payload.imgId) {
+             return {
+                ...img,
+                comments: [...img.comments, action.payload.commentId]
+             }
+           } else {
+             return img;
+           }
+         })
+       }
 
     default:
       return { massage: "default" };

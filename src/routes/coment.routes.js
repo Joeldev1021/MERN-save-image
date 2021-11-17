@@ -7,7 +7,7 @@ const {addComment, getAllComent, deleteComent,updateComentById, getComentByImg} 
 
 router.get('/img/coment',verifyToken, getComentByImg)
 
-router.get('/img/coment/all',verifyToken, getAllComent)
+router.get('/img/coment/all/:id',verifyToken, getAllComent)
 
 router.post('/img/comment/add/:id', verifyToken, addComment)
 

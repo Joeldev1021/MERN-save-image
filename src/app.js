@@ -36,8 +36,8 @@ app.use(noteRoutes)
 app.use(imgRoutes)
 app.use(likeRoutes)
 app.use(comentRoutes)
-//error
 
+//error
 app.use((err, req, res, next) => {
     res.status(err.status|| 500)
     res.send({ 

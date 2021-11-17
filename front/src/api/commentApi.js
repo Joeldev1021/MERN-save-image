@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const commentApi = async(imgId, token)=> {
+export const commentApi = async(imgId,comment, token)=> {
     const res = await axios({
         method: "POST",
         headers: {
@@ -8,8 +8,8 @@ export const commentApi = async(imgId, token)=> {
           Authorization: token,
         },
         data: {
-          comment:imgId,
-          
+          imgId,
+          comment, 
         },
         url: `http://localhost:4000/img/comment/add/${imgId}`,
       });

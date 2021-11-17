@@ -86,7 +86,7 @@ const ImgProvider = ({ children }) => {
   ///add likes img
   const addLike =async(imgId, userId)=> {
     try {
-     
+      
        await apiAddLikes(imgId, token)
        dispatch({
           type: ActionImg.LIKE_IMG,
@@ -101,12 +101,17 @@ const ImgProvider = ({ children }) => {
     }
  }
 
- const addComment = async(imgId)=> {
-   console.log(imgId)
-   console.log('hola')
+ const addComment = async(imgId, comment)=> {
+  
    try {
-    const img = await commentApi(imgId, token)
-    console.log(img)
+    const resComment = await commentApi(imgId, comment, token)
+    dispatch({
+      type: ActionImg.COMMENT_IMG,
+      payload: {
+        commentId: resComment.data._id,
+        imgId,
+      }
+    })
    } catch (error) {
      console.log(error)
    }
