@@ -1,29 +1,26 @@
-import axios from "axios";
-import { useContext,  useState } from "react";
+import { useContext, useState } from "react";
 import { GlobalUserContext } from "../../context/provider/GobalUserProvider";
 
 const Signup = () => {
-
   const [user, setUser] = useState({
-    username:'',
-    email: '',
-    password: '',
-    token: ''
-  })
+    username: "",
+    email: "",
+    password: "",
+    token: ""
+  });
 
-  const {signUpUser, errorMessage} = useContext(GlobalUserContext)
+  const { signUpUser, errorMessage } = useContext(GlobalUserContext);
 
-  const handleChange=(e)=> {
+  const handleChange = (e) => {
     setUser({
       ...user, [e.target.name]: e.target.value
-    })
-  }
+    });
+  };
 
-  const handleSubmit=(e)=> {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    signUpUser(user)
-  }
- 
+    signUpUser(user);
+  };
 
   return (
     <div className="d-flex justify-content-center ">
@@ -52,7 +49,7 @@ const Signup = () => {
               aria-describedby="emailHelp"
             />
           </div>
-          
+
             <div className="mb-3">
             <label htmlFor="email" className="form-label">
               email

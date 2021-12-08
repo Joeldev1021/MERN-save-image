@@ -1,11 +1,10 @@
-import axios from "axios";
 import { useContext, useState } from "react";
 import { GlobalUserContext } from "../../context/provider/GobalUserProvider";
 
 const Signin = () => {
   const [user, setUser] = useState({
     username: "",
-    password: "",
+    password: ""
   });
 
   const { signInUser, errorMessage } = useContext(GlobalUserContext);
@@ -13,7 +12,7 @@ const Signin = () => {
   const handleChange = (e) => {
     setUser({
       ...user,
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value
     });
   };
 
@@ -21,8 +20,6 @@ const Signin = () => {
     e.preventDefault();
     signInUser(user);
   };
-
-
 
   return (
     <div className="d-flex justify-content-center ">

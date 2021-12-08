@@ -14,8 +14,7 @@ import FormImg from "./components/FormImg";
 import ImgProvider from "./context/provider/ImgProvider";
 import ImgPages from "./pages/ImgPages";
 
-
-function App() {
+function App () {
   return (
     <Router>
       <GobalUserProvider>

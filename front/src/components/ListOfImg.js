@@ -3,7 +3,6 @@ import { FaRegComment } from "react-icons/fa";
 import { BsHeart, BsHeartFill } from "react-icons/bs";
 import { ImgContext } from "../context/provider/ImgProvider";
 import TimeAgo from "timeago-react";
-import vi from "timeago.js/lib/lang/vi";
 import { GlobalUserContext } from "../context/provider/GobalUserProvider";
 import ModalComment from "./ModalComment";
 
@@ -43,7 +42,7 @@ const ListOfImg = () => {
                   style={{
                     width: "17rem",
                     height: "15rem",
-                    objectFit: "cover",
+                    objectFit: "cover"
                   }}
                   src={image.imgUrl}
                   alt={image.title}
@@ -53,19 +52,21 @@ const ListOfImg = () => {
 
                 <div className="d-flex justify-content-between m-2">
                   <div className="d-flex flex-row align-items-center">
-                    <button 
-                    type="button" 
+                    <button
+                    type="button"
                     onClick={() => addLike(image._id, user._id)}
                     style={{
-                        border: "none",
-                        outline: "none",
-                        background: "none",
-                      }}>
-                      {image.likes.includes(user._id) ? (
+                      border: "none",
+                      outline: "none",
+                      background: "none"
+                    }}>
+                      {image.likes.includes(user._id)
+                        ? (
                         <BsHeartFill />
-                      ) : (
+                          )
+                        : (
                         <BsHeart />
-                      )}
+                          )}
                     </button>
 
                     <span className="m-1">{image.likes.length}</span>
@@ -76,7 +77,7 @@ const ListOfImg = () => {
                       style={{
                         border: "none",
                         outline: "none",
-                        background: "none",
+                        background: "none"
                       }}
                       onClick={() => handleShowModal(image)}
                     >

@@ -2,13 +2,13 @@ import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { GlobalUserContext } from "../context/provider/GobalUserProvider";
 
-function Header() {
+function Header () {
   const { isLogined } = useContext(GlobalUserContext);
 
   const handleLogout = (e) => {
     e.preventDefault();
     localStorage.clear();
-    window.location.reload()
+    window.location.reload();
   };
 
   return (
@@ -64,7 +64,7 @@ function Header() {
                 </li>
               </ul>
             </div>
-           
+
             <div className="dropdown">
               <button
                 className="btn btn-outline-light dropdown-toggle"
@@ -91,7 +91,7 @@ function Header() {
                 </li>
               </ul>
             </div>
-           
+
               </>
             )}
           </ul>
@@ -123,7 +123,8 @@ function Header() {
                 className="dropdown-menu"
                 aria-labelledby="dropdownMenuButton1"
               >
-                {isLogined ? (
+                {isLogined
+                  ? (
                   <li>
                     <a
                       className="dropdown-item"
@@ -133,7 +134,8 @@ function Header() {
                       Logout
                     </a>
                   </li>
-                ) : (
+                    )
+                  : (
                   <>
                     <li>
                       <Link className="dropdown-item" to="/auth/signin">
@@ -146,7 +148,7 @@ function Header() {
                       </Link>
                     </li>
                   </>
-                )}
+                    )}
               </ul>
             </div>
           </div>

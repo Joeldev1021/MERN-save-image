@@ -5,21 +5,21 @@ import { useHistory, useParams } from "react-router";
 
 const FormImg = () => {
   const { id } = useParams();
-  const history = useHistory()
+  const history = useHistory();
 
   const { uploadImg, images, editeImg } = useContext(ImgContext);
   const { token } = useContext(GlobalUserContext);
 
   const [selectImg, setselectImg] = useState(null);
   const [infoImg, setInfoImg] = useState({
-    title : "",
+    title: "",
     description: "",
-    imgUrl: "",
+    imgUrl: ""
   });
 
   useEffect(() => {
     if (images.length > 0 && id) {
-      const img = images.filter((img) => img._id == id);
+      const img = images.filter((img) => img._id === id);
       setInfoImg(img[0]);
     }
   }, [images]);
@@ -41,9 +41,9 @@ const FormImg = () => {
       formData.append("image", selectImg);
       uploadImg(formData, token);
     } else {
-      editeImg(infoImg, token)
+      editeImg(infoImg, token);
     }
-    history.push('/images')
+    history.push("/images");
   };
 
   return (
@@ -74,7 +74,9 @@ const FormImg = () => {
                 value={infoImg.description}
                 onChange={handleChange}
               ></textarea>
-              {id ? null : (
+              {id
+                ? null
+                : (
                 <>
                   <label htmlFor="image">Image:</label>
                   <input
@@ -85,7 +87,7 @@ const FormImg = () => {
                     onChange={handleChangeImg}
                   />
                 </>
-              )}
+                  )}
             </div>
             <div className="col-md-4 my-auto ">
               {id ? <img className="img-fluid" src={infoImg.imgUrl} /> : null}

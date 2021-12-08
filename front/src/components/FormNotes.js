@@ -1,22 +1,20 @@
 import { useContext, useEffect, useState } from "react";
-import {  useHistory, useParams } from "react-router";
+import { useHistory, useParams } from "react-router";
 import { GlobalNotesContext } from "../context/provider/GlobalNotesProvider";
 import { GlobalUserContext } from "../context/provider/GobalUserProvider";
 import Snniper from "./Snniper";
 
-
 const FormNotes = () => {
   const { addNote, notes, editeNote, errorNoteMessage, isLoadNote } = useContext(GlobalNotesContext);
-  const { token,  } = useContext(GlobalUserContext);
+  const { token } = useContext(GlobalUserContext);
 
-  const history = useHistory()
+  const history = useHistory();
   const params = useParams();
   const [note, setNote] = useState({
     title: "",
-    description: "",
+    description: ""
   });
 
-  
   useEffect(() => {
     if (params.id) {
       const note = notes.filter((note) => note._id === params.id);
@@ -24,31 +22,26 @@ const FormNotes = () => {
     }
   }, [params.id]);
 
- 
-
-
   const handleChange = (e) => {
     setNote({
       ...note,
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value
     });
   };
 
-  const handleSubmit =async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (params.id) {
       const newNote = await editeNote(note);
-       if(newNote){
-        history.push('/notes')
+      if (newNote) {
+        history.push("/notes");
       }
     } else {
-     const newNote = await addNote(note, token);
-     if(newNote){
-       history.push('/notes')
-     }
+      const newNote = await addNote(note, token);
+      if (newNote) {
+        history.push("/notes");
+      }
     }
-  
-    
   };
 
   return (
@@ -66,7 +59,7 @@ const FormNotes = () => {
           >
             {errorNoteMessage}
           </div>
-        )}
+          )}
           <input
             type="text"
             value={note.title}
@@ -92,9 +85,11 @@ const FormNotes = () => {
           ></textarea>
           <div className="col-auto mt-2">
             <button type="submit" className="btn btn-primary mb-3">
-              {isLoadNote? (
+              {isLoadNote
+                ? (
                 <Snniper/>
-              ): params.id ? "Edite Note" : "Create Note"}
+                  )
+                : params.id ? "Edite Note" : "Create Note"}
             </button>
           </div>
         </div>
