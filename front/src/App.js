@@ -13,6 +13,7 @@ import Profile from "./pages/Profile";
 import FormImg from "./components/FormImg";
 import ImgProvider from "./context/provider/ImgProvider";
 import ImgPages from "./pages/ImgPages";
+import ProfileImg from "./pages/ProfileImg";
 
 function App () {
   return (
@@ -27,6 +28,7 @@ function App () {
                 <Route component={NotesForm} path="/note/edite/:id" />
                 <Route component={NotesPages} path="/notes"/>
                 <Route component={ImgPages} path="/images"/>
+                <Route component={ProfileImg} path="/img/profile/:id"/>
                 <Route component={Signin} path="/auth/signin"/>
                 <Route component={Signup} path="/auth/signup"/>
                 <Route component={Profile} path="/profile"/>

@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useReducer } from "react";
 import { commentApi } from "../../api/commentApi";
-import { apiUploadImg, getApiImg, getApiDeleteImg, apiUpdateImg, getAllApiImg } from "../../api/imgApi";
+import { apiUploadImg, getApiImg, getApiDeleteImg, apiUpdateImg, getAllApiImg, getApiImgById } from "../../api/imgApi";
 import { apiAddLikes } from "../../api/likeApi";
 import { ActionImg } from "../actions/ActionImg";
 import imgReducer from "../reducer/imgReducer";
@@ -9,6 +9,7 @@ import { GlobalUserContext } from "./GobalUserProvider";
 export const ImgContext = createContext();
 
 const initialValues = {
+  img: [],
   images: [],
   allImg: [],
   errorImgMessage: null
@@ -18,6 +19,19 @@ const ImgProvider = ({ children }) => {
   const [state, dispatch] = useReducer(imgReducer, initialValues);
 
   const { token, isLogined } = useContext(GlobalUserContext);
+
+  const getImgById = async (id) => {
+    console.log(id);
+    try {
+      const res = await getApiImgById(id, token);
+      dispatch({
+        type: ActionImg.GET_IMG_BY_ID,
+        payload: res.data
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const getImg = async () => {
     try {
@@ -123,6 +137,7 @@ const ImgProvider = ({ children }) => {
         editeImg,
         deleteImg,
         addComment,
+        getImgById,
         addLike
       }}
     >

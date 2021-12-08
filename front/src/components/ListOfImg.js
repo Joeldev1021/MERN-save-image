@@ -2,13 +2,16 @@ import { useContext, useState } from "react";
 import { FaRegComment } from "react-icons/fa";
 import { BsHeart, BsHeartFill } from "react-icons/bs";
 import { ImgContext } from "../context/provider/ImgProvider";
-import TimeAgo from "timeago-react";
+import { useHistory } from "react-router-dom";
+
 import { GlobalUserContext } from "../context/provider/GobalUserProvider";
 import ModalComment from "./ModalComment";
+import FooterCard from "./FooterCard";
 
 const ListOfImg = () => {
   const { allImg, addLike, addComment } = useContext(ImgContext);
   const { user } = useContext(GlobalUserContext);
+  const history = useHistory();
 
   const [showModal, setShowModal] = useState(false);
   const [selecImg, setSelecImg] = useState(null);
@@ -17,6 +20,11 @@ const ListOfImg = () => {
     setSelecImg(image);
     setShowModal(!showModal);
   };
+
+  const handlePageSingleImg = (id) => {
+    history.push("/img/profile/" + id);
+  };
+
   console.log(allImg);
 
   return (
@@ -29,7 +37,7 @@ const ListOfImg = () => {
         />
       )}
 
-      <div className="row">
+      <div className="row justify-content-center">
         {allImg.length > 0 &&
           allImg.map((image) => {
             return (
@@ -39,10 +47,13 @@ const ListOfImg = () => {
                 key={image._id}
               >
                 <img
+                  className="cursor-pointer"
+                  onClick={() => handlePageSingleImg(image._id)}
                   style={{
                     width: "17rem",
                     height: "15rem",
-                    objectFit: "cover"
+                    objectFit: "cover",
+                    cursor: "pointer"
                   }}
                   src={image.imgUrl}
                   alt={image.title}
@@ -86,10 +97,7 @@ const ListOfImg = () => {
                     <span className="m-1">{image.comments.length}</span>
                   </div>
                 </div>
-                <div className="card-footer text-muted d-flex justify-content-between">
-                  <span>{image.userId.username}</span> {"  "}
-                  <TimeAgo datetime={image.created_at} locale="vi" />
-                </div>
+                <FooterCard image={image}/>
               </div>
             );
           })}

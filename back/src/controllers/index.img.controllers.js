@@ -7,6 +7,19 @@ const { cloudinaryAdd, cloudinaryDelete } = require("../helper/cloudinary");
 // Schema Image
 const ImgSchema = require("../models/ImgSchema");
 
+ctrlImg.getImgById = async (req, res, next) => {
+  const id = req.params.id;
+  console.log("hola");
+  try {
+    const img = await ImgSchema.findById(id).populate("comments");
+    if (!img) throw createError.BadRequest("image not found");
+
+    return res.json(img);
+  } catch (error) {
+    next(error);
+  }
+};
+// get img by id user
 ctrlImg.getImgs = async (req, res, next) => {
   // req.token = token
   try {
@@ -18,6 +31,7 @@ ctrlImg.getImgs = async (req, res, next) => {
   }
 };
 
+// get all img
 ctrlImg.getAllImg = async (req, res, next) => {
   try {
     const img = await ImgSchema.find().populate("userId", { password: 0 });

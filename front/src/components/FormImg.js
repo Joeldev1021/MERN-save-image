@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { ImgContext } from "../context/provider/ImgProvider";
 import { GlobalUserContext } from "../context/provider/GobalUserProvider";
 import { useHistory, useParams } from "react-router";
+import UploadForm from "./UploadForm";
 
 const FormImg = () => {
   const { id } = useParams();
@@ -49,51 +50,13 @@ const FormImg = () => {
   return (
     <div className="row h-100">
       <div className="col-md-6 offset-md-3 my-auto">
-        <form className="card card-body" onSubmit={handleSubmit}>
-          <div className="row">
-            <div className="d-flex justify-content-between align-items-center">
-              <h1>upload image</h1>
-              <button className="btn btn-primary">submit</button>
-            </div>
-            <div className="col-md-8">
-              <label htmlFor="name">title:</label>
-              <input
-                type="text"
-                id="name"
-                className="form-control mb-2"
-                name="title"
-                value={infoImg.title}
-                onChange={handleChange}
-                autoFocus
-              />
-              <label htmlFor="description">Description</label>
-              <textarea
-                name="description"
-                rows="2"
-                className="form-control"
-                value={infoImg.description}
-                onChange={handleChange}
-              ></textarea>
-              {id
-                ? null
-                : (
-                <>
-                  <label htmlFor="image">Image:</label>
-                  <input
-                    type="file"
-                    name="image"
-                    id="image"
-                    className="form-control"
-                    onChange={handleChangeImg}
-                  />
-                </>
-                  )}
-            </div>
-            <div className="col-md-4 my-auto ">
-              {id ? <img className="img-fluid" src={infoImg.imgUrl} /> : null}
-            </div>
-          </div>
-        </form>
+        <UploadForm
+          id={id}
+          infoImg={infoImg}
+          handleChange={handleChange}
+          handleChangeImg={handleChangeImg}
+          handleSubmit={handleSubmit}
+        />
       </div>
     </div>
   );
