@@ -9,7 +9,7 @@ import { GlobalUserContext } from "./GobalUserProvider";
 export const ImgContext = createContext();
 
 const initialValues = {
-  img: [],
+  img: "",
   images: [],
   allImg: [],
   errorImgMessage: null
@@ -17,7 +17,6 @@ const initialValues = {
 
 const ImgProvider = ({ children }) => {
   const [state, dispatch] = useReducer(imgReducer, initialValues);
-
   const { token, isLogined } = useContext(GlobalUserContext);
 
   const getImgById = async (id) => {
