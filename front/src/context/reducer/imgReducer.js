@@ -15,11 +15,6 @@ export default function imgReducer (state, action) {
         allImg: [...action.payload]
       };
 
-    case ActionImg.GET_IMG_BY_ID:
-      return {
-        ...state,
-        img: action.payload
-      };
     case ActionImg.ADD_IMG:
       return {
         ...state,
@@ -82,6 +77,11 @@ export default function imgReducer (state, action) {
             return img;
           }
         })
+      };
+    case ActionImg.GET_COMMENTS:
+      return {
+        ...state,
+        commentByImg: [...action.payload]
       };
 
     default:

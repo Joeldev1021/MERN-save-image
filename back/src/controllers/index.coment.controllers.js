@@ -8,9 +8,9 @@ crltComent.getComentByImg = async (req, res) => {
 };
 
 crltComent.getAllComent = async (req, res) => {
-  const img = await ImgSchema.findById(req.params.id).populate("comments");
-  console.log(img);
-  res.json("get all coment");
+  // await ImgSchema.findById(req.params.id).populate("comments");
+  const comment = await CommentSchema.find({ imgId: req.params.id }).populate("userId", { password: 0 });
+  res.json(comment);
 };
 
 crltComent.addComment = async (req, res, next) => {

@@ -9,9 +9,10 @@ const ImgSchema = require("../models/ImgSchema");
 
 ctrlImg.getImgById = async (req, res, next) => {
   const id = req.params.id;
-  console.log("hola");
+
   try {
-    const img = await ImgSchema.findById(id).populate("comments");
+    const img = await ImgSchema.findById(id);
+
     if (!img) throw createError.BadRequest("image not found");
 
     return res.json(img);

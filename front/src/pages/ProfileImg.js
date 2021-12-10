@@ -1,26 +1,33 @@
 /* eslint-disable no-unused-vars */
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { BsHeart, BsHeartFill } from "react-icons/bs";
 import { FaRegComment } from "react-icons/fa";
 import { useParams } from "react-router";
 import { apiAddLikes } from "../api/likeApi";
+import Comment from "../components/Comment";
 import { GlobalUserContext } from "../context/provider/GobalUserProvider";
 import { ImgContext } from "../context/provider/ImgProvider";
 
 const ProfileImg = () => {
-  const { getImgById, img } = useContext(ImgContext);
+  const { getCommentImgById, commentByImg, allImg } = useContext(ImgContext);
   const { user } = useContext(GlobalUserContext);
   const { id } = useParams();
+  const [img, setImg] = useState({});
 
   useEffect(() => {
-    getImgById(id);
+    getCommentImgById(id);
   }, []);
 
-  if (!img) return <h1>Cargando..</h1>;
+  useEffect(() => {
+    setImg(allImg.filter((img) => img._id === id)[0]);
+  }, [id]);
+
+  if (!commentByImg) return <h1>Cargando..</h1>;
 
   return (
-    <>
-      <div className="card " style={{ width: "18rem" }}>
+
+    <div className="row justify-content-center">
+      <div className="card " style={{ width: "30rem" }}>
         <img src={img.imgUrl} className="card-img-top" alt="..." />
         <div className="card-body">
           <p className="card-text">{img.title}</p>
@@ -55,10 +62,9 @@ const ProfileImg = () => {
             >
               <FaRegComment />
             </button>
-            {
-              img && img.comments.length > 0 && <span className="m-1">{img.comments.length}</span>
-            }
-
+            {img && img.comments.length > 0 && (
+              <span className="m-1">{img.comments.length}</span>
+            )}
           </div>
         </div>
         <div className="collapse" id="collapseExample">
@@ -85,8 +91,12 @@ const ProfileImg = () => {
             </div>
           </form>
         </div>
-      </div>
-    </>
+        {
+          commentByImg.map((comment, index) => <Comment key={comment._id} comment={comment} />)
+        }
+
+    </div>
+  </div>
   );
 };
 
