@@ -9,7 +9,7 @@ import { GlobalUserContext } from "./GobalUserProvider";
 export const ImgContext = createContext();
 
 const initialValues = {
-  commentByImg: "",
+  commentByImg: [],
   images: [],
   allImg: [],
   errorImgMessage: null
