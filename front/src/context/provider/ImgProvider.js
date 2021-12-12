@@ -112,11 +112,13 @@ const ImgProvider = ({ children }) => {
   const addComment = async (imgId, comment) => {
     try {
       const resComment = await commentApi(imgId, comment, token);
+      console.log(resComment);
       dispatch({
         type: ActionImg.COMMENT_IMG,
         payload: {
           commentId: resComment.data._id,
-          imgId
+          imgId,
+          comment: resComment.data
         }
       });
     } catch (error) {

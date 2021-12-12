@@ -9,10 +9,11 @@ import { GlobalUserContext } from "../context/provider/GobalUserProvider";
 import { ImgContext } from "../context/provider/ImgProvider";
 
 const ProfileImg = () => {
-  const { getCommentImgById, commentByImg, allImg } = useContext(ImgContext);
+  const { getCommentImgById, commentByImg, allImg, addComment } = useContext(ImgContext);
   const { user } = useContext(GlobalUserContext);
   const { id } = useParams();
-  const [img, setImg] = useState({});
+  const [img, setImg] = useState("");
+  const [comment, setComment] = useState("");
 
   useEffect(() => {
     getCommentImgById(id);
@@ -22,7 +23,14 @@ const ProfileImg = () => {
     setImg(allImg.filter((img) => img._id === id)[0]);
   }, [id]);
 
-  if (!commentByImg) return <h1>Cargando..</h1>;
+  console.log(commentByImg);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    addComment(id, comment);
+  };
+
+  if (!img) return <h1>Cargando..</h1>;
 
   return (
 
@@ -68,8 +76,7 @@ const ProfileImg = () => {
           </div>
         </div>
         <div className="collapse" id="collapseExample">
-          <hr />
-          <form>
+          <form className="border-top" onSubmit={(e) => handleSubmit(e)}>
             <div className="form-group row ">
               <div style={{ width: "95%", margin: "auto" }}>
                 <textarea
@@ -80,7 +87,9 @@ const ProfileImg = () => {
                     width: "100%",
                     height: "70px"
                   }}
+                  onChange={(e) => setComment(e.target.value)}
                   name="comment"
+                  defaultValue={comment}
                 ></textarea>
               </div>
             </div>

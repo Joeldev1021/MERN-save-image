@@ -1,8 +1,6 @@
 import { ActionImg } from "../actions/ActionImg";
 
 export default function imgReducer (state, action) {
-  console.log("state", state);
-  console.log("action", action);
   switch (action.type) {
     case ActionImg.GET_IMG:
       return {
@@ -67,6 +65,7 @@ export default function imgReducer (state, action) {
     case ActionImg.COMMENT_IMG:
       return {
         ...state,
+        commentByImg: [...state.commentByImg, action.payload.comment],
         allImg: state.allImg.map(img => {
           if (img._id === action.payload.imgId) {
             return {
