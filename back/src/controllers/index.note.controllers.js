@@ -1,9 +1,7 @@
-const crltNote = {};
-
 const Note = require("../models/Note");
 const createError = require("http-errors");
 
-crltNote.getNotes = async (req, res, next) => {
+const getNotes = async (req, res, next) => {
 //   const notes = await Note.find() .populate("userId");
   try {
     const notes = await Note.find({ userId: req.user.id });
@@ -14,7 +12,7 @@ crltNote.getNotes = async (req, res, next) => {
   }
 };
 
-crltNote.createNote = async (req, res, next) => {
+const createNote = async (req, res, next) => {
   try {
     const note = await new Note(req.body);
     if (!note) throw createError.BadRequest("image is not created");
@@ -26,12 +24,12 @@ crltNote.createNote = async (req, res, next) => {
   }
 };
 
-crltNote.getNoteById = async (req, res) => {
+const getNoteById = async (req, res) => {
   const note = await Note.findById(req.params.id);
   res.json(note);
 };
 
-crltNote.updateNoteById = async (req, res, next) => {
+const updateNoteById = async (req, res, next) => {
   const id = req.params.id;
   try {
     const noteUpdate = await Note.findByIdAndUpdate(id, req.body);
@@ -42,7 +40,7 @@ crltNote.updateNoteById = async (req, res, next) => {
   }
 };
 
-crltNote.deleteNote = async (req, res, next) => {
+const deleteNote = async (req, res, next) => {
   const id = req.params.id;
   try {
     const noteDelete = await Note.findByIdAndDelete(id);
@@ -53,4 +51,4 @@ crltNote.deleteNote = async (req, res, next) => {
   }
 };
 
-module.exports = crltNote;
+module.exports = { getNotes, createNote, getNoteById, updateNoteById, deleteNote };

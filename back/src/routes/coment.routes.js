@@ -1,8 +1,8 @@
 const express = require("express");
+const { getComentByImg, getAllComent, addComment, updateComentById, deleteComent } = require("../controllers/index.coment.controllers");
 const router = express.Router();
 
 const verifyToken = require("../middleware/verifyToken");
-const { addComment, getAllComent, deleteComent, updateComentById, getComentByImg } = require("../controllers/index.coment.controllers");
 
 router.get("/img/commet/:id", verifyToken, getComentByImg);
 

@@ -1,4 +1,4 @@
-const ctrlImg = {};
+
 const fs = require("fs");
 const createError = require("http-errors");
 
@@ -7,7 +7,7 @@ const { cloudinaryAdd, cloudinaryDelete } = require("../helper/cloudinary");
 // Schema Image
 const ImgSchema = require("../models/ImgSchema");
 
-ctrlImg.getImgById = async (req, res, next) => {
+const getImgById = async (req, res, next) => {
   const id = req.params.id;
 
   try {
@@ -21,7 +21,7 @@ ctrlImg.getImgById = async (req, res, next) => {
   }
 };
 // get img by id user
-ctrlImg.getImgs = async (req, res, next) => {
+const getImgs = async (req, res, next) => {
   // req.token = token
   try {
     const imgs = await ImgSchema.find({ userId: req.user.id });
@@ -33,7 +33,7 @@ ctrlImg.getImgs = async (req, res, next) => {
 };
 
 // get all img
-ctrlImg.getAllImg = async (req, res, next) => {
+const getAllImg = async (req, res, next) => {
   try {
     const img = await ImgSchema.find().populate("userId", { password: 0 });
     if (!img) throw createError.BadRequest("not found images");
@@ -44,7 +44,7 @@ ctrlImg.getAllImg = async (req, res, next) => {
   }
 };
 
-ctrlImg.uploadImg = async (req, res, next) => {
+const uploadImg = async (req, res, next) => {
   const img = await new ImgSchema();
 
   try {
@@ -64,7 +64,7 @@ ctrlImg.uploadImg = async (req, res, next) => {
   }
 };
 
-ctrlImg.deleteImg = async (req, res, next) => {
+const deleteImg = async (req, res, next) => {
   const id = req.params.id;
   try {
     const img = await ImgSchema.findByIdAndRemove(id);
@@ -80,7 +80,7 @@ ctrlImg.deleteImg = async (req, res, next) => {
   }
 };
 
-ctrlImg.updateImg = async (req, res, next) => {
+const updateImg = async (req, res, next) => {
   const id = req.params.id;
   console.log(req.body);
   try {
@@ -93,4 +93,4 @@ ctrlImg.updateImg = async (req, res, next) => {
   }
 };
 
-module.exports = ctrlImg;
+module.exports = { getImgById, getImgs, getAllImg, uploadImg, deleteImg, updateImg };

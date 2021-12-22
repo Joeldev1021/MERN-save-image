@@ -1,8 +1,8 @@
-const crltLikes = {};
+
 const createError = require("http-errors");
 const ImgSchema = require("../models/ImgSchema");
 
-crltLikes.addLike = async (req, res, next) => {
+const addLike = async (req, res, next) => {
   const { id } = req.params;
   try {
     if (!id) throw createError.NotFound("not found img");
@@ -23,4 +23,4 @@ crltLikes.addLike = async (req, res, next) => {
   }
 };
 
-module.exports = crltLikes;
+module.exports = { addLike };

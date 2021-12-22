@@ -1,14 +1,13 @@
-const ctrlUser = {};
 const jwt = require("jsonwebtoken");
 const createError = require("http-errors");
 const User = require("../models/UserSchema");
 
-ctrlUser.getProfile = async (req, res) => {
+const getProfile = async (req, res) => {
   // res.json("signup")//singUp is first user in the application
   res.json({ user: req.user });
 };
 
-ctrlUser.singUp = async (req, res, next) => {
+const singUp = async (req, res, next) => {
   const { username, email, password } = req.body;
   try {
     const user = await User.findOne({ username });
@@ -32,13 +31,13 @@ ctrlUser.singUp = async (req, res, next) => {
   }
 };
 
-ctrlUser.renderSingInForm = async (req, res) => {
+const renderSingInForm = async (req, res) => {
   const user = await User.find();
   console.log(user);
   res.json(user);
 };
 
-ctrlUser.singIn = async (req, res, next) => {
+const singIn = async (req, res, next) => {
   try {
     const user = await User.findOne({ username: req.body.username });
     if (!user) throw createError.Unauthorized("the user does not exists");
@@ -58,10 +57,10 @@ ctrlUser.singIn = async (req, res, next) => {
   }
 };
 
-ctrlUser.logout = async (req, res) => {
+const logout = async (req, res) => {
   const autToken = req.headers.authorization;
   const logout = await jwt.sign({ autToken }, "logout", { expiresIn: 1 });
   res.json(logout);
 };
 
-module.exports = ctrlUser;
+module.exports = { singUp, singIn, logout, renderSingInForm, getProfile };
