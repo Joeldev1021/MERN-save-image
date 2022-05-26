@@ -2,17 +2,16 @@ const express = require("express");
 const router = express.Router();
 //
 const verifyToken = require("../middleware/verifyToken");
+const NoteController = require("../controllers/note.controller");
 
-const { getNotes, getNoteById, updateNoteById, deleteNote, createNote } = require("../controllers/index.note.controllers");
+router.get("/", NoteController.getNotesAll);
 
-router.get("/", getNotes);
+router.post("/add", verifyToken, NoteController.createNote);
 
-router.post("/add", verifyToken, createNote);
+router.get("/:id", NoteController.getNoteById);
 
-router.get("/:id", getNoteById);
+router.put("/edite/:id", verifyToken, NoteController.updateNoteById);
 
-router.put("/edite/:id", verifyToken, updateNoteById);
-
-router.delete("/delete/:id", verifyToken, deleteNote);
+router.delete("/delete/:id", verifyToken, NoteController.deleteNote);
 
 module.exports = router;
