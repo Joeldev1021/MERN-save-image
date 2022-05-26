@@ -9,13 +9,8 @@ const port = process.env.PORT || 5000;
 
 // export server conect database
 require("./service");
-
+const indexRoutes = require("./routes/index");
 // export router
-const imgRoutes = require("./routes/img.routes");
-const userRoutes = require("./routes/user.routes");
-const noteRoutes = require("./routes/note.routes");
-const likeRoutes = require("./routes/like.routes");
-const comentRoutes = require("./routes/coment.routes");
 
 // midleware
 app.use(morgan("dev"));
@@ -29,11 +24,7 @@ app.use(fileUpload({
 }));
 
 // routes
-app.use(userRoutes);
-app.use(noteRoutes);
-app.use(imgRoutes);
-app.use(likeRoutes);
-app.use(comentRoutes);
+app.use(indexRoutes);
 
 // error
 app.use((err, req, res, next) => {
