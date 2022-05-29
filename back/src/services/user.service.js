@@ -1,4 +1,5 @@
 const User = require("../models/user.schema");
+
 class UserService {
   async getAllUser () {
     try {
@@ -9,19 +10,35 @@ class UserService {
   }
 
   async getUserById (id) {
-    return await User.findById(id);
+    try {
+      return await User.findById(id);
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 
   async getUserByEmail (email) {
-    return await User.findOne({ email });
+    try {
+      return await User.findOne({ email });
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 
   async updateUser (id, data) {
-    return await User.findByIdAndUpdate(id, data);
+    try {
+      return await User.findByIdAndUpdate(id, data);
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 
   async deleteUser (id) {
-    return await User.findByIdAndDelete(id);
+    try {
+      return await User.findByIdAndDelete(id);
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 }
 
