@@ -1,27 +1,29 @@
-const Note = require("../models/Note");
+const Note = require("../models/note.schema");
 const createError = require("http-errors");
 
+const NoteService = require("../services/note.service");
+
 class NotesController {
-  async getNotes (req, res) {
-    //   const notes = await Note.find() .populate("userId");
+  async getNotesByUserId (req, res) {
     try {
-      const notes = await Note.find();
-      console.log(notes);
-      /*   const notes = await Note.find({ userId: req.user.id });
-    if (!notes) throw createError.NotFound("notes not found");
-    */ res.json(notes);
+      const notes = await Note.find({ userId: req.user.id });
+      if (!notes) throw createError.NotFound("notes not found");
+      res.json(notes);
     } catch (error) {
-      res.json(error);
+      throw new Error(error);
     }
   };
 
   async getNotesAll (req, res, next) {
     try {
-      const notes = await Note.find();
-      if (!notes) throw createError.NotFound("notes not found");
-      res.json(notes);
+      const notes = await NoteService.findAllNotes();
+      if (!notes) res.status(404).json({ message: "notes not found" });
+      res.json({
+        message: "get all notes success",
+        notes
+      });
     } catch (error) {
-      next(error);
+      console.log(error);
     }
   };
 
@@ -37,9 +39,18 @@ class NotesController {
     }
   };
 
-  async getNoteById (req, res, next) {
-    const note = await Note.findById(req.params.id);
-    res.json(note);
+  async getNoteById (req, res) {
+    try {
+      const note = await NoteService.findNoteById(req.params.id);
+      if (!note) {
+        return res.status(404).json({
+          message: "note not found"
+        });
+      }
+      res.json(note);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   async updateNoteById (req, res, next) {
