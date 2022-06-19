@@ -9,7 +9,7 @@ export const authSignUpApi = async (user) => {
       email: user.email,
       password: user.password
     },
-    url: "http://localhost:4000/signup"
+    url: "http://localhost:4000/auth/signup"
   });
 
   return token.data.token;
@@ -23,14 +23,14 @@ export const authSignInApi = async (user) => {
       username: user.username,
       password: user.password
     },
-    url: "http://localhost:4000/signin"
+    url: "http://localhost:4000/auth/signin"
   });
 
   return res;
 };
 
 export const getProfileUser = async (token) => {
-  const url = "http://localhost:4000/auth/profile";
+  const url = "http://localhost:4000/user/profile";
   const resUser = await axios(url, {
     method: "GET",
     headers: {
