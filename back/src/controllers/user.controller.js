@@ -63,6 +63,10 @@ class UserController {
       message: `delete ${user.name} success`
     });
   }
+
+  async getProfile (req, res) {
+    res.json({ user: req.user });
+  }
 }
 
 module.exports = new UserController();
