@@ -16,6 +16,10 @@ class NoteService {
     }
   }
 
+  async findNoteByUserId (userId) {
+    console.log(userId);
+  }
+
   async createNote (data) {
     try {
       return await new Note(data);
