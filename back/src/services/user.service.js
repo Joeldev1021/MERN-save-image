@@ -17,9 +17,26 @@ class UserService {
     }
   }
 
+  async getUserByUsername (username) {
+    try {
+      return await User.findOne({ username });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
   async getUserByEmail (email) {
     try {
       return await User.findOne({ email });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  async createUser (user) {
+    try {
+      const newUser = new User(user);
+      return newUser.save();
     } catch (error) {
       throw new Error(error);
     }
