@@ -1,11 +1,10 @@
 const mongoose = require("mongoose");
 const { Schema, model } = mongoose;
-const bcrypt = require("bcrypt");
 
 const userSchema = new Schema({
   username: {
     type: String,
-    //    unique: true,
+    unique: true,
     required: true
   },
   email: {
@@ -16,20 +15,11 @@ const userSchema = new Schema({
     type: String,
     required: true
   },
-  noteId: { type: Schema.Types.ObjectId, ref: "notes" }
+  noteId: { type: Schema.Types.ObjectId, ref: "notes" }// ref : "Note"
 }, {
   timestamps: {
     createdAt: "created_at"
   }
 });
-
-userSchema.methods.encryPassword = (password) => {
-  const newPassword = bcrypt.hash(password, 10);
-  return newPassword;
-};
-
-userSchema.methods.comparedPassword = function (password) {
-  return bcrypt.compare(password, this.password);
-};
 
 module.exports = model("User", userSchema);
