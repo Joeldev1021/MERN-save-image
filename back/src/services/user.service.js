@@ -5,7 +5,7 @@ class UserService {
     try {
       return await User.find();
     } catch (error) {
-      throw new Error(error);
+      throw new Error("error finds all user");
     }
   }
 
@@ -13,7 +13,7 @@ class UserService {
     try {
       return await User.findById(id);
     } catch (error) {
-      throw new Error(error);
+      throw new Error("error in getting user by ID", id);
     }
   }
 
@@ -21,7 +21,7 @@ class UserService {
     try {
       return await User.findOne({ username });
     } catch (error) {
-      throw new Error(error);
+      throw new Error("error get user by username", username);
     }
   }
 
@@ -29,7 +29,7 @@ class UserService {
     try {
       return await User.findOne({ email });
     } catch (error) {
-      throw new Error(error);
+      throw new Error("error getting User By Email", email);
     }
   }
 
@@ -38,7 +38,7 @@ class UserService {
       const newUser = new User(user);
       return newUser.save();
     } catch (error) {
-      throw new Error(error);
+      throw new Error("error created user");
     }
   }
 
@@ -46,7 +46,7 @@ class UserService {
     try {
       return await User.findByIdAndUpdate(id, data);
     } catch (error) {
-      throw new Error(error);
+      throw new Error("error in update user ", id);
     }
   }
 
@@ -54,7 +54,7 @@ class UserService {
     try {
       return await User.findByIdAndDelete(id);
     } catch (error) {
-      throw new Error(error);
+      throw new Error("error deleted user ", id);
     }
   }
 }

@@ -39,8 +39,12 @@ class AuthService {
 
   async logout (req) {
     const authLogout = req.headers.authorization;
-    const islogout = await destroyToken(authLogout);
-    return islogout;
+    try {
+      const islogout = await destroyToken(authLogout);
+      return islogout;
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 }
 

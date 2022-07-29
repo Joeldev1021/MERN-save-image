@@ -1,14 +1,14 @@
 const Note = require("../models/note.schema");
 class NoteService {
-  async findAllNotes () {
+  async findAll () {
     try {
       return await Note.find();
     } catch (error) {
-      throw new Error(error);
+      throw new Error("Erro getting all Notes");
     }
   }
 
-  async findNoteById (id) {
+  async findById (id) {
     try {
       return await Note.findById(id);
     } catch (error) {
@@ -17,18 +17,23 @@ class NoteService {
   }
 
   async findNoteByUserId (userId) {
-    console.log(userId);
+    try {
+      return await Note.findByUserId({ userId });
+    } catch (error) {
+      throw new Error("Erro getting notes by user", userId);
+    }
   }
 
   async createNote (data) {
     try {
-      return await new Note(data);
+      const newNote = await new Note(data);
+      return await newNote.save();
     } catch (error) {
       throw new Error(error);
     }
   }
 
-  async deleteNoteById (id) {
+  async delete (id) {
     try {
       return await Note.findByIdAndDelete(id);
     } catch (error) {
@@ -36,7 +41,7 @@ class NoteService {
     }
   }
 
-  async updateNoteById (id, data) {
+  async update (id, data) {
     try {
       return await Note.findByIdAndUpdate(id, data);
     } catch (error) {

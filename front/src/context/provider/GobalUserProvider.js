@@ -45,6 +45,7 @@ const GobalUserProvider = ({ children }) => {
   const signInUser = async (user) => {
     try {
       const res = await authSignInApi(user);
+      console.log(res);
       const { token } = res.data;
       if (token) {
         localStorage.setItem("token", token);
