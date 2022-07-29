@@ -1,12 +1,11 @@
 const express = require("express");
 const morgan = require("morgan");
 const fileUpload = require("express-fileupload");
-
+const { errorMiddleware } = require("./middleware/errorMiddleware");
 const cors = require("cors");
 const app = express();
 require("dotenv").config();
 const port = process.env.PORT || 5000;
-
 // export server conect database
 require("./service");
 const indexRoutes = require("./routes/index");
@@ -27,13 +26,7 @@ app.use(fileUpload({
 app.use(indexRoutes);
 
 // error
-app.use((err, req, res, next) => {
-  res.status(err.status || 500);
-  res.send({
-    status: err.status || 500,
-    message: err.message
-  });
-});
+app.use(errorMiddleware);
 
 // listen
 app.listen(port, () => {
