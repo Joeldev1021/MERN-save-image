@@ -1,19 +1,19 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-//
-const verifyToken = require("../middleware/verifyToken");
-const NoteController = require("../controllers/note.controllers");
 
-router.get("/all", NoteController.getNotesAll);
+const verifyToken = require('../middleware/verifyToken');
+const NoteController = require('../controllers/note.controllers');
 
-router.get("/", verifyToken, NoteController.getNotesByUserId);
+router.get('/all', NoteController.findAll);
 
-router.post("/add", verifyToken, NoteController.createNote);
+router.get('/', verifyToken, NoteController.findNotesByUserId);
 
-router.get("/:id", NoteController.getNoteById);
+router.post('/add', verifyToken, NoteController.create);
 
-router.put("/edite/:id", verifyToken, NoteController.updateNoteById);
+router.get('/:id', NoteController.findById);
 
-router.delete("/delete/:id", verifyToken, NoteController.deleteNote);
+router.put('/edite/:id', verifyToken, NoteController.update);
+
+router.delete('/delete/:id', verifyToken, NoteController.delete);
 
 module.exports = router;

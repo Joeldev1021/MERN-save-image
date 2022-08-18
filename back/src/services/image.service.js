@@ -1,12 +1,61 @@
-const fs = require("fs");
-const createError = require("http-errors");
+const Image = require('../models/img.schema');
 
-const { cloudinaryAdd, cloudinaryDelete } = require("../helper/cloudinary");
+class ImageService {
+	async findAll() {
+		try {
+			return Image.find().populate('userId', {
+				password: 0,
+			});
+		} catch (error) {
+			throw error;
+		}
+	}
 
-// Schema Image
-const ImgSchema = require("../models/img.schema");
+	async findById(id) {
+		try {
+			return Image.findById(id);
+		} catch (error) {
+			throw new Error(error);
+		}
+	}
 
-class ImgController {
+	async findByUserId({ userId }) {
+		try {
+			return Image.find({ userId });
+		} catch (error) {
+			throw new Error('Erro getting notes by user', userId);
+		}
+	}
+
+	async create(image) {
+		try {
+			const newImage = new Image(image);
+			return newImage.save();
+		} catch (error) {
+			throw new Error('Error creating note', error);
+		}
+	}
+
+	async delete(id) {
+		try {
+			return Image.findByIdAndDelete(id);
+		} catch (error) {
+			throw new Error('Error deleting note by id', id);
+		}
+	}
+
+	async update(id, data) {
+		try {
+			return Image.findByIdAndUpdate(id, data);
+		} catch (error) {
+			throw new Error('Error update note by id ', id);
+		}
+	}
+}
+
+module.exports = new ImageService();
+
+/* class ImgController {
   async getImgById (req, res, next) {
     const id = req.params.id;
 
@@ -96,3 +145,4 @@ class ImgController {
 ;
 
 module.exports = new ImgController();
+ */

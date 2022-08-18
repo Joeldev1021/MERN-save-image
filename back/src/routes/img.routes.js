@@ -1,20 +1,19 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
 
-const verifyToken = require("../middleware/verifyToken");
-const { verify } = require("jsonwebtoken");
-const ImgController = require("../controllers/img.controllers");
+const verifyToken = require('../middleware/verifyToken');
+const ImgController = require('../controllers/image.controllers');
 
-router.get("/", verifyToken, ImgController.getImgs);
+router.get('/', verifyToken, ImgController.findByUserId);
 
-router.get("/all", verifyToken, ImgController.getAllImg);
+router.get('/all', ImgController.findAll);
 
-router.get("/:id", verifyToken, ImgController.getImgById);
+router.get('/:id', ImgController.findById);
 
-router.post("/upload", verifyToken, ImgController.uploadImg);
+router.post('/upload', ImgController.create);
 
-router.delete("/delete/:id", verifyToken, ImgController.deleteImg);
+router.put('/:id', verifyToken, ImgController.update);
 
-router.put("/update/:id", verify, ImgController.updateImg);
+router.delete('/:id', ImgController.delete);
 
 module.exports = router;
