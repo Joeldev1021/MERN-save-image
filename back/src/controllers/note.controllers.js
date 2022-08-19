@@ -51,8 +51,7 @@ class NotesController {
 		try {
 			const noteUpdate = await NoteService.update(id, req.body);
 
-			if (!noteUpdate)
-				res.status(404).json({ message: 'note not updated' });
+			if (!noteUpdate) res.status(404).json({ message: 'note not updated' });
 
 			return res.status(200).json({
 				message: 'note updated successfully',
@@ -67,8 +66,7 @@ class NotesController {
 		const { id } = req.params;
 		try {
 			const noteDelete = await NoteService.delete(id);
-			if (!noteDelete)
-				res.status(404).json({ message: 'note not deleted ' });
+			if (!noteDelete) res.status(404).json({ message: 'note not deleted ' });
 			return res.status(200).json({
 				message: 'note deleted successfully',
 				noteDelete,

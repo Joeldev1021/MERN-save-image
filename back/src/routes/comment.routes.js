@@ -1,16 +1,23 @@
-const express = require("express");
+const express = require('express');
+const verifyToken = require('../middleware/verifyToken');
+const CommentControllers = require('../controllers/comment.controllers');
+
 const router = express.Router();
-const CommentController = require("../controllers/comment.controller");
-const verifyToken = require("../middleware/verifyToken");
 
-router.get("/img/commet/:id", verifyToken, CommentController.getComentByImg);
+router.get('/', CommentControllers.find);
 
-router.get("/img/comment/all/:id", verifyToken, CommentController.getAllComent);
+router.get('/:id', verifyToken, CommentControllers.findByIdImage);
 
-router.post("/img/comment/add/:id", verifyToken, CommentController.addComment);
+router.get('/all/:id', verifyToken, CommentControllers.findAllByIdImage);
 
-router.put("/img/comment/edite/:id", verifyToken, CommentController.updateComentById);
+router.post('/add-comment/:id', verifyToken, CommentControllers.create); // id -> idImg
 
-router.delete("/img/comment/delete/:id", verifyToken, CommentController.deleteComent);
+router.put('/edit-comment/:id', verifyToken, CommentControllers.update);
+
+router.delete(
+	'/img/comment/delete/:id',
+	verifyToken,
+	CommentControllers.delete
+);
 
 module.exports = router;

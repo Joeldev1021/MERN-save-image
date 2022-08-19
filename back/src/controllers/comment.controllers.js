@@ -1,44 +1,62 @@
 const createError = require('http-errors');
 const ImgSchema = require('../models/img.schema');
 const CommentSchema = require('../models/comment.schema');
-
+const { HttpStatus } = require('../config/httpStatus');
+const CommentService = require('../services/comment.service');
+const ImageService = require('../services/image.service');
 class CommentController {
-	async getComentByImg(req, res) {
-		res.json('get coment');
+	async find(req, res) {
+		try {
+			const foundComments = await CommentService.find();
+			if (!foundComments)
+				res.status(HttpStatus.NOT_FOUND).json('comments not found');
+			res.status(HttpStatus.OK).json(foundComments);
+		} catch (error) {
+			throw new Error(error);
+		}
 	}
 
-	async getAllComent(req, res) {
-		// await ImgSchema.findById(req.params.id).populate("comments");
-		const comment = await CommentSchema.find({ imgId: req.params.id })
-			.populate('userId', { password: 0 })
-			.sort({ createdAt: -1 });
-		res.json(comment);
+	async findByIdImage(req, res) {
+		res.json('get comment');
 	}
 
-	async addComment(req, res, next) {
-		const img = await ImgSchema.findById(req.body.imgId);
-		if (!img) return next(createError(404, 'Img not found'));
-
-		const comment = new CommentSchema({
-			comment: req.body.comment,
-			imgId: req.body.imgId,
-			userId: req.user._id,
-		});
-		const comentSave = await comment.save();
-		// get comment with user
-		const comentPopulate = await CommentSchema.findById(
-			comentSave._id
-		).populate('userId', { password: 0 });
-		img.comments.push(comment._id);
-		await img.save();
-		res.json(comentPopulate);
+	async findAllByIdImage(req, res) {
+		const { id } = req.params;
+		console.log('hola', id);
+		try {
+			const comment = await CommentService.findAllByIdImg(id);
+			res.status(200).json(comment);
+		} catch (error) {
+			throw new Error(error.message);
+		}
 	}
 
-	async updateComentById(req, res) {
+	async create(req, res, next) {
+		const { id } = req.params;
+
+		try {
+			const image = await ImageService.findById(id);
+			if (!image) res.status(HttpStatus.NOT_FOUND).send('Img not found');
+
+			const comment = {
+				comment: req.body.comment,
+				imgId: id,
+				userId: req.user._id,
+			};
+
+			const comments = await CommentService.create(comment, image);
+
+			res.status(HttpStatus.OK).json(comments);
+		} catch (error) {
+			throw new Error(error);
+		}
+	}
+
+	async update(req, res) {
 		res.json('update coment');
 	}
 
-	async deleteComent(req, res, next) {
+	async delete(req, res, next) {
 		res.json('delete coment');
 	}
 }

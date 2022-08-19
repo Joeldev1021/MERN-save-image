@@ -10,6 +10,7 @@ const PORT = process.env.PORT || 4000;
 require('./service');
 // export router
 const indexRoute = require('./routes/index');
+
 // midleware
 app.use(morgan('dev'));
 app.use(cors());
