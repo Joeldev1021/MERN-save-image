@@ -1,11 +1,20 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
-const API_URI = ` mongodb+srv://joeluser:${process.env.PASSWORD_DB}@cluster0.m8z6c.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+const { API_URI, API_URI_TEST, NODE_ENV } = process.env;
 
-mongoose.connect(API_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useFindAndModify: false
-}).then(() => console.log("conect db"));
+const API_URL = NODE_ENV === 'test' ? API_URI_TEST : API_URI;
+mongoose
+	.connect(API_URL, {
+		useNewUrlParser: true,
+		useUnifiedTopology: true,
+		useFindAndModify: false,
+		useCreateIndex: true,
+	})
+	.then(() => console.log('conect db to mongodb'))
+	.catch(err => console.log(err));
+
+process.on('uncaughtException', async () => {
+	mongoose.disconnect();
+});
 
 module.exports = mongoose;

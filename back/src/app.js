@@ -1,50 +1,33 @@
-const express = require("express");
-const morgan = require("morgan");
-const fileUpload = require("express-fileupload");
-
-const cors = require("cors");
+const express = require('express');
+const morgan = require('morgan');
+const cors = require('cors');
+const { errorMiddleware } = require('./middleware/errorMiddleware');
+const { fileUploadImage } = require('./middleware/fileUpload');
 const app = express();
-require("dotenv").config();
-const port = process.env.PORT || 5000;
-
+require('dotenv').config();
+const PORT = process.env.PORT || 4000;
 // export server conect database
-require("./service");
-
+require('./service');
 // export router
-const imgRoutes = require("./routes/img.routes");
-const userRoutes = require("./routes/user.routes");
-const noteRoutes = require("./routes/note.routes");
-const likeRoutes = require("./routes/like.routes");
-const comentRoutes = require("./routes/coment.routes");
+const indexRoute = require('./routes/index');
 
 // midleware
-app.use(morgan("dev"));
+app.use(morgan('dev'));
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));
-// app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.json());
-app.use(fileUpload({
-  useTempFiles: true,
-  tempFileDir: "./src/tmp/"
-}));
+
+/// uplaod imgaes
+app.use(fileUploadImage);
 
 // routes
-app.use(userRoutes);
-app.use(noteRoutes);
-app.use(imgRoutes);
-app.use(likeRoutes);
-app.use(comentRoutes);
+app.use(indexRoute);
 
-// error
-app.use((err, req, res, next) => {
-  res.status(err.status || 500);
-  res.send({
-    status: err.status || 500,
-    message: err.message
-  });
-});
+app.use(errorMiddleware);
 
 // listen
-app.listen(port, () => {
-  console.log("app listening at ", port);
+const server = app.listen(PORT, () => {
+	console.log(`app listening at ${PORT}`);
 });
+
+module.exports = { app, server };
