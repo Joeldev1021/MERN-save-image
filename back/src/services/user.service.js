@@ -27,7 +27,7 @@ class UserService {
 
 	async findByEmail(email) {
 		try {
-			return await User.findOne({ email });
+			return User.findOne({ email });
 		} catch (error) {
 			throw new Error('Error getting User By Email', email);
 		}

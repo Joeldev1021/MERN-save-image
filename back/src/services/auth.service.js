@@ -1,6 +1,7 @@
 const UserService = require('./user.service');
 const bcrypt = require('bcrypt');
 const { generateToken, destroyToken } = require('../utils');
+const { HttpStatus } = require('../config/httpStatus');
 
 class AuthService {
 	async register({ user }) {
@@ -35,13 +36,13 @@ class AuthService {
 				password,
 				existedUserEmail.password
 			);
-
-			if (matchPasword) {
-				const token = await generateToken(existedUserEmail);
-				return token;
-			} else throw new Error('credentails incorret');
+			if (!matchPasword) {
+				throw new Error('credentails incorret');
+			}
+			const token = await generateToken(existedUserEmail);
+			return token;
 		} catch (error) {
-			throw new Error(error);
+			throw error;
 		}
 	}
 

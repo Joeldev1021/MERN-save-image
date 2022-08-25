@@ -1,20 +1,33 @@
+const { HttpStatus } = require('../config/httpStatus');
 const AuthService = require('../services/auth.service');
 
 class AuthController {
 	async register(req, res) {
-		const responseUser = await AuthService.register({ user: req.body });
-		if (!responseUser) res.status(404).send('user not registered');
-		res.status(200).send({
-			token: responseUser.token,
-		});
+		try {
+			const responseUser = await AuthService.register({ user: req.body });
+			if (!responseUser)
+				res
+					.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.send('user not registered');
+			res.status(200).send({
+				token: responseUser.token,
+			});
+		} catch (error) {
+			res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
+		}
 	}
 
 	async login(req, res) {
-		const { email, password } = req.body;
-		const response = await AuthService.login({ email, password });
-		res.status(200).send({
-			token: response,
-		});
+		try {
+			const { email, password } = req.body;
+			if (!email || !password) throw new Error('fill in email and password');
+			const response = await AuthService.login({ email, password });
+			res.status(200).json({
+				token: response,
+			});
+		} catch (error) {
+			res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
+		}
 	}
 
 	async logout(req, res) {
