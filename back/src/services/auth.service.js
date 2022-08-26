@@ -42,7 +42,7 @@ class AuthService {
 			const token = await generateToken(existedUserEmail);
 			return token;
 		} catch (error) {
-			throw error;
+			throw new Error(error);
 		}
 	}
 
