@@ -2,7 +2,7 @@ import React from 'react';
 import BannerForm from '../../components/BannerForm';
 import Form from '../../components/Form';
 
-const Login = () => {
+const LoginPage = () => {
 	return (
 		<section className="h-screen">
 			<div className="container px-6 py-12 h-full">
@@ -17,4 +17,4 @@ const Login = () => {
 	);
 };
 
-export default Login;
+export default LoginPage;

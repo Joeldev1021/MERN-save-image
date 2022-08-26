@@ -1,5 +1,5 @@
-import React, { ChangeEvent, FormEvent, useState } from 'react';
-import { loginApi } from '../api';
+import { ChangeEvent, FormEvent, useContext, useState } from 'react';
+import { AuthContext } from '../context/user/AuthContext';
 import ButtonForm from './ButtonForm';
 import Facebook from './Icons/Facebook';
 import Twitter from './Icons/Twitter';
@@ -11,13 +11,14 @@ interface IFormData {
 }
 
 const Form = () => {
+	const { login } = useContext(AuthContext);
 	const [formData, setFormData] = useState<IFormData>({
 		email: '',
 		password: '',
 	});
 
 	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-		setFormData((prev: any) => ({
+		setFormData((prev: IFormData) => ({
 			...prev,
 			[e.target.name]: e.target.value,
 		}));
@@ -25,9 +26,12 @@ const Form = () => {
 
 	const handleSubmit = async (e: FormEvent) => {
 		e.preventDefault();
-		const data = await loginApi(formData);
-		console.log(data);
+		login(formData);
+		/* 		const token = await loginApi(formData);
+		console.log(token);
+	 */
 	};
+
 	return (
 		<form onSubmit={e => handleSubmit(e)}>
 			<Input

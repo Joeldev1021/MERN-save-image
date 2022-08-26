@@ -1,30 +1,31 @@
 import { useContext, useState } from "react";
 import { GlobalUserContext } from "../../context/provider/GobalUserProvider";
 
-const Signin = () => {
+const Signup = () => {
   const [user, setUser] = useState({
     username: "",
-    password: ""
+    email: "",
+    password: "",
+    token: ""
   });
 
-  const { signInUser, errorMessage } = useContext(GlobalUserContext);
+  const { signUpUser, errorMessage } = useContext(GlobalUserContext);
 
   const handleChange = (e) => {
     setUser({
-      ...user,
-      [e.target.name]: e.target.value
+      ...user, [e.target.name]: e.target.value
     });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    signInUser(user);
+    signUpUser(user);
   };
 
   return (
     <div className="d-flex justify-content-center ">
       <div className="row justify-content-md-center col-md-4">
-        <h1>Signin</h1>
+        <h1>SingUp</h1>
         {errorMessage && (
           <div
             className="alert alert-danger text-center rounded-0"
@@ -33,7 +34,7 @@ const Signin = () => {
             {errorMessage}
           </div>
         )}
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} >
           <div className="mb-3">
             <label htmlFor="username" className="form-label">
               username
@@ -46,6 +47,20 @@ const Signin = () => {
               id="username"
               name="username"
               aria-describedby="emailHelp"
+            />
+          </div>
+
+            <div className="mb-3">
+            <label htmlFor="email" className="form-label">
+              email
+            </label>
+            <input
+              value={user.email}
+              onChange={handleChange}
+              type="email"
+              name="email"
+              className="form-control"
+              id="email"
             />
           </div>
           <div className="mb-3">
@@ -62,7 +77,7 @@ const Signin = () => {
             />
           </div>
           <button type="submit" className="btn btn-primary">
-            submit
+              submit
           </button>
         </form>
       </div>
@@ -70,4 +85,4 @@ const Signin = () => {
   );
 };
 
-export default Signin;
+export default Signup;

@@ -1,20 +1,17 @@
-import { useState } from 'react'
-import Header from './components/Header'
-
-function App () {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <Header/>
-            <div className="m-auto">
-                <div className="text-6xl text-red-600">{count}</div>
-                <button className="px-6 py-2 rounded bg-green-800 hover:bg-green-600 text-white" type="button" onClick={() => setCount((count) => count + 1)}>
-                    count+
-                </button>
-            </div>
-</>
-  )
+import CardList from './components/CardList';
+import Header from './components/Header/Header';
+import { Routes, Route } from 'react-router-dom';
+import LoginPage from './pages/auth/LoginPage';
+function App() {
+	return (
+		<>
+			<Header />
+			<Routes>
+				<Route path="/login" element={<LoginPage />} />
+				<Route path="/" element={<CardList />} />
+			</Routes>
+		</>
+	);
 }
 
-export default App
+export default App;

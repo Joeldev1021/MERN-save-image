@@ -3,7 +3,7 @@
 		"browser": true,
 		"es2021": true
 	},
-	"extends": ["plugin:react/recommended", "eslint-config-prettier", "standard"],
+	"extends": ["plugin:react/recommended", "standard", "eslint-config-prettier"],
 	"parser": "@typescript-eslint/parser",
 	"parserOptions": {
 		"ecmaFeatures": {
@@ -16,6 +16,6 @@
 	"rules": {
 		"react/react-in-jsx-scope": "off",
 		"react/jsx-filename-extension": [1, { "extensions": [".js", ".tsx"] }],
-		"no-tabs": "off"
+		"no-undef": "off"
 	}
 }
