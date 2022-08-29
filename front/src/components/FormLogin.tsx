@@ -1,20 +1,25 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { IUserLogin } from '../interface';
+import AlertForm from './AlertForm';
 import ButtonForm from './ButtonForm';
 import Facebook from './Icons/Facebook';
 import Twitter from './Icons/Twitter';
 import Input from './Input';
+import Spinner from './Spinner';
 
 interface LoginProps {
+	loading: boolean;
+	errorMessage: string | undefined;
 	login: (userLogin: IUserLogin) => void;
 }
 
-const FormLogin = ({ login }: LoginProps) => {
+const FormLogin = ({ login, errorMessage, loading }: LoginProps) => {
+	const [errorMsg, setErrorMsg] = useState<string | undefined>(errorMessage);
 	const [formData, setFormData] = useState<IUserLogin>({
 		email: '',
 		password: '',
 	});
-
+	console.log(errorMessage);
 	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setFormData((prev: IUserLogin) => ({
 			...prev,
@@ -25,13 +30,23 @@ const FormLogin = ({ login }: LoginProps) => {
 	const handleSubmit = async (e: FormEvent) => {
 		e.preventDefault();
 		login(formData);
-		/* 		const token = await loginApi(formData);
-		console.log(token);
-	 */
 	};
+
+	useEffect(() => {
+		setTimeout(() => {
+			setErrorMsg(undefined);
+		}, 5000);
+	}, [errorMessage]);
+
+	useEffect(() => {
+		if (errorMessage) {
+			setErrorMsg(errorMessage);
+		}
+	}, [errorMessage]);
 
 	return (
 		<form onSubmit={e => handleSubmit(e)}>
+			{errorMsg && <AlertForm errorMsg={errorMsg} />}
 			<Input
 				placeholder="email"
 				type="email"
@@ -47,12 +62,13 @@ const FormLogin = ({ login }: LoginProps) => {
 				handleChange={handleChange}
 			/>
 			<button
+				disabled={!formData.email || !formData.password}
 				type="submit"
-				className="inline-block px-7 py-3 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-full"
+				className="flex justify-center px-7 py-3 disabled:opacity-75  bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-full"
 				data-mdb-ripple="true"
 				data-mdb-ripple-color="light"
 			>
-				Sign in
+				Sign in {loading && <Spinner />}
 			</button>
 
 			<div className="flex items-center my-4 before:flex-1 before:border-t before:border-gray-300 before:mt-0.5 after:flex-1 after:border-t after:border-gray-300 after:mt-0.5">

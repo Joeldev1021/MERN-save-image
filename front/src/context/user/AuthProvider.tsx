@@ -8,10 +8,11 @@ import { authReducer } from './authReducer';
 interface Props {
 	children: JSX.Element | JSX.Element[];
 }
+
 const INITIAL_STATE: AuthState = {
-	token: '',
+	token: localStorage.getItem('token') || '',
 	loading: false,
-	error: false,
+	errorMessage: undefined,
 };
 
 export const AuthProvider = ({ children }: Props) => {
@@ -21,14 +22,24 @@ export const AuthProvider = ({ children }: Props) => {
 		/* 	"email": "joel@gmail.com",
 			"password": "1234" */
 		dispatch({ type: 'LOGIN_LOADING' });
-		const token = await loginApi(userLogin);
-		if (token.token) dispatch({ type: 'LOGIN_SUCCESS', payload: token.token });
-
-		if (token.message) dispatch({ type: 'LOGIN_ERROR' });
+		try {
+			const res = await loginApi(userLogin);
+			if (res.token) {
+				dispatch({ type: 'LOGIN_SUCCESS', payload: res.token });
+				localStorage.setItem('token', res.token);
+			}
+			if (res.errorMessage) {
+				throw new Error(res.errorMessage);
+			}
+		} catch (error) {
+			if (error instanceof Error) {
+				dispatch({ type: 'LOGIN_ERROR', payload: error.message });
+			}
+		}
 	};
 
 	return (
-		<AuthContext.Provider value={{ state, value: 'hola', login }}>
+		<AuthContext.Provider value={{ state, login }}>
 			{children}
 		</AuthContext.Provider>
 	);

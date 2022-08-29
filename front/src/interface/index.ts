@@ -31,4 +31,14 @@ export interface IUserLogin {
 
 export interface AuthState {
     token: string
+    loading: boolean
+    errorMessage?: string
+}
+
+export interface INotes {
+    _id: string
+    title: string
+    description: string
+    userId: string
+    __v?: number
 }

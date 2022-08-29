@@ -3,7 +3,6 @@ import { AuthState, IUserLogin } from '../../interface';
 
 export type AuthContextProps = {
 	state: AuthState;
-	value: string;
 	login: (userLogin: IUserLogin) => void;
 };
 
