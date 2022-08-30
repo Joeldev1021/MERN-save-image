@@ -22,7 +22,6 @@ app.use(fileUploadImage);
 
 // routes
 app.use(indexRoute);
-
 app.use(errorMiddleware);
 
 // listen
