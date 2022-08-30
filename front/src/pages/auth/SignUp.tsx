@@ -1,6 +1,6 @@
 import React from 'react';
 import BannerForm from '../../components/BannerForm';
-import ButtonForm from '../../components/ButtonForm';
+import ButtonForm from '../../components/Button/ButtonSocialForm';
 import Facebook from '../../components/Icons/Facebook';
 import Twitter from '../../components/Icons/Twitter';
 import Input from '../../components/Input';
