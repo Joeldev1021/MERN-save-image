@@ -10,8 +10,7 @@ class ImageController {
 	async findAll(req, res) {
 		try {
 			const images = await ImageService.findAll();
-			if (!images)
-				res.status(HttpStatus.NOT_FOUND).send('Images not found');
+			if (!images) res.status(HttpStatus.NOT_FOUND).send('Images not found');
 
 			return res.status(HttpStatus.OK).json(images);
 		} catch (error) {
@@ -25,9 +24,7 @@ class ImageController {
 			const img = await ImageService.findById(id);
 
 			if (!img)
-				res.status(HttpStatus.NOT_FOUND).send(
-					`image find id ${id}, not found`
-				);
+				res.status(HttpStatus.NOT_FOUND).send(`image find id ${id}, not found`);
 			return res.json(img);
 		} catch (error) {
 			throw new Error(error);
@@ -37,12 +34,13 @@ class ImageController {
 	// get img by id user
 	async findByUserId(req, res) {
 		const { id } = req.user;
+		console.log(id);
 		try {
 			const images = await ImageService.findByUserId({ userId: id });
 			if (!images)
-				res.status(HttpStatus.NOT_FOUND).send(
-					'images by user ID' + id + 'not found'
-				);
+				res
+					.status(HttpStatus.NOT_FOUND)
+					.send('images by user ID' + id + 'not found');
 			res.status(HttpStatus.OK).json(images);
 		} catch (error) {
 			throw new Error(error);
@@ -54,9 +52,9 @@ class ImageController {
 			if (!req.files)
 				res.status(HttpStatus.NO_CONTENT).send('not provided image');
 			if (!req.body.title || !req.body.description) {
-				res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(
-					'you have complete form'
-				);
+				res
+					.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.send('you have complete form');
 			}
 			const imgCloud = await cloudinaryAdd(req.files.image.tempFilePath);
 
@@ -83,8 +81,7 @@ class ImageController {
 		const { id } = req.params;
 		try {
 			const imgUpdate = await ImageService.update(id, req.body);
-			if (!imgUpdate)
-				res.status(HttpStatus.NOT_FOUND).send('image not found');
+			if (!imgUpdate) res.status(HttpStatus.NOT_FOUND).send('image not found');
 
 			return res.status(HttpStatus.OK).json(imgUpdate);
 		} catch (error) {
@@ -96,8 +93,7 @@ class ImageController {
 		const { id } = req.params;
 		try {
 			const image = await ImageService.delete(id);
-			if (!image)
-				res.status(HttpStatus.NOT_FOUND).send('image not found');
+			if (!image) res.status(HttpStatus.NOT_FOUND).send('image not found');
 			// cut url
 			const imgCut = image.imgUrl.split('/')[7].split('.')[0];
 			await cloudinaryDelete(imgCut); // delete img cloudinary

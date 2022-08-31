@@ -13,7 +13,7 @@ class AuthController {
 				token: responseUser.token,
 			});
 		} catch (error) {
-			res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
+			res.status(HttpStatus.BAD_REQUEST).send({ errorMessage: error.message });
 		}
 	}
 
@@ -26,7 +26,9 @@ class AuthController {
 				token: response,
 			});
 		} catch (error) {
-			res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
+			return res
+				.status(HttpStatus.INTERNAL_SERVER_ERROR)
+				.send({ errorMessage: error.message });
 		}
 	}
 

@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const { HttpStatus } = require('../config/httpStatus');
 const User = require('../models/user.schema');
 
 const veryAuth = async (req, res, next) => {
@@ -11,7 +12,7 @@ const veryAuth = async (req, res, next) => {
 		req.user = user;
 		next();
 	} catch (error) {
-		res.status(401).json({ error: error.message });
+		res.status(HttpStatus.UNAUTHORIZED).json({ error: error.message });
 	}
 };
 

@@ -1,18 +1,18 @@
 const express = require('express');
 const router = express.Router();
 
-const verifyToken = require('../middleware/verifyToken');
+const verifyAuth = require('../middleware/verifyAuth');
 const ImgController = require('../controllers/image.controllers');
 
-router.get('/', verifyToken, ImgController.findByUserId);
+router.get('/', verifyAuth, ImgController.findByUserId);
 
 router.get('/all', ImgController.findAll);
 
-router.get('/:id', ImgController.findById);
+router.get('/:id', verifyAuth, ImgController.findById);
 
 router.post('/upload', ImgController.create);
 
-router.put('/:id', verifyToken, ImgController.update);
+router.put('/:id', verifyAuth, ImgController.update);
 
 router.delete('/:id', ImgController.delete);
 

@@ -1,9 +1,9 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
 
-const verifyToken = require("../middleware/verifyToken");
-const LikeController = require("../controllers/like.controllers");
+const verifyAuth = require('../middleware/verifyAuth');
+const LikeController = require('../controllers/like.controllers');
 
-router.post("/img/like/add/:id", verifyToken, LikeController.addLike);
+router.post('/img/like/add/:id', verifyAuth, LikeController.addLike);
 
 module.exports = router;
