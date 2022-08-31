@@ -2,60 +2,32 @@ const User = require('../models/user.schema');
 
 class UserService {
 	async findAll() {
-		try {
-			return await User.find();
-		} catch (error) {
-			throw new Error('Error finds all user');
-		}
+		return User.find();
 	}
 
 	async findById(id) {
-		try {
-			return await User.findById(id);
-		} catch (error) {
-			throw new Error('Error in getting user by ID', id);
-		}
+		return User.findById(id);
 	}
 
 	async findByUsername(username) {
-		try {
-			return await User.findOne({ username });
-		} catch (error) {
-			throw new Error('Error get user by username', username);
-		}
+		return User.findOne({ username });
 	}
 
 	async findByEmail(email) {
-		try {
-			return User.findOne({ email });
-		} catch (error) {
-			throw new Error('Error getting User By Email', email);
-		}
+		return User.findOne({ email });
 	}
 
 	async create(user) {
-		try {
-			const newUser = new User(user);
-			return newUser.save();
-		} catch (error) {
-			throw new Error('Error created user');
-		}
+		const newUser = new User(user);
+		return newUser.save();
 	}
 
 	async update(id, data) {
-		try {
-			return await User.findByIdAndUpdate(id, data);
-		} catch (error) {
-			throw new Error('Error in update user ', id);
-		}
+		return User.findByIdAndUpdate(id, data);
 	}
 
 	async delete(id) {
-		try {
-			return await User.findByIdAndDelete(id);
-		} catch (error) {
-			throw new Error('Error deleted user ', id);
-		}
+		return User.findByIdAndDelete(id);
 	}
 }
 

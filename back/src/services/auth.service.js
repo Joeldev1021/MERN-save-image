@@ -21,7 +21,7 @@ class AuthService {
 				token: tokenData,
 			};
 		} catch (error) {
-			throw new Error(error);
+			throw new Error(error.message);
 		}
 	}
 
@@ -42,7 +42,7 @@ class AuthService {
 			const token = await generateToken(existedUserEmail);
 			return token;
 		} catch (error) {
-			throw new Error(error);
+			throw new Error(error.message);
 		}
 	}
 
@@ -52,7 +52,7 @@ class AuthService {
 			const islogout = await destroyToken(authLogout);
 			return islogout;
 		} catch (error) {
-			throw new Error(error);
+			throw new Error(error.message);
 		}
 	}
 }
