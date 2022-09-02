@@ -26,15 +26,23 @@ class AuthController {
 				token: response,
 			});
 		} catch (error) {
-			return res
+			res
 				.status(HttpStatus.INTERNAL_SERVER_ERROR)
 				.send({ errorMessage: error.message });
 		}
 	}
 
 	async logout(req, res) {
-		const response = await AuthService.logout(req);
-		return res.status(200).send({ token: response });
+		const authToken = req.headers.authorization;
+		try {
+			const response = await AuthService.logout(authToken);
+			/* this token duration 1s */
+			return res.status(200).send({ token: response });
+		} catch (error) {
+			res
+				.status(HttpStatus.INTERNAL_SERVER_ERROR)
+				.send({ errorMessage: error.message });
+		}
 	}
 }
 
