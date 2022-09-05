@@ -8,7 +8,7 @@ router.get('/', CommentControllers.find);
 
 router.get('/:id', verifyAuth, CommentControllers.findByIdImage);
 
-router.get('/all/:id', verifyAuth, CommentControllers.findAllByIdImage);
+router.get('/all/:id', CommentControllers.findAllByIdImage); // verifyAuth
 
 router.post('/add-comment/:id', verifyAuth, CommentControllers.create); // id -> idImg
 

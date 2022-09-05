@@ -22,7 +22,6 @@ class CommentController {
 
 	async findAllByIdImage(req, res) {
 		const { id } = req.params;
-		console.log('hola', id);
 		try {
 			const comment = await CommentService.findAllByIdImg(id);
 			res.status(200).json(comment);

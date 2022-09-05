@@ -34,7 +34,6 @@ class ImageController {
 	// get img by id user
 	async findByUserId(req, res) {
 		const { id } = req.user;
-		console.log(id);
 		try {
 			const images = await ImageService.findByUserId({ userId: id });
 			if (!images)

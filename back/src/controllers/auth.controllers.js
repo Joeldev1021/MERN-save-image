@@ -17,7 +17,7 @@ class AuthController {
 		}
 	}
 
-	async login(req, res) {
+	async login(req, res, next) {
 		try {
 			const { email, password } = req.body;
 			if (!email || !password) throw new Error('fill in email and password');
@@ -26,9 +26,8 @@ class AuthController {
 				token: response,
 			});
 		} catch (error) {
-			res
-				.status(HttpStatus.INTERNAL_SERVER_ERROR)
-				.send({ errorMessage: error.message });
+			res.status(HttpStatus.BAD_REQUEST);
+			next(error);
 		}
 	}
 

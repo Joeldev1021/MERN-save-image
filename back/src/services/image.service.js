@@ -20,11 +20,7 @@ class ImageService {
 	}
 
 	async findByUserId({ userId }) {
-		try {
-			return Image.find({ userId });
-		} catch (error) {
-			throw new Error('Erro getting notes by user', userId);
-		}
+		return Image.find({ userId });
 	}
 
 	async create(image) {
