@@ -1,6 +1,7 @@
 const fs = require('fs');
 const { HttpStatus } = require('../config/httpStatus');
 const { cloudinaryAdd, cloudinaryDelete } = require('../helper/cloudinary');
+const { isValidHttpUrlImage } = require('../helper/isValidHttpUrl');
 const ImageService = require('../services/image.service');
 
 // Schema Image
@@ -46,25 +47,35 @@ class ImageController {
 		}
 	}
 
-	async create(req, res) {
+	async create(req, res, next) {
 		try {
-			if (!req.files)
+			if (!req.files && !req.body.imgUrl) {
 				res.status(HttpStatus.NO_CONTENT).send('not provided image');
+			}
 			if (!req.body.title || !req.body.description) {
 				res
 					.status(HttpStatus.INTERNAL_SERVER_ERROR)
 					.send('you have complete form');
 			}
-			const imgCloud = await cloudinaryAdd(req.files.image.tempFilePath);
+			let imgCloud;
 
-			if (!imgCloud)
-				res.status(HttpStatus.NO_CONTENT).send('not provided image');
-
+			if (req.files) {
+				const imgCloud = await cloudinaryAdd(req.files.image.tempFilePath);
+				if (!imgCloud)
+					res.status(HttpStatus.NO_CONTENT).send('not provided image');
+			}
+			/**
+			 * validate if url is valid
+			 */
+			if (req.body.imgUrl) {
+				if (isValidHttpUrlImage(req.body.imgUrl))
+					throw new Error('url is not valid');
+			}
 			const image = {
 				title: req.body.title,
 				description: req.body.description,
 				userId: req.body.user,
-				imgUrl: imgCloud.url,
+				imgUrl: req.body.imgUrl ? req.body.imgUrl : imgCloud.url,
 			};
 			const imgSave = await ImageService.create(image);
 			await fs.unlink(req.files.image.tempFilePath, () =>
@@ -72,7 +83,8 @@ class ImageController {
 			);
 			res.status(HttpStatus.OK).json(imgSave);
 		} catch (error) {
-			throw new Error(error);
+			res.status(HttpStatus.NO_CONTENT);
+			next(error);
 		}
 	}
 
