@@ -4,7 +4,8 @@ import { IPostUser, IPostState } from '../../interface';
 export type PostContextProps = {
 	state: IPostState;
 	posts: IPostUser[] | [];
-	getPost: (token: string) => void;
+	getPost: () => void;
+	getCommentsPost: (imgId: string) => void;
 };
 
 export const PostContext = createContext<PostContextProps>(
