@@ -7,22 +7,22 @@ const NavBar = () => {
 
 	const navigation = [
 		{ title: 'Login', path: '/login' },
-		{ title: 'Notes', path: '/notes' },
-		{ title: 'Guides', path: '#' },
-		{ title: 'Partners', path: '#' },
+		{ title: 'My Post', path: '/my-post' },
+		{ title: 'Upload', path: '/upload' },
 	];
+
 	return (
 		<nav className="bg-white border-b">
 			<div className="flex items-center space-x-8 py-3 px-4 max-w-screen-xl mx-auto">
 				<div className="flex-none lg:flex-initial">
-					<a href="javascript:void(0)">
+					<Link to="/">
 						<img
 							src="https://img.freepik.com/vector-premium/logo-diseno-camara_1465-19.jpg"
 							width={120}
 							height={50}
 							alt="save image"
 						/>
-					</a>
+					</Link>
 				</div>
 				<div className="flex-1 flex items-center justify-between">
 					<div

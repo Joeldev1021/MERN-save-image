@@ -1,23 +1,31 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useContext } from 'react';
+import { AuthContext } from '../../context/auth/AuthContext';
 import { INavigation } from '../../interface';
 
 const ProfileDropDown = (props: any) => {
 	const [state, setState] = useState<boolean>(false);
 	/* const profileRef = useRef<HTMLButtonElement>() */
 	const profileRef = useRef<HTMLButtonElement>({} as HTMLButtonElement);
+	const { logout } = useContext(AuthContext);
 
 	const navigation: INavigation[] = [
-		{ title: 'Dashboard', path: 'javascript:void(0)' },
-		{ title: 'Settings', path: 'javascript:void(0)' },
-		{ title: 'Log out', path: 'javascript:void(0)' },
+		{ title: 'Dashboard', path: '#' },
+		{ title: 'Log out', path: '#' },
 	];
 
-	useEffect(() => {
-		const handleDropDown = (e: any) => {
-			if (!profileRef.current.contains(e.target)) setState(false);
-		};
-		document.addEventListener('click', handleDropDown);
-	}, []);
+	const handleClickDropdown = (title: string) => {
+		if (title === 'Log out') {
+			logout();
+		}
+	};
+
+	const handleDropDownProfile = () => {
+		if (state) {
+			setState(false);
+		} else {
+			setState(true);
+		}
+	};
 
 	return (
 		<div className={`relative ${props.class}`}>
@@ -25,7 +33,7 @@ const ProfileDropDown = (props: any) => {
 				<button
 					ref={profileRef}
 					className="w-10 h-10 outline-none rounded-full ring-offset-2 ring-gray-200 ring-2 lg:focus:ring-indigo-600"
-					onClick={() => setState(!state)}
+					onClick={e => handleDropDownProfile()}
 				>
 					<img
 						src="https://randomuser.me/api/portraits/men/46.jpg"
@@ -48,6 +56,7 @@ const ProfileDropDown = (props: any) => {
 							key={index}
 							className="block text-gray-600 lg:hover:bg-gray-50 lg:p-2.5"
 							href={navItem.path}
+							onClick={e => handleClickDropdown(navItem.title)}
 						>
 							{navItem.title}
 						</a>
