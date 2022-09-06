@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig } from 'axios';
-import { ICommentsPost } from '../interface/post';
+import { IPostUser } from '../interface';
 
 const API_URL = 'http://localhost:5000'
 
@@ -20,7 +20,7 @@ axiosIn.interceptors.request.use(
 
 )
 
-export const getNotesApi = async (token: string) => {
+export const getNotesApi = async () => {
     const result = await fetch('http://localhost:5000/note/all')
     return result.json()
 }
@@ -28,6 +28,10 @@ export const getNotesApi = async (token: string) => {
 export const getPostByUser = async () => {
     // intercept token
     return axiosIn.get(`${API_URL}/img`)
+}
+
+export const getAllPostsApi = async () => {
+    return axios.get<IPostUser[]>("http://localhost:5000/img/all")
 }
 
 /* export const getPostProfileApi = async (id: string) => {
@@ -39,13 +43,11 @@ export const getCommentsPostApi = async (id: string) => {
     return axiosIn.get(`${API_URL}/img-comment/all/${id}`)
 }
 
-/* export const getPostByUser = async (token: string) => {
-    const result = await fetch('http://localhost:5000/img', {
-        method: 'GET',
-        headers: new Headers({
-            'Authorization': token,
-            'Content-Type': 'application/json'
-        }),
+export const uploadPostApi = async (data: string) => {
+    return axiosIn.post(`${API_URL}/img/upload`, data, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
     })
-    return result.json()
-} */
+}
+

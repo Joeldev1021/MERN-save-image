@@ -1,5 +1,10 @@
-import { useReducer } from 'react';
-import { getCommentsPostApi, getPostByUser } from '../../api/postApi';
+import { useReducer, useEffect } from 'react';
+import {
+	getAllPostsApi,
+	getCommentsPostApi,
+	getPostByUser,
+	uploadPostApi,
+} from '../../api/postApi';
 import { IPostUser, IPostState } from '../../interface';
 import { ICommentsPost } from '../../interface/post';
 import { PostContext } from './PostContext';
@@ -10,7 +15,8 @@ interface Props {
 }
 
 const INITIAL_STATE: IPostState = {
-	posts: [],
+	postAll: [],
+	postsByUser: [],
 	commentByPost: [],
 	loading: false,
 	errorMessage: null,
@@ -18,6 +24,18 @@ const INITIAL_STATE: IPostState = {
 
 export const PostProvider = ({ children }: Props) => {
 	const [state, dispatch] = useReducer(postReducer, INITIAL_STATE);
+
+	const getAllPosts = async () => {
+		try {
+			const response = await getAllPostsApi();
+			if (response.data) {
+				const posts: IPostUser[] = response.data;
+				dispatch({ type: 'LOADING_ALL_POST_SUCCESS', payload: posts });
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	};
 
 	const getPost = async () => {
 		dispatch({ type: 'LOADING_POST' });
@@ -49,10 +67,23 @@ export const PostProvider = ({ children }: Props) => {
 			});
 		}
 	};
+	const uploadPost = async (data: any) => {
+		const response = await uploadPostApi(data);
+		console.log(response);
+	};
+	useEffect(() => {
+		getAllPosts();
+	}, []);
 
 	return (
 		<PostContext.Provider
-			value={{ posts: state.posts, state, getPost, getCommentsPost }}
+			value={{
+				posts: state.postsByUser,
+				state,
+				getPost,
+				getCommentsPost,
+				uploadPost,
+			}}
 		>
 			{children}
 		</PostContext.Provider>

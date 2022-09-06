@@ -6,6 +6,7 @@ export type PostContextProps = {
 	posts: IPostUser[] | [];
 	getPost: () => void;
 	getCommentsPost: (imgId: string) => void;
+	uploadPost: (data: any) => void;
 };
 
 export const PostContext = createContext<PostContextProps>(

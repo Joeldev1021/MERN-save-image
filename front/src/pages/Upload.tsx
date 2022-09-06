@@ -1,4 +1,5 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useContext, useState } from 'react';
+import { PostContext } from '../context/post-image/PostContext';
 
 interface FormUpload {
 	title: string;
@@ -9,11 +10,15 @@ const URL_UPLOAD =
 	'https://img.freepik.com/free-vector/image-upload-concept-landing-page_52683-27130.jpg?size=338&ext=jpg';
 
 const Upload = () => {
-	const [selectImage, setSelectImage] = useState<any>();
-	const [formPost, setformPost] = useState<FormUpload>({
+	const initialFormPost = {
 		title: '',
 		description: '',
-	});
+	};
+	const { uploadPost } = useContext(PostContext);
+	const [selectImage, setSelectImage] = useState<any>();
+
+	const [formPost, setformPost] = useState<FormUpload>(initialFormPost);
+
 	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		const formData = new FormData();
@@ -21,7 +26,12 @@ const Upload = () => {
 		formData.append('description', formPost.description);
 		formData.append('image', selectImage);
 		const entry = Object.fromEntries(formData);
-		console.log(entry);
+		if (entry.title && entry.description && entry.image) {
+			console.log('reset');
+			/* uploadPost(entry); */
+			setformPost({ title: '', description: '' });
+			setSelectImage(null);
+		}
 	};
 
 	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -30,14 +40,9 @@ const Upload = () => {
 			[e.target.name]: e.target.value,
 		}));
 	};
+
 	return (
-		<div
-			className="relative  flex items-center justify-center sm:px-6 lg:px-8  bg-no-repeat"
-			style={{
-				backgroundImage:
-					'background-image: url(https://images.unsplash.com/photo-1621243804936-775306a8f2e3?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80)',
-			}}
-		>
+		<div className="relative  flex items-center justify-center sm:px-6 lg:px-8  bg-no-repeat">
 			<div className="absolute inset-0 z-0"></div>
 			<div className="sm:max-w-lg w-full p-5 bg-white rounded-xl z-10">
 				<div className="text-center">
@@ -55,6 +60,7 @@ const Upload = () => {
 							type="text"
 							name="title"
 							placeholder="title"
+							value={formPost.title}
 							onChange={e => handleChange(e)}
 						/>
 					</div>
@@ -67,9 +73,23 @@ const Upload = () => {
 							type="text"
 							placeholder="description"
 							name="description"
+							value={formPost.description}
 							onChange={e => handleChange(e)}
 						/>
 					</div>
+					{/* url images -- ready */}
+					{/* <div className="grid grid-cols-1 space-y-2">
+						<label className="text-sm font-bold text-gray-500 tracking-wide">
+							URL Image
+						</label>
+						<input
+							className="text-base p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500"
+							type="text"
+							placeholder="URL Image"
+							name="url image"
+							onChange={e => handleChange(e)}
+						/>
+					</div> */}
 					<div className="grid grid-cols-1 space-y-2">
 						<label className="text-sm font-bold text-gray-500 tracking-wide">
 							Attach Document
