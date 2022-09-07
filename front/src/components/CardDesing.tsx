@@ -1,40 +1,52 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BsHeart } from 'react-icons/bs';
+import { FaEllipsisV } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import TimeAgo from 'react-timeago';
+import ListGroup from './ListGroup';
 import IconComment from './Icons/IconComment';
+import PostComments from './Post-comments/Post-Comments';
 
 interface CardProps {
 	id: string;
+	username?: string;
 	title: string;
 	desc: string;
 	img: string;
 	createdAt: string;
 	likes: string[];
 	comments: string[];
+	showComments?: boolean;
 }
 const urlMontain = 'https://ik.imagekit.io/q5edmtudmz/post1_fOFO9VDzENE.jpg';
 const CardDesing = ({
 	id,
+	username,
 	title,
 	desc,
 	img,
 	createdAt,
 	likes,
 	comments,
+	showComments,
 }: CardProps) => {
 	const navigate = useNavigate();
+	const [showDropDown, setShowDropDown] = useState(false);
 
 	const handleClick = async (id: string) => {
 		navigate(`/post/${id}`, { replace: true });
 	};
+
 	return (
-		<div
-			className="mx-auto px-4 py-8 max-w-xl my-2"
-			onClick={() => handleClick(id)}
-		>
-			<div className="bg-white shadow-2xl rounded-lg mb-6 tracking-wide">
-				<div className="md:flex-shrink-0">
+		<div className="mx-auto  px-4 py-8 max-w-xl my-2 relative">
+			{showDropDown && <ListGroup id={id} />}
+			<FaEllipsisV
+				color="white"
+				onClick={() => setShowDropDown(!showDropDown)}
+				className="absolute right-[20px] top-[40px] cursor-pointer"
+			/>
+			<div className="bg-white shadow-2xl   rounded-lg mb-6 tracking-wide">
+				<div className="md:flex-shrink-0" onClick={() => handleClick(id)}>
 					<img
 						src={img || urlMontain}
 						alt="mountains"
@@ -42,15 +54,10 @@ const CardDesing = ({
 					/>
 				</div>
 				<div className="px-4 py-2 mt-2">
-					<h2 className="font-bold text-2xl text-gray-800 tracking-normal">
+					<p className="font-bold px-2 text-[18px] text-gray-800 tracking-normal">
 						{title}
-					</h2>
-					<p className="text-sm text-gray-700 px-2 mr-1">
-						{desc} consectetur adipisicing elit. Tempora reiciendis ad
-						architecto at aut placeat quia, minus dolor praesentium officia
-						maxime deserunt porro amet ab debitis deleniti modi soluta
-						similique...
 					</p>
+					<p className="text-sm text-gray-700 px-2 mr-1">{desc}</p>
 					<div className="flex items-center justify-between mt-2 mx-6">
 						<p className="flex items-center text-red-500  -ml-3 text-[19px]">
 							<BsHeart />
@@ -72,13 +79,14 @@ const CardDesing = ({
 							/>
 						</div>
 						<h2 className="text-sm tracking-tighter text-gray-900">
-							<span>By Mohammed Ibrahim</span>{' '}
+							<span>{username || 'By Mohammed Ibrahim'} </span>{' '}
 							<span className="text-gray-600">
 								<TimeAgo date={createdAt} />
 							</span>
 						</h2>
 					</div>
 				</div>
+				{showComments ? <PostComments /> : null}
 			</div>
 		</div>
 	);
