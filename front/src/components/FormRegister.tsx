@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, { ChangeEvent, useState } from 'react';
 import Button from './Button/Button';
 import Input from './Input';
@@ -10,11 +9,9 @@ interface IRegisterUser {
 }
 
 const FormRegister = () => {
-	const [registerUser, setRegisterUser] = useState<IRegisterUser>({
-		username: '',
-		email: '',
-		password: '',
-	});
+	const [registerUser, setRegisterUser] = useState<IRegisterUser>(
+		{} as IRegisterUser
+	);
 	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setRegisterUser((prev: IRegisterUser) => ({
 			...prev,
@@ -49,9 +46,10 @@ const FormRegister = () => {
 				disabled={
 					!registerUser.email || !registerUser.password || !registerUser.email
 				}
-				text="register"
 				loading={false}
-			/>
+			>
+				Register
+			</Button>
 			<p className="text-center">
 				Already have an account?
 				<a className="text-blue-600" href="">

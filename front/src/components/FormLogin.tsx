@@ -1,4 +1,5 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { IUserLogin } from '../interface';
 import AlertForm from './AlertForm';
 import Button from './Button/Button';
@@ -15,11 +16,8 @@ interface LoginProps {
 
 const FormLogin = ({ login, errorMessage, loading }: LoginProps) => {
 	const [errorMsg, setErrorMsg] = useState<string | undefined>(errorMessage);
-	const [formData, setFormData] = useState<IUserLogin>({
-		email: '',
-		password: '',
-	});
-	console.log(errorMessage);
+	const [formData, setFormData] = useState<IUserLogin>({} as IUserLogin);
+
 	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setFormData((prev: IUserLogin) => ({
 			...prev,
@@ -64,8 +62,9 @@ const FormLogin = ({ login, errorMessage, loading }: LoginProps) => {
 			<Button
 				disabled={!formData.email || !formData.password}
 				loading={loading}
-				text="sign in"
-			/>
+			>
+				Sign in
+			</Button>
 
 			<div className="flex items-center my-4 before:flex-1 before:border-t before:border-gray-300 before:mt-0.5 after:flex-1 after:border-t after:border-gray-300 after:mt-0.5">
 				<p className="text-center font-semibold mx-4 mb-0">OR</p>
@@ -80,7 +79,10 @@ const FormLogin = ({ login, errorMessage, loading }: LoginProps) => {
 				Continue with Twitter
 			</ButtonSocialForm>
 			<p className="text-center">
-				Don’t have an account yet? <a className="text-blue-600">Sign up</a>{' '}
+				Don’t have an account yet?{' '}
+				<Link to="/register" className="text-blue-600">
+					Sign up
+				</Link>
 			</p>
 		</form>
 	);
