@@ -9,3 +9,9 @@ export interface ICommentsPost {
     __v?: number
     _id: string
 }
+export interface IPostEdite {
+    id: string;
+    title: string;
+    description: string;
+    imgUrl: string;
+}

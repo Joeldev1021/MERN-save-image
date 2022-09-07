@@ -16,6 +16,7 @@ export interface AuthState {
 }
 export interface IUser {
     _id: string
+    avatar?: string
     username: string
     email: string
     created_at: string
@@ -31,14 +32,15 @@ export interface IPostUser {
     imgUrl: string
     likes: string[]
     title: string
-    updatedAt: string[]
+    updatedAt: string
     __v?: number
     userId: IUser | string
 }
 
 
 export interface IPostState {
-    posts: IPostUser[] | []
+    postsByUser: IPostUser[] | []
+    postAll: IPostUser[] | []
     commentByPost: ICommentsPost[] | []
     errorMessage: string | null
     loading: boolean
