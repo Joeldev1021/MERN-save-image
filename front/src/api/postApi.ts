@@ -1,5 +1,6 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import { IPostUser } from '../interface';
+import { IPostEdite } from '../interface/post';
 
 const API_URL = 'http://localhost:5000'
 
@@ -49,5 +50,9 @@ export const uploadPostApi = async (data: string) => {
             'Content-Type': 'multipart/form-data'
         }
     })
+}
+
+export const updatePostApi = async (data: IPostEdite) => {
+    return axiosIn.put(`${API_URL}/img/${data.id}`, data)
 }
 
