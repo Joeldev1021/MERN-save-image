@@ -1,21 +1,42 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, {
+	ChangeEvent,
+	FormEvent,
+	useContext,
+	useEffect,
+	useState,
+} from 'react';
 import { useParams } from 'react-router-dom';
 import Input from '../components/Input';
 import { PostContext } from '../context/post-image/PostContext';
-import { IPostUser } from '../interface';
+import { IPostEdite } from '../interface/post';
 
 function EditePost() {
 	const { id } = useParams();
-	const { posts } = useContext(PostContext);
-	const [editePost, setEditePost] = useState<IPostUser>();
+	const { posts, updatePost } = useContext(PostContext);
+	const [editePost, setEditePost] = useState<IPostEdite>({} as IPostEdite);
 
 	useEffect(() => {
 		const postFound = posts.find(post => post._id === id);
-		setEditePost(postFound);
+		if (postFound) {
+			setEditePost({
+				id: postFound._id,
+				title: postFound.title,
+				description: postFound.description,
+				imgUrl: postFound.imgUrl,
+			});
+		}
 	}, [id]);
 
-	const handleChange = () => {};
-	const handleSubmit = () => {};
+	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+		setEditePost((prev: IPostEdite) => ({
+			...prev,
+			[e.target.name]: e.target.value,
+		}));
+	};
+	const handleSubmit = (e: FormEvent) => {
+		e.preventDefault();
+		updatePost(editePost);
+	};
 
 	return (
 		<div className="relative  flex items-center justify-center sm:px-6 lg:px-8  bg-no-repeat">
