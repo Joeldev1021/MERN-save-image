@@ -1,13 +1,12 @@
-import React from 'react';
+import { ReactNode } from 'react';
 import Spinner from '../Spinner';
 interface BtnFormProps {
 	disabled: boolean;
 	loading: boolean;
-	text: string;
+	children: ReactNode;
 }
 
-const Button = ({ disabled, loading, text }: BtnFormProps) => {
-	console.log('disabled', disabled);
+const Button = ({ disabled, loading, children }: BtnFormProps) => {
 	return (
 		<button
 			disabled={disabled}
@@ -16,7 +15,7 @@ const Button = ({ disabled, loading, text }: BtnFormProps) => {
 			data-mdb-ripple="true"
 			data-mdb-ripple-color="light"
 		>
-			{text} {loading && <Spinner />}
+			{children} {loading && <Spinner />}
 		</button>
 	);
 };
