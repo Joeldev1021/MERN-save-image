@@ -27,8 +27,7 @@ const Upload = () => {
 		formData.append('image', selectImage);
 		const entry = Object.fromEntries(formData);
 		if (entry.title && entry.description && entry.image) {
-			console.log('reset');
-			/* uploadPost(entry); */
+			uploadPost(entry);
 			setformPost({ title: '', description: '' });
 			setSelectImage(null);
 		}
@@ -42,7 +41,7 @@ const Upload = () => {
 	};
 
 	return (
-		<div className="relative  flex items-center justify-center sm:px-6 lg:px-8  bg-no-repeat">
+		<div className="relative flex items-center justify-center sm:px-6 lg:px-8 bg-no-repeat mt-28">
 			<div className="absolute inset-0 z-0"></div>
 			<div className="sm:max-w-lg w-full p-5 bg-white rounded-xl z-10">
 				<div className="text-center">

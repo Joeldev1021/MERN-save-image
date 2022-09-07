@@ -10,8 +10,7 @@ const MyPost = () => {
 		getPost();
 	}, []);
 	return (
-		<div>
-			<h1>my post</h1>
+		<div className="mt-40">
 			{state.token ? (
 				posts.map(post => {
 					return (

@@ -24,8 +24,9 @@ const ProfilePost = () => {
 		console.log(state.commentByPost);
 		setPostById(postFound);
 	};
+
 	return (
-		<div>
+		<div className="mt-32">
 			{postById ? (
 				<CardDesing
 					id={postById._id}
