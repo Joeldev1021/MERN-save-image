@@ -1,9 +1,39 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { PostContext } from '../../context/post-image/PostContext';
+import CommentSection from './CommentSection';
+import FormComment from './FormComment';
+import { ICommentsPost } from '../../interface/post';
 
 function PostComments() {
+	const { state } = useContext(PostContext);
 	return (
-		<section className="place-items-center  h-screen py-4 sm:py-8">
-			<div className="px-2 py-4 bg-white rounded-xl border shadow-xl mx-auto w-4/5 sm:max-w-md sm:px-5 hover:border-blue-200">
+		<section className="place-items-center border   h-auto  ">
+			<div className="px-2 py-4 bg-white rounded-xl  mx-auto w-4/5 sm:max-w-md sm:px-5 ">
+				<FormComment />
+				<div className="my-4">
+					<small className="text-base font-bold text-gray-700 ml-1">
+						{state.commentByPost ? state.commentByPost.length : 4} comments
+					</small>
+					{state.commentByPost &&
+						state.commentByPost.map((cm: ICommentsPost) => (
+							<CommentSection
+								key={cm._id}
+								avatar={cm.userId.avatar!}
+								username={cm.userId.username}
+								comment={cm.comment}
+								createdAt={cm.created_at}
+							/>
+						))}
+				</div>
+			</div>
+		</section>
+	);
+}
+
+export default PostComments;
+
+/* <section className="place-items-center border   h-screen py-4 ">
+			<div className="px-2 py-4 bg-white rounded-xl  mx-auto w-4/5 sm:max-w-md sm:px-5 ">
 				<form action="#" className="mt-4">
 					<label htmlFor="comment" className="block">
 						<textarea
@@ -22,14 +52,7 @@ function PostComments() {
              transition-all ease-in duration-300 hover:text-gray-200 hover:bg-blue-700 text-sm"
 					>
 						Post comment
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							className="h-4 w-4 ml-2 rotate-90"
-							viewBox="0 0 20 20"
-							fill="currentColor"
-						>
-							<path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
-						</svg>
+						<IconSend />
 					</button>
 				</form>
 				<div className="my-4">
@@ -64,18 +87,7 @@ function PostComments() {
 										href="#"
 										className="flex items-center text-blue-500 hover:text-blue-600"
 									>
-										<svg
-											xmlns="http://www.w3.org/2000/svg"
-											className="h-4 w-4 mr-1"
-											viewBox="0 0 20 20"
-											fill="currentColor"
-										>
-											<path
-												fillRule="evenodd"
-												d="M7.707 3.293a1 1 0 010 1.414L5.414 7H11a7 7 0 017 7v2a1 1 0 11-2 0v-2a5 5 0 00-5-5H5.414l2.293 2.293a1 1 0 11-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-												clipRule="evenodd"
-											/>
-										</svg>
+										<IconReply />
 										<span className="font-semibold">2 Reply</span>
 									</a>
 									<a
@@ -100,14 +112,7 @@ function PostComments() {
 										href="#"
 										className="flex items-center text-blue-500 hover:text-blue-600"
 									>
-										<svg
-											xmlns="http://www.w3.org/2000/svg"
-											className="h-4 w-4 mr-1"
-											viewBox="0 0 20 20"
-											fill="currentColor"
-										>
-											<path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z" />
-										</svg>
+										<IconShare />
 										<span className="font-semibold">Share</span>
 									</a>
 								</div>
@@ -235,8 +240,4 @@ function PostComments() {
 					</div>
 				</div>
 			</div>
-		</section>
-	);
-}
-
-export default PostComments;
+		</section> */
