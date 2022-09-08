@@ -52,7 +52,7 @@ class AuthService {
 			if (!isLogout) throw new Error('is not logged out');
 			return isLogout;
 		} catch (error) {
-			throw new Error(error.message);
+			throw error;
 		}
 	}
 }

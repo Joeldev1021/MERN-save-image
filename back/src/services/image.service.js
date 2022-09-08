@@ -24,12 +24,12 @@ class ImageService {
 	}
 
 	async create(image) {
-		try {
-			const newImage = new Image(image);
-			return newImage.save();
-		} catch (error) {
-			throw new Error('Error creating note', error);
-		}
+		const newImage = new Image(image);
+		return newImage.save();
+	}
+
+	async update(id, data) {
+		return Image.findByIdAndUpdate(id, data);
 	}
 
 	async delete(id) {
@@ -37,14 +37,6 @@ class ImageService {
 			return Image.findByIdAndDelete(id);
 		} catch (error) {
 			throw new Error('Error deleting note by id', id);
-		}
-	}
-
-	async update(id, data) {
-		try {
-			return Image.findByIdAndUpdate(id, data);
-		} catch (error) {
-			throw new Error('Error update note by id ', id);
 		}
 	}
 }

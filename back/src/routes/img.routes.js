@@ -8,9 +8,9 @@ router.get('/', verifyAuth, ImgController.findByUserId);
 
 router.get('/all', ImgController.findAll);
 
-router.get('/:id', verifyAuth, ImgController.findById);
+router.post('/upload', verifyAuth, ImgController.create);
 
-router.post('/upload', ImgController.create);
+router.get('/:id', verifyAuth, ImgController.findById);
 
 router.put('/:id', verifyAuth, ImgController.update);
 
