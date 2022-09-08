@@ -73,7 +73,7 @@ class UserController {
 	async findProfile(req, res, next) {
 		try {
 			if (!req.user) res.status(HttpStatus.UNAUTHORIZED).send('not authorized');
-			res.status(HttpStatus.OK).send({ user: req.user });
+			res.status(HttpStatus.OK).send(req.user);
 		} catch (error) {
 			next(error);
 		}
