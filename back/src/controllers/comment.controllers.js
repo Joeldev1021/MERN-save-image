@@ -20,20 +20,27 @@ class CommentController {
 		res.json('get comment');
 	}
 
-	async findAllByIdImage(req, res) {
+	async findAllByIdImage(req, res, next) {
 		const { id } = req.params;
+		console.log('commentss....');
 		try {
 			const comment = await CommentService.findAllByIdImg(id);
+			if (!comment) throw new Error('image not found');
+
 			res.status(200).json(comment);
 		} catch (error) {
-			throw new Error(error.message);
+			next(error);
 		}
 	}
 
 	async create(req, res, next) {
 		const { id } = req.params;
+		console.log('body', req.body);
 
 		try {
+			if (!req.body.comment)
+				res.status(HttpStatus.INTERNAL_SERVER_ERROR).send('not comment');
+
 			const image = await ImageService.findById(id);
 			if (!image) res.status(HttpStatus.NOT_FOUND).send('Img not found');
 
@@ -42,12 +49,10 @@ class CommentController {
 				imgId: id,
 				userId: req.user._id,
 			};
-
 			const comments = await CommentService.create(comment, image);
-
 			res.status(HttpStatus.OK).json(comments);
 		} catch (error) {
-			throw new Error(error);
+			next(error);
 		}
 	}
 
