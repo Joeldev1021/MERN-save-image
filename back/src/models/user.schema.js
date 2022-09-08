@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 const { Schema, model } = mongoose;
 
+const avatarDefault =
+	'https://st3.depositphotos.com/19428878/35584/v/450/depositphotos_355846362-stock-illustration-default-avatar-profile-icon-social.jpg';
+
 const userSchema = new Schema(
 	{
 		username: {
@@ -18,7 +21,7 @@ const userSchema = new Schema(
 		},
 		avatar: {
 			type: String,
-			default: 'https://cdn-icons-png.flaticon.com/512/1053/1053244.png?w=360',
+			default: avatarDefault,
 		},
 		noteId: { type: Schema.Types.ObjectId, ref: 'notes' }, // ref : "Note"
 	},
@@ -26,6 +29,7 @@ const userSchema = new Schema(
 		timestamps: {
 			createdAt: 'created_at',
 		},
+		versionKey: false,
 	}
 );
 

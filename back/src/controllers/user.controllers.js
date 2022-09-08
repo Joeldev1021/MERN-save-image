@@ -1,12 +1,17 @@
+const { HttpStatus } = require('../config/httpStatus');
 const UserService = require('../services/user.service');
 
 class UserController {
 	async findAll(req, res) {
-		const users = await UserService.findAll();
-		res.json({
-			messages: 'get all users success',
-			users,
-		});
+		try {
+			const users = await UserService.findAll();
+			res.json({
+				messages: 'get all users success',
+				users,
+			});
+		} catch (error) {
+			next(error);
+		}
 	}
 
 	async findById(req, res) {
@@ -37,18 +42,19 @@ class UserController {
 		});
 	}
 
-	async update(req, res) {
+	async update(req, res, next) {
 		const { id } = req.params;
-		const user = await UserService.update(id, req.body);
-		if (!user) {
-			res.status(404).json({
-				message: 'user not found',
+		try {
+			const user = await UserService.update(id, req.body);
+			if (!user) throw new Error('user not found');
+
+			res.status(200).json({
+				message: 'update user success',
+				user,
 			});
+		} catch (error) {
+			next(error);
 		}
-		res.status(200).json({
-			message: 'update user success',
-			user,
-		});
 	}
 
 	async delete(req, res) {
@@ -64,8 +70,13 @@ class UserController {
 		});
 	}
 
-	async findProfile(req, res) {
-		res.json({ user: req.user });
+	async findProfile(req, res, next) {
+		try {
+			if (!req.user) res.status(HttpStatus.UNAUTHORIZED).send('not authorized');
+			res.status(HttpStatus.OK).send({ user: req.user });
+		} catch (error) {
+			next(error);
+		}
 	}
 }
 
