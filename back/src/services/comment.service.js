@@ -23,9 +23,11 @@ class CommentService {
 	 */
 
 	async create(commentData, image) {
+		console.log(commentData);
+		console.log('image', image);
 		const comment = new CommentSchema(commentData);
 		const commentSave = await comment.save();
-		const comentPopulateById = await CommentSchema.findById(
+		const commentPopulateById = await CommentSchema.findById(
 			commentSave._id
 		).populate('userId', { password: 0 });
 
@@ -33,8 +35,8 @@ class CommentService {
 			image.comments.push(commentSave._id);
 			await image.save();
 		}
-		console.log(comentPopulateById);
-		return comentPopulateById;
+		console.log(commentPopulateById);
+		return commentPopulateById;
 	}
 
 	async update(id, data) {
