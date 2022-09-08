@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
+import axios, { AxiosError } from 'axios';
 import { useReducer } from 'react';
-import { loginApi, logoutApi } from '../../api';
+import { getProfileApi, loginApi, logoutApi } from '../../api/authApi';
 import { AuthState, IUserLogin } from '../../interface';
 import { AuthContext } from './AuthContext';
 import { authReducer } from './authReducer';
@@ -9,8 +10,12 @@ interface Props {
 	children: JSX.Element | JSX.Element[];
 }
 
+const localUser = localStorage.getItem('user');
+const user = localUser ? JSON.parse(localUser) : null;
+
 const INITIAL_STATE: AuthState = {
 	token: localStorage.getItem('token') || '',
+	user,
 	loading: false,
 	errorMessage: undefined,
 };
@@ -20,19 +25,31 @@ export const AuthProvider = ({ children }: Props) => {
 
 	const login = async (userLogin: IUserLogin) => {
 		/* 	"email": "joel@gmail.com",
-			"password": "1234" */
+			"password": "1234"
+			pep@gmail.com
+			"password" "password"
+			 */
 		dispatch({ type: 'LOGIN_LOADING' });
 		try {
-			const res = await loginApi(userLogin);
-			if (res.token) {
-				dispatch({ type: 'LOGIN_SUCCESS', payload: res.token });
-				localStorage.setItem('token', res.token);
+			const { data } = await loginApi(userLogin);
+			if (data.token) {
+				const resUser = await getProfileApi(data.token);
+				localStorage.setItem('token', data.token);
+
+				if (resUser.data) {
+					dispatch({
+						type: 'LOGIN_SUCCESS',
+						payload: { token: data.token, user: resUser.data },
+					});
+					localStorage.setItem('user', JSON.stringify(resUser.data));
+				}
 			}
 		} catch (error) {
-			console.log('error catch ', error);
-			if (error instanceof Error) {
-				dispatch({ type: 'LOGIN_ERROR', payload: error.message });
-			}
+			const err = error as any;
+			dispatch({
+				type: 'LOGIN_ERROR',
+				payload: err.response?.data.errorMessage,
+			});
 		}
 	};
 
@@ -43,6 +60,7 @@ export const AuthProvider = ({ children }: Props) => {
 			if (response.token) {
 				dispatch({ type: 'LOGOUT_SUCCESS' });
 				localStorage.setItem('token', '');
+				localStorage.setItem('user', '');
 			}
 		} catch (error) {
 			dispatch({ type: 'LOGOUT_ERROR' });
