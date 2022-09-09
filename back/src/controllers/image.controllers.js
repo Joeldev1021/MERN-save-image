@@ -4,14 +4,15 @@ const { cloudinaryAdd, cloudinaryDelete } = require('../helper/cloudinary');
 const { isValidHttpUrlImage } = require('../helper/isValidHttpUrl');
 const ImageService = require('../services/image.service');
 
-// Schema Image
-
 class ImageController {
 	// find all image
 	async findAll(req, res, next) {
 		try {
 			const images = await ImageService.findAll();
-			if (!images) res.status(HttpStatus.NOT_FOUND).send('Images not found');
+			if (!images)
+				res
+					.status(HttpStatus.NOT_FOUND)
+					.send({ errorMessage: 'Images not found' });
 
 			return res.status(HttpStatus.OK).json(images);
 		} catch (error) {
@@ -25,7 +26,9 @@ class ImageController {
 			const img = await ImageService.findById(id);
 
 			if (!img)
-				res.status(HttpStatus.NOT_FOUND).send(`image find id ${id}, not found`);
+				res
+					.status(HttpStatus.NOT_FOUND)
+					.send({ errorMessage: 'image find  not found' });
 			return res.json(img);
 		} catch (error) {
 			next(error);
@@ -40,7 +43,7 @@ class ImageController {
 			if (!images)
 				res
 					.status(HttpStatus.NOT_FOUND)
-					.send('images by user ID' + id + 'not found');
+					.send({ errorMessage: 'images by user not found' });
 			res.status(HttpStatus.OK).json(images);
 		} catch (error) {
 			next(error);
@@ -50,9 +53,13 @@ class ImageController {
 	async create(req, res, next) {
 		try {
 			if (!req.files && !req.body.imgUrl)
-				res.status(HttpStatus.NO_CONTENT).send('not provided image');
+				res
+					.status(HttpStatus.NO_CONTENT)
+					.send({ errorMessage: 'not provided image' });
 			if (!req.body.title || !req.body.description)
-				res.status(HttpStatus.NO_CONTENT).send('fill required ');
+				res
+					.status(HttpStatus.NO_CONTENT)
+					.send({ errorMessage: 'fill required' });
 
 			let imgCloud;
 
@@ -61,14 +68,16 @@ class ImageController {
 				if (!imgCloud)
 					res
 						.status(HttpStatus.INTERNAL_SERVER_ERROR)
-						.send('error save image to cloudinary');
+						.send({ errorMessage: 'error save image to cloudinary' });
 			}
 			/**
 			 * validate if url is valid
 			 */
 			if (req.body.imgUrl) {
 				if (isValidHttpUrlImage(req.body.imgUrl))
-					res.status(HttpStatus.NO_CONTENT).send('url is not valid');
+					res
+						.status(HttpStatus.NO_CONTENT)
+						.send({ errorMessage: 'url is not valid' });
 			}
 
 			const image = {
@@ -92,15 +101,22 @@ class ImageController {
 		const { title, description } = req.body;
 		try {
 			if (!title || !description)
-				res.status(HttpStatus.INTERNAL_SERVER_ERROR).send('fill required');
+				res
+					.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.send({ errorMessage: 'fill is required' });
 			const findImage = await ImageService.findById(id);
-			if (!findImage) res.status(HttpStatus.NOT_FOUND).send('image not found');
+			if (!findImage)
+				res.status(HttpStatus.NOT_FOUND).send({ errorMessage: ' not found' });
 			if (findImage.userId !== req.user._id)
-				res.status(HttpStatus.UNAUTHORIZED).send('not authorizated');
+				res
+					.status(HttpStatus.UNAUTHORIZED)
+					.send({ errorMessage: 'not authorizated' });
 
 			const imgUpdate = await ImageService.update(id, req.body);
 			if (!imgUpdate)
-				res.status(HttpStatus.BAD_REQUEST).send('image not updated');
+				res
+					.status(HttpStatus.BAD_REQUEST)
+					.send({ errorMessage: 'image not updated' });
 
 			return res.status(HttpStatus.OK).json(req.body);
 		} catch (error) {
@@ -112,14 +128,17 @@ class ImageController {
 		const { id } = req.params;
 		try {
 			const image = await ImageService.delete(id);
-			if (!image) res.status(HttpStatus.NOT_FOUND).send('image not found');
+			if (!image)
+				res
+					.status(HttpStatus.NOT_FOUND)
+					.send({ errorMessage: 'image not found' });
 			// cut url
 			const imgCut = image.imgUrl.split('/')[7].split('.')[0];
 			await cloudinaryDelete(imgCut); // delete img cloudinary
 
 			return res.status(HttpStatus.OK).json(img);
 		} catch (error) {
-			next(error)
+			next(error);
 		}
 	}
 }
