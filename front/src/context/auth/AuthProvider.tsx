@@ -15,7 +15,7 @@ const user = localUser ? JSON.parse(localUser) : null;
 
 const INITIAL_STATE: AuthState = {
 	token: localStorage.getItem('token') || '',
-	user,
+	user: user || null,
 	loading: false,
 	errorMessage: undefined,
 };

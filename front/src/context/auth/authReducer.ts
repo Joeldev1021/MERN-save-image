@@ -21,7 +21,7 @@ export const authReducer = (state: AuthState, action: AuthAction) => {
         case "LOGOUT_LOADING":
             return { ...state, loading: true }
         case "LOGOUT_SUCCESS":
-            return { ...state, token: '', user: '', loading: false }
+            return { ...state, token: '', user: null, loading: false }
         case "LOGOUT_ERROR":
             return { ...state, errorMessage: "not logout" }
         default:

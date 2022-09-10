@@ -7,29 +7,25 @@ import { IPostUser } from '../interface';
 const ProfilePost = () => {
 	const [postById, setPostById] = useState<IPostUser>();
 	const { id } = useParams();
-	const { getCommentsPost, state } = useContext(PostContext);
+	const { getCommentsPost, findPostById } = useContext(PostContext);
 
 	useEffect(() => {
 		getCommentsPost(id!);
 	}, []);
 
 	useEffect(() => {
-		getPostById(id!);
-	}, [id]);
-
-	const getPostById = (id: string) => {
-		const postFound: IPostUser | undefined = state.postAll.find(
-			post => post._id === id
-		);
-		console.log(state.commentByPost);
+		const postFound = findPostById(id!);
 		setPostById(postFound);
-	};
+	}, [id]);
 
 	return (
 		<div className="mt-32">
 			{postById ? (
 				<CardDesing
 					id={postById._id}
+					username={
+						typeof postById.userId !== 'string' ? postById.userId.username : ''
+					}
 					title={postById.title}
 					desc={postById.description}
 					img={postById.imgUrl}

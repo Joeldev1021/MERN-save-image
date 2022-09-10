@@ -1,24 +1,77 @@
+import { useContext, useState } from 'react';
+import { FaEllipsisV } from 'react-icons/fa';
+import { AuthContext } from '../../context/auth/AuthContext';
 import IconReply from '../Icons/IconReply';
 import IconShare from '../Icons/IconShare';
+import ListGroupCmt from '../ListGroupCmt';
+import ModalEditeComment from '../ModalEditeComment';
 interface CommentProps {
+	id?: string;
 	avatar: string;
 	createdAt: string;
 	username: string;
 	comment: string;
+	author: string;
+	desc: string;
 }
 
 const CommentSection = ({
+	id,
 	avatar,
 	username,
 	comment,
 	createdAt,
+	author,
+	desc,
 }: CommentProps) => {
+	const { state } = useContext(AuthContext);
+	const [showListGroup, setShowListGroup] = useState<boolean>(false);
+	const [showModal, setShowModal] = useState<boolean>(false);
+	const [isUser] = useState<boolean>(username === state.user?.username);
+
+	const handleListGroup = (action: string) => {
+		const actionCase = action.toLocaleLowerCase();
+		if (actionCase === 'close') {
+			setShowListGroup(false);
+		}
+		if (actionCase === 'edite') {
+			setShowListGroup(false);
+			setShowModal(true);
+		}
+	};
+
+	const onClose = (e: any) => {
+		if (e === 'close') {
+			return setShowModal(false);
+		}
+		if (e.target.classList.contains('fixed')) {
+			setShowModal(false);
+		}
+	};
+
 	return (
-		<div className="flex flex-row mx-auto justify-between px-1 py-1">
+		<div className="flex flex-row mx-auto justify-between px-1 py-1 relative">
+			<FaEllipsisV
+				color="gray"
+				onClick={() => setShowListGroup(!showListGroup)}
+				className="absolute right-[20px] top-[20px] cursor-pointer"
+			/>
+			{showListGroup && isUser && (
+				<ListGroupCmt handleListGroup={handleListGroup} />
+			)}
+			{showModal && (
+				<ModalEditeComment
+					onClose={onClose}
+					author={author}
+					desc={desc}
+					comment={comment}
+					id={id!}
+				/>
+			)}
 			<div className="flex mr-2">
 				<div className="items-center justify-center w-12 h-12 mx-auto">
 					<img
-						alt="profil"
+						alt="profile"
 						src={
 							avatar ||
 							'https://images.unsplash.com/photo-1619380061814-58f03707f082?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTl8fG1hbiUyMGZhY2V8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60'

@@ -1,12 +1,14 @@
 import React, { useContext } from 'react';
 import BannerForm from '../../components/BannerForm';
 import FormLogin from '../../components/FormLogin';
-import { AuthContext } from '../../context/user/AuthContext';
+import { AuthContext } from '../../context/auth/AuthContext';
 
 const LoginPage = () => {
 	const { login, state } = useContext(AuthContext);
+
 	return (
-		<section className="h-screen">
+		<section className="h-screen mt-20">
+			{/* {state.token && <Navigate to="/" />} */}
 			<div className="container px-6 py-12 h-full">
 				<div className="flex justify-center items-center flex-wrap h-full g-6 text-gray-800">
 					<BannerForm />
