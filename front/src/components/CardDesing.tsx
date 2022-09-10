@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { BsHeart } from 'react-icons/bs';
 import { FaEllipsisV } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
@@ -6,10 +6,12 @@ import TimeAgo from 'react-timeago';
 import ListGroup from './ListGroup';
 import IconComment from './Icons/IconComment';
 import PostComments from './Post-comments/Post-Comments';
+import { AuthContext } from '../context/auth/AuthContext';
 
 interface CardProps {
 	id: string;
 	username?: string;
+	authorId?: string;
 	title: string;
 	desc: string;
 	img: string;
@@ -22,6 +24,7 @@ const urlMontain = 'https://ik.imagekit.io/q5edmtudmz/post1_fOFO9VDzENE.jpg';
 const CardDesing = ({
 	id,
 	username,
+	authorId,
 	title,
 	desc,
 	img,
@@ -31,7 +34,8 @@ const CardDesing = ({
 	showComments,
 }: CardProps) => {
 	const navigate = useNavigate();
-	const [showDropDown, setShowDropDown] = useState(false);
+	const { state } = useContext(AuthContext);
+	const [showListGroupPost, setShowListGroupPost] = useState(false);
 
 	const handleClick = async (id: string) => {
 		navigate(`/post/${id}`, { replace: true });
@@ -39,10 +43,12 @@ const CardDesing = ({
 
 	return (
 		<div className="mx-auto  px-4 py-8 max-w-xl my-2 relative">
-			{showDropDown && <ListGroup id={id} />}
+			{showListGroupPost && state.user?._id === authorId && (
+				<ListGroup id={id} />
+			)}
 			<FaEllipsisV
 				color="white"
-				onClick={() => setShowDropDown(!showDropDown)}
+				onClick={() => setShowListGroupPost(!showListGroupPost)}
 				className="absolute right-[20px] top-[40px] cursor-pointer"
 			/>
 			<div className="bg-white shadow-2xl   rounded-lg mb-6 tracking-wide">
@@ -86,7 +92,7 @@ const CardDesing = ({
 						</h2>
 					</div>
 				</div>
-				{showComments ? <PostComments /> : null}
+				{showComments ? <PostComments author={username!} desc={desc} /> : null}
 			</div>
 		</div>
 	);

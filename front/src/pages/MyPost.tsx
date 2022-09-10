@@ -2,21 +2,33 @@ import React, { useContext, useEffect } from 'react';
 import { AuthContext } from '../context/auth/AuthContext';
 import { PostContext } from '../context/post-image/PostContext';
 import CardDesing from '../components/CardDesing';
+import { IPostUser } from '../interface';
 
 const MyPost = () => {
 	const { state } = useContext(AuthContext);
-	const { posts, getPost } = useContext(PostContext);
+	const {
+		getPostUser,
+		state: { postsByUser },
+	} = useContext(PostContext);
+
 	useEffect(() => {
-		getPost();
+		getPostUser();
 	}, []);
+
 	return (
 		<div className="mt-40">
 			{state.token ? (
-				posts.map(post => {
+				postsByUser.map((post: IPostUser) => {
+					/// validate if username exist
+					const user =
+						typeof post.userId !== 'string'
+							? post.userId.username
+							: post.userId;
 					return (
 						<CardDesing
 							key={post._id}
 							id={post._id}
+							authorId={user}
 							title={post.title}
 							desc={post.description}
 							img={post.imgUrl}

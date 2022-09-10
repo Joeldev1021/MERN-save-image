@@ -1,8 +1,10 @@
 import React from 'react';
+import { FaRegComment } from 'react-icons/fa';
+import { BsHeartFill } from 'react-icons/bs';
 import TimeAgo from 'react-timeago';
 
 interface CardProps {
-	username: string;
+	username?: string;
 	comments: number;
 	likes: number;
 	createdAt: string;
@@ -49,6 +51,19 @@ const Card = ({
 					<p className="text-gray-400 text-sm mt-1">{desc}</p>
 				</div>
 			</a>
+			<div className="flex justify-around">
+				{comments && (
+					<p className="flex align-middle">
+						{comments} <FaRegComment />
+					</p>
+				)}
+				{likes && (
+					<p>
+						{likes}
+						<BsHeartFill />
+					</p>
+				)}
+			</div>
 		</article>
 	);
 };
