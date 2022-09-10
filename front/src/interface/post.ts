@@ -1,6 +1,6 @@
 import { IUser } from "."
 
-export interface ICommentsPost {
+export interface ICommentPost {
     comment: string
     created_at: string
     imgId: string

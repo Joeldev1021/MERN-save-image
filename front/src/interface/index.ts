@@ -1,4 +1,4 @@
-import { ICommentsPost } from "./post"
+import { ICommentPost } from "./post"
 
 export interface INavigation {
     title: string,
@@ -9,11 +9,7 @@ export interface IUserLogin {
     password: string
 }
 
-export interface AuthState {
-    token: string
-    loading: boolean
-    errorMessage?: string
-}
+
 export interface IUser {
     _id: string
     avatar?: string
@@ -22,6 +18,12 @@ export interface IUser {
     created_at: string
     updatedAt: string
     __v?: number
+}
+export interface AuthState {
+    token: string
+    user: IUser | null
+    loading: boolean
+    errorMessage?: string
 }
 // Post 
 export interface IPostUser {
@@ -34,14 +36,14 @@ export interface IPostUser {
     title: string
     updatedAt: string
     __v?: number
-    userId: IUser | string
+    userId: IUser | string // populated or not populated
 }
 
 
 export interface IPostState {
     postsByUser: IPostUser[] | []
     postAll: IPostUser[] | []
-    commentByPost: ICommentsPost[] | []
+    commentByPost: ICommentPost[] | []
     errorMessage: string | null
     loading: boolean
 }
