@@ -1,16 +1,16 @@
 import { IPostUser, IPostState } from "../../interface"
-import { ICommentsPost } from "../../interface/post"
+import { ICommentPost } from "../../interface/post"
 
 
 type PostAction =
     | { type: 'LOADING_ALL_POST' }
     | { type: "LOADING_ALL_POST_SUCCESS", payload: IPostUser[] }
     | { type: "LOADING_ALL_POST_ERROR", payload: string }
-    | { type: "LOADING_POST" }
-    | { type: "LOAD_POST_SUCCESS", payload: IPostUser[] }
-    | { type: "LOAD_POST_ERROR", payload: string }
+    | { type: "LOADING_POST_USER" }
+    | { type: "LOAD_POST_USER_SUCCESS", payload: IPostUser[] }
+    | { type: "LOAD_POST_USER_ERROR", payload: string }
     | { type: "LOAD_COMMENTS_POST" }
-    | { type: "LOAD_COMMENTS_POST_SUCCESS", payload: ICommentsPost[] }
+    | { type: "LOAD_COMMENTS_POST_SUCCESS", payload: ICommentPost[] }
     | { type: "LOAD_COMMENTS_POST_ERROR", payload: string }
 
 export const postReducer = (state: IPostState, action: PostAction) => {
@@ -21,11 +21,11 @@ export const postReducer = (state: IPostState, action: PostAction) => {
             return { ...state, postAll: action.payload, loading: false }
         case 'LOADING_ALL_POST_ERROR':
             return { ...state, loading: false, errorMessage: action.payload }
-        case "LOADING_POST":
+        case "LOADING_POST_USER":
             return { ...state, loading: true, errorMessage: null }
-        case "LOAD_POST_SUCCESS":
+        case "LOAD_POST_USER_SUCCESS":
             return { ...state, postsByUser: action.payload, loading: false, errorMessage: null }
-        case "LOAD_POST_ERROR":
+        case "LOAD_POST_USER_ERROR":
             return { ...state, errorMessage: action.payload, loading: false }
         case "LOAD_COMMENTS_POST":
             return { ...state, loading: true }
