@@ -1,4 +1,5 @@
 import React, { useState, useRef, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/auth/AuthContext';
 import { INavigation } from '../../interface';
 
@@ -8,14 +9,20 @@ const ProfileDropDown = (props: any) => {
 	const profileRef = useRef<HTMLButtonElement>({} as HTMLButtonElement);
 	const { logout } = useContext(AuthContext);
 
+	const navigate = useNavigate();
+
 	const navigation: INavigation[] = [
 		{ title: 'Dashboard', path: '#' },
+		{ title: 'Settings', path: '#' },
 		{ title: 'Log out', path: '#' },
 	];
 
 	const handleClickDropdown = (title: string) => {
 		if (title === 'Log out') {
 			logout();
+		}
+		if (title === 'Settings') {
+			return navigate('/settings');
 		}
 	};
 
