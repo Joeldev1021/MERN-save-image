@@ -26,7 +26,7 @@ export const getNotesApi = async () => {
     return result.json()
 }
 
-export const getPostByUser = async () => {
+export const getPostByUserApi = async () => {
     // intercept token
     return axiosIn.get(`${API_URL}/img`)
 }
@@ -56,3 +56,10 @@ export const updatePostApi = async (data: IPostEdite) => {
     return axiosIn.put(`${API_URL}/img/${data.id}`, data)
 }
 
+export const addCommentByPostApi = async (id: string, comment: string) => {
+    return axiosIn.post(`${API_URL}/img-comment/add-comment/${id}`, { comment })
+}
+
+export const updateCommentPostApi = async (id: string, comment: string) => {
+    return axiosIn.put(`${API_URL}/img-comment/update-comment/${id}`, { comment })
+}
