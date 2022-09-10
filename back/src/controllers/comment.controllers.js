@@ -22,7 +22,6 @@ class CommentController {
 
 	async findAllByIdImage(req, res, next) {
 		const { id } = req.params;
-		console.log('commentss....');
 		try {
 			const comment = await CommentService.findAllByIdImg(id);
 			if (!comment) throw new Error('image not found');
@@ -56,8 +55,15 @@ class CommentController {
 		}
 	}
 
-	async update(req, res) {
-		res.json('update coment');
+	async update(req, res, next) {
+		try {
+			const { id } = req.params;
+			console.log(req.body);
+			const commentUpdate = await CommentService.update(id, req.body);
+			res.json(commentUpdate);
+		} catch (error) {
+			next(error);
+		}
 	}
 
 	async delete(req, res, next) {

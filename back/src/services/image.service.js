@@ -15,7 +15,7 @@ class ImageService {
 		try {
 			return Image.findById(id);
 		} catch (error) {
-			throw new Error(error);
+			throw error;
 		}
 	}
 

@@ -5,6 +5,10 @@ class CommentService {
 		return CommentSchema.find();
 	}
 
+	async findById(id) {
+		return CommentSchema.findById(id);
+	}
+
 	async findByIdImg() {
 		res.json('get coment');
 	}
@@ -40,7 +44,7 @@ class CommentService {
 	}
 
 	async update(id, data) {
-		res.json('update coment');
+		return CommentSchema.findByIdAndUpdate(id, data);
 	}
 
 	async delete(id) {

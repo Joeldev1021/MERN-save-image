@@ -107,10 +107,13 @@ class ImageController {
 			const findImage = await ImageService.findById(id);
 			if (!findImage)
 				res.status(HttpStatus.NOT_FOUND).send({ errorMessage: ' not found' });
-			if (findImage.userId !== req.user._id)
+
+			// parse id to string
+			if (String(findImage.userId) !== String(req.user._id)) {
 				res
 					.status(HttpStatus.UNAUTHORIZED)
 					.send({ errorMessage: 'not authorizated' });
+			}
 
 			const imgUpdate = await ImageService.update(id, req.body);
 			if (!imgUpdate)
