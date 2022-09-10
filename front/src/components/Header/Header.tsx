@@ -12,7 +12,7 @@ const NavBar = () => {
 	];
 
 	return (
-		<nav className="bg-white border-b">
+		<header className="bg-white border-b fixed w-full top-0 z-40">
 			<div className="flex items-center space-x-8 py-3 px-4 max-w-screen-xl mx-auto">
 				<div className="flex-none lg:flex-initial">
 					<Link to="/">
@@ -101,7 +101,7 @@ const NavBar = () => {
 					</div>
 				</div>
 			</div>
-		</nav>
+		</header>
 	);
 };
 export default NavBar;
