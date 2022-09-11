@@ -132,15 +132,6 @@ const Upload = () => {
 						>
 							Upload
 						</Button>
-						{/* <button
-							type="submit"
-							disabled={true}
-							className="my-5 w-full flex justify-center bg-blue-500 text-gray-100 p-4  rounded-full tracking-wide
-                                    font-semibold  focus:outline-none focus:shadow-outline hover:bg-blue-600 shadow-lg cursor-pointer transition ease-in duration-300"
-						>
-							Upload
-							{state.loading && <Spinner />}
-						</button> */}
 					</div>
 				</form>
 			</div>
