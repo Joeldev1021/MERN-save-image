@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import { IPostUser } from '../interface';
-import { IPostEdite } from '../interface/post';
+import { IPostEdite, IPostUpload } from '../interface/post';
 
 const API_URL = 'http://localhost:5000'
 
@@ -35,17 +35,8 @@ export const getAllPostsApi = async () => {
     return axios.get<IPostUser[]>("http://localhost:5000/img/all")
 }
 
-/* export const getPostProfileApi = async (id: string) => {
-    return axiosIn.get(`${API_URL}/img-comment/all/${id}`)
-      const result = await fetch(`http://localhost:5000/img-comment/all/${id}`)
-     return result.json() 
-} */
-export const getCommentsPostApi = async (id: string) => {
-    return axiosIn.get(`${API_URL}/img-comment/all/${id}`)
-}
-
-export const uploadPostApi = async (data: string) => {
-    return axiosIn.post(`${API_URL}/img/upload`, data, {
+export const uploadPostApi = async (data: IPostUpload) => {
+    return axiosIn.post<IPostUser>(`${API_URL}/img/upload`, data, {
         headers: {
             'Content-Type': 'multipart/form-data'
         }
@@ -54,6 +45,19 @@ export const uploadPostApi = async (data: string) => {
 
 export const updatePostApi = async (data: IPostEdite) => {
     return axiosIn.put(`${API_URL}/img/${data.id}`, data)
+}
+
+export const deletePostApi = async (id: string) => {
+    return axiosIn.delete(`${API_URL}/img/${id}`)
+}
+
+/* export const getPostProfileApi = async (id: string) => {
+    return axiosIn.get(`${API_URL}/img-comment/all/${id}`)
+      const result = await fetch(`http://localhost:5000/img-comment/all/${id}`)
+     return result.json() 
+} */
+export const getCommentsPostApi = async (id: string) => {
+    return axiosIn.get(`${API_URL}/img-comment/all/${id}`)
 }
 
 export const addCommentByPostApi = async (id: string, comment: string) => {
