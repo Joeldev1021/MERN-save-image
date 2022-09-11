@@ -12,11 +12,12 @@ import { IPostEdite } from '../interface/post';
 
 function EditePost() {
 	const { id } = useParams();
-	const { posts, updatePost } = useContext(PostContext);
+	const { updatePost, findPostById } = useContext(PostContext);
 	const [editePost, setEditePost] = useState<IPostEdite>({} as IPostEdite);
 
 	useEffect(() => {
-		const postFound = posts.find(post => post._id === id);
+		const postFound = findPostById(id!);
+
 		if (postFound) {
 			setEditePost({
 				id: postFound._id,

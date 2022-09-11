@@ -1,11 +1,10 @@
 import { useContext } from 'react';
 import { PostContext } from '../context/post-image/PostContext';
 import { IPostUser } from '../interface';
-import CardDesing from './CardDesing';
+import Card from './Card';
 
 const CardList = () => {
 	const { state } = useContext(PostContext);
-
 	return (
 		<section className="mt-40 mx-auto px-4 max-w-screen-xl lg:px-8">
 			<div className="text-center">
@@ -16,15 +15,16 @@ const CardList = () => {
 			</div>
 			{state.postAll &&
 				state.postAll.map((post: IPostUser) => {
+					const authorId =
+						typeof post.userId === 'object' ? post.userId._id : post.userId;
 					const username =
-						typeof post.userId === 'object'
-							? post.userId.username
-							: post.userId;
+						typeof post.userId === 'object' && post.userId.username;
 					return (
-						<CardDesing
+						<Card
 							key={post._id}
 							id={post._id}
-							username={username}
+							authorId={authorId}
+							username={username || ''}
 							title={post.title}
 							desc={post.description}
 							img={post.imgUrl}

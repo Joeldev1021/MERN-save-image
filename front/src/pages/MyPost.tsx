@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import { AuthContext } from '../context/auth/AuthContext';
 import { PostContext } from '../context/post-image/PostContext';
-import CardDesing from '../components/CardDesing';
+import Card from '../components/Card';
 import { IPostUser } from '../interface';
 
 const MyPost = () => {
@@ -25,7 +25,7 @@ const MyPost = () => {
 							? post.userId.username
 							: post.userId;
 					return (
-						<CardDesing
+						<Card
 							key={post._id}
 							id={post._id}
 							authorId={user}

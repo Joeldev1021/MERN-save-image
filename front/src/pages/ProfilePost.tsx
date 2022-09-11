@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import CardDesing from '../components/CardDesing';
+import Card from '../components/Card';
 import { PostContext } from '../context/post-image/PostContext';
 import { IPostUser } from '../interface';
 
@@ -21,7 +21,7 @@ const ProfilePost = () => {
 	return (
 		<div className="mt-32">
 			{postById ? (
-				<CardDesing
+				<Card
 					id={postById._id}
 					username={
 						typeof postById.userId !== 'string' ? postById.userId.username : ''
