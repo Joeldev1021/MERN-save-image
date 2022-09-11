@@ -1,70 +1,100 @@
-import React from 'react';
-import { FaRegComment } from 'react-icons/fa';
-import { BsHeartFill } from 'react-icons/bs';
+import React, { useState, useContext } from 'react';
+import { BsHeart } from 'react-icons/bs';
+import { FaEllipsisV } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 import TimeAgo from 'react-timeago';
+import ListGroup from './ListGroup';
+import IconComment from './Icons/IconComment';
+import PostComments from './Post-comments/Post-Comments';
+import { AuthContext } from '../context/auth/AuthContext';
 
 interface CardProps {
+	id: string;
 	username?: string;
-	comments: number;
-	likes: number;
-	createdAt: string;
+	authorId?: string;
 	title: string;
 	desc: string;
 	img: string;
+	createdAt: string;
+	likes: string[];
+	comments: string[];
+	showComments?: boolean;
 }
-
+const urlMontain = 'https://ik.imagekit.io/q5edmtudmz/post1_fOFO9VDzENE.jpg';
 const Card = ({
+	id,
+	username,
+	authorId,
 	title,
 	desc,
 	img,
 	createdAt,
-	username,
-	comments,
 	likes,
+	comments,
+	showComments,
 }: CardProps) => {
+	const navigate = useNavigate();
+	const { state } = useContext(AuthContext);
+	const [showListGroupPost, setShowListGroupPost] = useState(false);
+
+	const handleClick = async (id: string) => {
+		navigate(`/post/${id}`, { replace: true });
+	};
+
 	return (
-		<article className="min-w-[300px] max-w-md mx-auto mt-4 shadow-lg border rounded-md duration-300 hover:shadow-sm">
-			<a href="#">
-				<img
-					src={img}
-					loading="lazy"
-					alt={title}
-					className="object-cover w-full h-48 rounded-t-md"
-				/>
-				<div className="flex items-center mt-2 pt-3 ml-4 mr-2">
-					<div className="flex-none w-10 h-10 rounded-full">
-						<img
-							src="https://api.uifaces.co/our-content/donated/KtCFjlD4.jpg"
-							className="w-full h-full rounded-full"
-							alt={username}
-						/>
+		<div className="mx-auto  px-4 py-8 max-w-xl my-2 relative">
+			{showListGroupPost && state.user?._id === authorId && (
+				<ListGroup id={id} />
+			)}
+			<FaEllipsisV
+				color="white"
+				onClick={() => setShowListGroupPost(!showListGroupPost)}
+				className="absolute right-[20px] top-[40px] cursor-pointer"
+			/>
+			<div className="bg-white shadow-2xl   rounded-lg mb-6 tracking-wide">
+				<div className="md:flex-shrink-0" onClick={() => handleClick(id)}>
+					<img
+						src={img || urlMontain}
+						alt="mountains"
+						className="w-full h-64 rounded-lg rounded-b-none object-cover"
+					/>
+				</div>
+				<div className="px-4 py-2 mt-2">
+					<p className="font-bold px-2 text-[18px] text-gray-800 tracking-normal">
+						{title}
+					</p>
+					<p className="text-sm text-gray-700 px-2 mr-1">{desc}</p>
+					<div className="flex items-center justify-between mt-2 mx-6">
+						<p className="flex items-center text-red-500  -ml-3 text-[19px]">
+							<BsHeart />
+							<span className="text-gray-700 ml-1 text-[16px]">
+								{likes && likes.length}
+							</span>
+						</p>
+						<p className="flex text-gray-700">
+							<IconComment />
+							{comments && comments.length}
+						</p>
 					</div>
-					<div className="ml-3">
-						<span className="block text-gray-900">{username}</span>
-						<span className="block text-gray-400 text-sm">
-							<TimeAgo date={createdAt} />
-						</span>
+					<div className="author flex items-center -ml-3 my-3">
+						<div className="user-logo">
+							<img
+								className="w-12 h-12 object-cover rounded-full mx-4  shadow"
+								src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=731&q=80"
+								alt="avatar"
+							/>
+						</div>
+						<h2 className="text-sm tracking-tighter text-gray-900">
+							<span>{username || 'By Mohammed Ibrahim'} </span>{' '}
+							<span className="text-gray-600">
+								<TimeAgo date={createdAt} />
+							</span>
+						</h2>
 					</div>
 				</div>
-				<div className="pt-3 ml-4 mr-2 mb-3">
-					<h3 className="text-xl text-gray-900">{title}</h3>
-					<p className="text-gray-400 text-sm mt-1">{desc}</p>
-				</div>
-			</a>
-			<div className="flex justify-around">
-				{comments && (
-					<p className="flex align-middle">
-						{comments} <FaRegComment />
-					</p>
-				)}
-				{likes && (
-					<p>
-						{likes}
-						<BsHeartFill />
-					</p>
-				)}
+				{showComments ? <PostComments author={username!} desc={desc} /> : null}
 			</div>
-		</article>
+		</div>
 	);
 };
 
