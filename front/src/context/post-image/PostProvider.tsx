@@ -12,6 +12,7 @@ import {
 } from '../../api/postApi';
 import { IPostUser, IPostState } from '../../interface';
 import { ICommentPost, IPostEdite, IPostUpload } from '../../interface/post';
+import { PostActionType } from '../actions/PostActionType';
 import { PostContext } from './PostContext';
 import { postReducer } from './postReducer';
 
@@ -35,7 +36,10 @@ export const PostProvider = ({ children }: Props) => {
 			const response = await getAllPostsApi();
 			if (response.data) {
 				const posts: IPostUser[] = response.data;
-				dispatch({ type: 'LOAD_ALL_POST_SUCCESS', payload: posts });
+				dispatch({
+					type: PostActionType.LOAD_ALL_POST_SUCCESS,
+					payload: posts,
+				});
 			}
 		} catch (error) {
 			console.log(error);
@@ -51,18 +55,21 @@ export const PostProvider = ({ children }: Props) => {
 	};
 
 	const uploadPost = async (data: IPostUpload) => {
-		dispatch({ type: 'LOAD_UPLOAD_POST' });
+		dispatch({ type: PostActionType.LOAD_UPLOAD_POST });
 		try {
 			const response = await uploadPostApi(data);
 			if (response.data) {
 				console.log(response.data);
-				dispatch({ type: 'LOAD_UPLOAD_POST_SUCCESS', payload: response.data });
+				dispatch({
+					type: PostActionType.LOAD_UPLOAD_POST_SUCCESS,
+					payload: response.data,
+				});
 			}
 		} catch (error) {
 			const err = error as AxiosError;
 			console.log(err.response?.data);
 			dispatch({
-				type: 'LOAD_UPLOAD_POST_ERROR',
+				type: PostActionType.LOAD_UPLOAD_POST_ERROR,
 				payload: 'error upload',
 			});
 		}
@@ -70,7 +77,8 @@ export const PostProvider = ({ children }: Props) => {
 
 	const deletePost = async (id: string) => {
 		try {
-			const response = await deletePostApi(id);
+			const idWrong = `${id}idoaidi`;
+			const response = await deletePostApi(idWrong);
 			console.log(response);
 		} catch (error) {
 			const err = error as AxiosError;
@@ -79,15 +87,18 @@ export const PostProvider = ({ children }: Props) => {
 	};
 
 	const getPostUser = async () => {
-		dispatch({ type: 'LOAD_POST_USER' });
+		dispatch({ type: PostActionType.LOAD_POST_USER });
 		try {
 			const response = await getPostByUserApi();
 			const posts: IPostUser[] = response.data;
-			dispatch({ type: 'LOAD_POST_USER_SUCCESS', payload: posts });
+			dispatch({ type: PostActionType.LOAD_POST_USER_SUCCESS, payload: posts });
 		} catch (error) {
 			console.log(error);
 			if (error instanceof Error) {
-				dispatch({ type: 'LOAD_POST_USER_ERROR', payload: error.message });
+				dispatch({
+					type: PostActionType.LOAD_POST_USER_ERROR,
+					payload: error.message,
+				});
 			}
 		}
 	};
@@ -97,17 +108,20 @@ export const PostProvider = ({ children }: Props) => {
 	 * @param {string} imgId - string
 	 */
 	const getCommentsPost = async (imgId: string) => {
-		dispatch({ type: 'LOAD_COMMENTS_POST' });
+		dispatch({ type: PostActionType.LOAD_COMMENTS_POST });
 		try {
 			const response = await getCommentsPostApi(imgId);
 			if (response.data) {
 				const comments: ICommentPost[] = response.data;
-				dispatch({ type: 'LOAD_COMMENTS_POST_SUCCESS', payload: comments });
+				dispatch({
+					type: PostActionType.LOAD_COMMENTS_POST_SUCCESS,
+					payload: comments,
+				});
 			}
 		} catch (error) {
 			const err = error as any;
 			dispatch({
-				type: 'LOAD_COMMENTS_POST_ERROR',
+				type: PostActionType.LOAD_COMMENTS_POST_ERROR,
 				payload: err.response?.data.errorMessage,
 			});
 		}
