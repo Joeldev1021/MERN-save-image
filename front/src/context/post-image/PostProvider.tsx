@@ -1,3 +1,4 @@
+import { AxiosError } from 'axios';
 import { useReducer, useEffect } from 'react';
 import {
 	getAllPostsApi,
@@ -7,9 +8,10 @@ import {
 	addCommentByPostApi,
 	updateCommentPostApi,
 	getPostByUserApi,
+	deletePostApi,
 } from '../../api/postApi';
 import { IPostUser, IPostState } from '../../interface';
-import { ICommentPost, IPostEdite } from '../../interface/post';
+import { ICommentPost, IPostEdite, IPostUpload } from '../../interface/post';
 import { PostContext } from './PostContext';
 import { postReducer } from './postReducer';
 
@@ -33,15 +35,51 @@ export const PostProvider = ({ children }: Props) => {
 			const response = await getAllPostsApi();
 			if (response.data) {
 				const posts: IPostUser[] = response.data;
-				dispatch({ type: 'LOADING_ALL_POST_SUCCESS', payload: posts });
+				dispatch({ type: 'LOAD_ALL_POST_SUCCESS', payload: posts });
 			}
 		} catch (error) {
 			console.log(error);
 		}
 	};
+	const updatePost = async (post: IPostEdite) => {
+		try {
+			const response = await updatePostApi(post);
+			console.log('response', response);
+		} catch (error) {
+			console.log('catch', error);
+		}
+	};
+
+	const uploadPost = async (data: IPostUpload) => {
+		dispatch({ type: 'LOAD_UPLOAD_POST' });
+		try {
+			const response = await uploadPostApi(data);
+			if (response.data) {
+				console.log(response.data);
+				dispatch({ type: 'LOAD_UPLOAD_POST_SUCCESS', payload: response.data });
+			}
+		} catch (error) {
+			const err = error as AxiosError;
+			console.log(err.response?.data);
+			dispatch({
+				type: 'LOAD_UPLOAD_POST_ERROR',
+				payload: 'error upload',
+			});
+		}
+	};
+
+	const deletePost = async (id: string) => {
+		try {
+			const response = await deletePostApi(id);
+			console.log(response);
+		} catch (error) {
+			const err = error as AxiosError;
+			console.log(err.response?.data);
+		}
+	};
 
 	const getPostUser = async () => {
-		dispatch({ type: 'LOADING_POST_USER' });
+		dispatch({ type: 'LOAD_POST_USER' });
 		try {
 			const response = await getPostByUserApi();
 			const posts: IPostUser[] = response.data;
@@ -73,20 +111,6 @@ export const PostProvider = ({ children }: Props) => {
 				payload: err.response?.data.errorMessage,
 			});
 		}
-	};
-
-	const updatePost = async (post: IPostEdite) => {
-		try {
-			const response = await updatePostApi(post);
-			console.log('response', response);
-		} catch (error) {
-			console.log('catch', error);
-		}
-	};
-
-	const uploadPost = async (data: any) => {
-		const response = await uploadPostApi(data);
-		console.log(response);
 	};
 
 	const addCommentByPost = async (id: string, comment: string) => {
@@ -121,6 +145,7 @@ export const PostProvider = ({ children }: Props) => {
 				getPostUser,
 				uploadPost,
 				updatePost,
+				deletePost,
 				findPostById,
 				getCommentsPost,
 				addCommentByPost,

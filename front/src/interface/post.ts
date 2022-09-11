@@ -1,5 +1,10 @@
 import { IUser } from "."
 
+export interface IPostUpload {
+    title: string;
+    description: string;
+    image: File
+}
 export interface ICommentPost {
     comment: string
     created_at: string
