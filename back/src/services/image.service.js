@@ -33,11 +33,7 @@ class ImageService {
 	}
 
 	async delete(id) {
-		try {
-			return Image.findByIdAndDelete(id);
-		} catch (error) {
-			throw new Error('Error deleting note by id', id);
-		}
+		return Image.findByIdAndDelete(id);
 	}
 }
 

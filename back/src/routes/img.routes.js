@@ -14,6 +14,6 @@ router.get('/:id', verifyAuth, ImgController.findById);
 
 router.put('/:id', verifyAuth, ImgController.update);
 
-router.delete('/:id', ImgController.delete);
+router.delete('/:id', verifyAuth, ImgController.delete);
 
 module.exports = router;

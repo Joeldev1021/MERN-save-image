@@ -62,7 +62,6 @@ class ImageController {
 					.send({ errorMessage: 'fill required' });
 
 			let imgCloud;
-
 			if (req.files) {
 				imgCloud = await cloudinaryAdd(req.files.image.tempFilePath);
 				if (!imgCloud)
@@ -87,7 +86,7 @@ class ImageController {
 				imgUrl: imgCloud.url ? imgCloud.url : req.body.imgUrl,
 			};
 			const imgSave = await ImageService.create(image);
-			await fs.unlink(req.files.image.tempFilePath, () =>
+			fs.unlink(req.files.image.tempFilePath, () =>
 				console.log('deleted files')
 			);
 			res.status(HttpStatus.OK).json(imgSave);
@@ -134,13 +133,14 @@ class ImageController {
 			if (!image)
 				res
 					.status(HttpStatus.NOT_FOUND)
-					.send({ errorMessage: 'image not found' });
+					.send({ errorMessage: 'image not deleted' });
 			// cut url
 			const imgCut = image.imgUrl.split('/')[7].split('.')[0];
-			await cloudinaryDelete(imgCut); // delete img cloudinary
+			const response = await cloudinaryDelete(imgCut); // delete img cloudinary
 
-			return res.status(HttpStatus.OK).json(img);
+			return res.status(HttpStatus.OK).json(image);
 		} catch (error) {
+			console.log(error);
 			next(error);
 		}
 	}

@@ -1,19 +1,25 @@
-const cloudinary = require("cloudinary").v2;
+const cloudinary = require('cloudinary').v2;
 
 cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET
+	cloud_name: process.env.CLOUDINARY_NAME,
+	api_key: process.env.CLOUDINARY_API_KEY,
+	api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-const cloudinaryAdd = async (img) => {
-  const res = await cloudinary.uploader.upload(img);
-  return res;
+const cloudinaryAdd = async img => {
+	try {
+		return cloudinary.uploader.upload(img);
+	} catch (error) {
+		console.log(error);
+	}
 };
 
-const cloudinaryDelete = async (img) => {
-  const res = await cloudinary.uploader.destroy(img);
-  return res;
+const cloudinaryDelete = async img => {
+	try {
+		return cloudinary.uploader.destroy(img);
+	} catch (error) {
+		console.log(error);
+	}
 };
 
 module.exports = { cloudinaryAdd, cloudinaryDelete };
