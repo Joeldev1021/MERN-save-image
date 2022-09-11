@@ -1,43 +1,40 @@
 import { ChangeEvent, FormEvent, useContext, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Button from '../components/Button/Button';
 import { PostContext } from '../context/post-image/PostContext';
-
-interface FormUpload {
-	title: string;
-	description: string;
-}
+import { IPostUpload } from '../interface/post';
 
 const URL_UPLOAD =
 	'https://img.freepik.com/free-vector/image-upload-concept-landing-page_52683-27130.jpg?size=338&ext=jpg';
 
 const Upload = () => {
-	const initialFormPost = {
-		title: '',
-		description: '',
-	};
-	const { uploadPost } = useContext(PostContext);
-	const [selectImage, setSelectImage] = useState<any>();
+	const { uploadPost, state } = useContext(PostContext);
+	const navigate = useNavigate();
+	const [formPost, setformPost] = useState<IPostUpload>({} as IPostUpload);
 
-	const [formPost, setformPost] = useState<FormUpload>(initialFormPost);
-
-	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		const formData = new FormData();
-		formData.append('title', formPost.title);
-		formData.append('description', formPost.description);
-		formData.append('image', selectImage);
-		const entry = Object.fromEntries(formData);
-		if (entry.title && entry.description && entry.image) {
-			uploadPost(entry);
-			setformPost({ title: '', description: '' });
-			setSelectImage(null);
+		if (formPost.description && formPost.title && formPost.image) {
+			await uploadPost(formPost);
+			if (!state.loading) {
+				navigate('/my-post');
+			}
 		}
 	};
 
 	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-		setformPost((prev: FormUpload) => ({
-			...prev,
-			[e.target.name]: e.target.value,
-		}));
+		if (e.target.files) {
+			const file = e.target.files[0];
+			setformPost((prev: IPostUpload) => ({
+				...prev,
+				[e.target.name]: file,
+			}));
+		} else {
+			setformPost((prev: IPostUpload) => ({
+				...prev,
+				[e.target.name]: e.target.value,
+			}));
+		}
 	};
 
 	return (
@@ -59,7 +56,7 @@ const Upload = () => {
 							type="text"
 							name="title"
 							placeholder="title"
-							value={formPost.title}
+							defaultValue={formPost.title}
 							onChange={e => handleChange(e)}
 						/>
 					</div>
@@ -72,7 +69,7 @@ const Upload = () => {
 							type="text"
 							placeholder="description"
 							name="description"
-							value={formPost.description}
+							defaultValue={formPost.description}
 							onChange={e => handleChange(e)}
 						/>
 					</div>
@@ -100,8 +97,8 @@ const Upload = () => {
 										<img
 											className="has-mask h-36 object-contain"
 											src={
-												selectImage
-													? URL.createObjectURL(selectImage)
+												formPost.image
+													? URL.createObjectURL(formPost.image)
 													: URL_UPLOAD
 											}
 											alt="freepik image"
@@ -118,8 +115,8 @@ const Upload = () => {
 								</div>
 								<input
 									type="file"
-									name="file"
-									onChange={e => setSelectImage(e.target.files![0])}
+									name="image"
+									onChange={e => handleChange(e)}
 									className="hidden"
 								/>
 							</label>
@@ -129,13 +126,21 @@ const Upload = () => {
 						<span>File type: doc,pdf,types of images</span>
 					</p>
 					<div>
-						<button
+						<Button
+							loading={state.loading}
+							disabled={!(formPost.title && formPost.image)}
+						>
+							Upload
+						</Button>
+						{/* <button
 							type="submit"
+							disabled={true}
 							className="my-5 w-full flex justify-center bg-blue-500 text-gray-100 p-4  rounded-full tracking-wide
                                     font-semibold  focus:outline-none focus:shadow-outline hover:bg-blue-600 shadow-lg cursor-pointer transition ease-in duration-300"
 						>
 							Upload
-						</button>
+							{state.loading && <Spinner />}
+						</button> */}
 					</div>
 				</form>
 			</div>
