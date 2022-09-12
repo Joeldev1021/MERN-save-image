@@ -11,8 +11,12 @@ import {
 	deletePostApi,
 } from '../../api/postApi';
 import { IPostUser, IPostState } from '../../interface';
-import { ICommentPost, IPostEdite, IPostUpload } from '../../interface/post';
-import { PostActionType } from '../actions/PostActionType';
+import {
+	ErrorPostResponse,
+	ICommentPost,
+	IPostUpload,
+} from '../../interface/post';
+import { PostActionType } from '../actions/post';
 import { PostContext } from './PostContext';
 import { postReducer } from './postReducer';
 
@@ -45,21 +49,12 @@ export const PostProvider = ({ children }: Props) => {
 			console.log(error);
 		}
 	};
-	const updatePost = async (post: IPostEdite) => {
-		try {
-			const response = await updatePostApi(post);
-			console.log('response', response);
-		} catch (error) {
-			console.log('catch', error);
-		}
-	};
 
 	const uploadPost = async (data: IPostUpload) => {
 		dispatch({ type: PostActionType.LOAD_UPLOAD_POST });
 		try {
 			const response = await uploadPostApi(data);
 			if (response.data) {
-				console.log(response.data);
 				dispatch({
 					type: PostActionType.LOAD_UPLOAD_POST_SUCCESS,
 					payload: response.data,
@@ -75,14 +70,41 @@ export const PostProvider = ({ children }: Props) => {
 		}
 	};
 
-	const deletePost = async (id: string) => {
+	const updatePost = async (post: IPostUser) => {
+		dispatch({ type: PostActionType.LOAD_UPDATE_POST });
 		try {
-			const idWrong = `${id}idoaidi`;
-			const response = await deletePostApi(idWrong);
-			console.log(response);
+			const response = await updatePostApi(post);
+			if (response.data) {
+				console.log(response);
+				dispatch({
+					type: PostActionType.LOAD_UPDATE_POST_SUCCESS,
+					payload: post,
+				});
+			}
+		} catch (error) {
+			console.log('error', error);
+		}
+	};
+
+	const deletePost = async (id: string) => {
+		dispatch({ type: PostActionType.LOAD_UPDATE_POST });
+		try {
+			const response = await deletePostApi(id);
+			if (response.data) {
+				console.log(response.data);
+				dispatch({
+					type: PostActionType.LOAD_DELETE_POST_SUCCESS,
+					payload: response.data._id,
+				});
+			}
 		} catch (error) {
 			const err = error as AxiosError;
-			console.log(err.response?.data);
+			const data = err.response?.data as ErrorPostResponse;
+			console.log(data);
+			dispatch({
+				type: PostActionType.LOAD_DELETE_POST_ERROR,
+				payload: data.errorMessage,
+			});
 		}
 	};
 
@@ -90,10 +112,15 @@ export const PostProvider = ({ children }: Props) => {
 		dispatch({ type: PostActionType.LOAD_POST_USER });
 		try {
 			const response = await getPostByUserApi();
-			const posts: IPostUser[] = response.data;
-			dispatch({ type: PostActionType.LOAD_POST_USER_SUCCESS, payload: posts });
+			if (response.data) {
+				const posts = response.data;
+				dispatch({
+					type: PostActionType.LOAD_POST_USER_SUCCESS,
+					payload: posts,
+				});
+			}
 		} catch (error) {
-			console.log(error);
+			console.log(error); // change code
 			if (error instanceof Error) {
 				dispatch({
 					type: PostActionType.LOAD_POST_USER_ERROR,
@@ -141,10 +168,16 @@ export const PostProvider = ({ children }: Props) => {
 		console.log(response);
 	};
 
-	const findPostById = (id: string) => {
-		const postFound: IPostUser | undefined = state.postAll.find(
-			p => p._id === id
-		);
+	/**
+	 * Find a post by id, if isUser is true, search in postsByUser, otherwise search in postAll
+	 * @param {string} id - string - the id of the post
+	 * @param {boolean} [isUser] - boolean - this is a flag to determine if we're looking for a post by a
+	 * user or all posts.
+	 * @returns the postFound variable.
+	 */
+	const findPostById = (id: string, isUser?: boolean) => {
+		const posts = isUser ? state.postsByUser : state.postAll;
+		const postFound: IPostUser | undefined = posts.find(p => p._id === id);
 		return postFound;
 	};
 

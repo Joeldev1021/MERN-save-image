@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import { IPostUser } from '../interface';
-import { IPostEdite, IPostUpload } from '../interface/post';
+import { ICommentPost, IPostUpload } from '../interface/post';
 
 const API_URL = 'http://localhost:5000'
 
@@ -28,7 +28,7 @@ export const getNotesApi = async () => {
 
 export const getPostByUserApi = async () => {
     // intercept token
-    return axiosIn.get(`${API_URL}/img`)
+    return axiosIn.get<IPostUser[]>(`${API_URL}/img`)
 }
 
 export const getAllPostsApi = async () => {
@@ -43,21 +43,17 @@ export const uploadPostApi = async (data: IPostUpload) => {
     })
 }
 
-export const updatePostApi = async (data: IPostEdite) => {
-    return axiosIn.put(`${API_URL}/img/${data.id}`, data)
+export const updatePostApi = async (data: IPostUser) => {
+    return axiosIn.put<IPostUser>(`${API_URL}/img/${data._id}`, data)
 }
 
 export const deletePostApi = async (id: string) => {
-    return axiosIn.delete(`${API_URL}/img/${id}`)
+    return axiosIn.delete<IPostUser>(`${API_URL}/img/${id}`)
 }
+/* =================== comment===================  */
 
-/* export const getPostProfileApi = async (id: string) => {
-    return axiosIn.get(`${API_URL}/img-comment/all/${id}`)
-      const result = await fetch(`http://localhost:5000/img-comment/all/${id}`)
-     return result.json() 
-} */
 export const getCommentsPostApi = async (id: string) => {
-    return axiosIn.get(`${API_URL}/img-comment/all/${id}`)
+    return axiosIn.get<ICommentPost[]>(`${API_URL}/img-comment/all/${id}`)
 }
 
 export const addCommentByPostApi = async (id: string, comment: string) => {

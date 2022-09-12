@@ -5,10 +5,10 @@ import { IPostEdite, IPostUpload } from '../../interface/post';
 export type PostContextProps = {
 	state: IPostState;
 	uploadPost: (data: IPostUpload) => void;
-	updatePost: (data: IPostEdite) => void;
+	updatePost: (data: IPostUser) => void;
 	getPostUser: () => void;
 	deletePost: (id: string) => void;
-	findPostById: (id: string) => IPostUser | undefined;
+	findPostById: (id: string, isUser?: boolean) => IPostUser | undefined;
 	getCommentsPost: (imgId: string) => void;
 	addCommentByPost: (id: string, comment: string) => void;
 	updateCommentPost: (id: string, comment: string) => void;

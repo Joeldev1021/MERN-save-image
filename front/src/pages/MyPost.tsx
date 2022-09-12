@@ -14,7 +14,6 @@ const MyPost = () => {
 	useEffect(() => {
 		getPostUser();
 	}, []);
-
 	return (
 		<div className="mt-40">
 			{state.token ? (

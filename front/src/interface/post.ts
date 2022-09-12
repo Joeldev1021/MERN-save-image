@@ -20,3 +20,7 @@ export interface IPostEdite {
     description: string;
     imgUrl: string;
 }
+
+export interface ErrorPostResponse {
+    errorMessage: string;
+}

@@ -5,42 +5,39 @@ import React, {
 	useEffect,
 	useState,
 } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import Button from '../components/Button/Button';
 import Input from '../components/Input';
 import { PostContext } from '../context/post-image/PostContext';
-import { IPostEdite } from '../interface/post';
+import { IPostUser } from '../interface';
 
 function EditePost() {
 	const { id } = useParams();
-	const { updatePost, findPostById } = useContext(PostContext);
-	const [editePost, setEditePost] = useState<IPostEdite>({} as IPostEdite);
+	const navigate = useNavigate();
+	const { updatePost, findPostById, state } = useContext(PostContext);
+	const [editePost, setEditePost] = useState<IPostUser>({} as IPostUser);
 
 	useEffect(() => {
-		const postFound = findPostById(id!);
-
+		const postFound = findPostById(id!, true);
 		if (postFound) {
-			setEditePost({
-				id: postFound._id,
-				title: postFound.title,
-				description: postFound.description,
-				imgUrl: postFound.imgUrl,
-			});
+			setEditePost(postFound);
 		}
 	}, [id]);
 
 	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-		setEditePost((prev: IPostEdite) => ({
+		setEditePost((prev: IPostUser) => ({
 			...prev,
 			[e.target.name]: e.target.value,
 		}));
 	};
-	const handleSubmit = (e: FormEvent) => {
+	const handleSubmit = async (e: FormEvent) => {
 		e.preventDefault();
-		updatePost(editePost);
+		await updatePost(editePost);
+		navigate('/my-post');
 	};
 
 	return (
-		<div className="relative  flex items-center justify-center sm:px-6 lg:px-8  bg-no-repeat">
+		<div className="relative  flex items-center justify-center sm:px-6 lg:px-8  bg-no-repeat mt-24">
 			<div className="absolute inset-0 z-0"></div>
 			<div className="sm:max-w-lg w-full p-5 bg-white rounded-xl z-10">
 				<div className="text-center">
@@ -95,13 +92,12 @@ function EditePost() {
 							<span>File type: doc,pdf,types of images</span>
 						</p>
 						<div>
-							<button
-								type="submit"
-								className="my-5 w-full flex justify-center bg-blue-500 text-gray-100 p-4  rounded-full tracking-wide
-                                    font-semibold  focus:outline-none focus:shadow-outline hover:bg-blue-600 shadow-lg cursor-pointer transition ease-in duration-300"
+							<Button
+								loading={state.loading}
+								disabled={!(editePost.title && editePost.description)}
 							>
-								Update
-							</button>
+								Upload
+							</Button>
 						</div>
 					</form>
 				)}
