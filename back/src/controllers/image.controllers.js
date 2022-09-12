@@ -120,7 +120,7 @@ class ImageController {
 					.status(HttpStatus.BAD_REQUEST)
 					.send({ errorMessage: 'image not updated' });
 
-			return res.status(HttpStatus.OK).json(req.body);
+			return res.status(HttpStatus.OK).json(imgUpdate);
 		} catch (error) {
 			next(error);
 		}
@@ -140,7 +140,6 @@ class ImageController {
 
 			return res.status(HttpStatus.OK).json(image);
 		} catch (error) {
-			console.log(error);
 			next(error);
 		}
 	}
