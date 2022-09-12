@@ -1,3 +1,4 @@
+const commentSchema = require('../models/comment.schema');
 const CommentSchema = require('../models/comment.schema');
 
 class CommentService {
@@ -27,8 +28,6 @@ class CommentService {
 	 */
 
 	async create(commentData, image) {
-		console.log(commentData);
-		console.log('image', image);
 		const comment = new CommentSchema(commentData);
 		const commentSave = await comment.save();
 		const commentPopulateById = await CommentSchema.findById(
@@ -39,16 +38,17 @@ class CommentService {
 			image.comments.push(commentSave._id);
 			await image.save();
 		}
-		console.log(commentPopulateById);
 		return commentPopulateById;
 	}
 
 	async update(id, data) {
-		return CommentSchema.findByIdAndUpdate(id, data);
+		return CommentSchema.findByIdAndUpdate(id, data).populate('userId', {
+			password: 0,
+		});
 	}
 
 	async delete(id) {
-		res.json('delete coment');
+		return commentSchema.findByIdAndDelete(id);
 	}
 }
 

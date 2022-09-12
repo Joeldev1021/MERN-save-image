@@ -5,14 +5,14 @@ const { HttpStatus } = require('../config/httpStatus');
 const CommentService = require('../services/comment.service');
 const ImageService = require('../services/image.service');
 class CommentController {
-	async find(req, res) {
+	async find(req, res, next) {
 		try {
 			const foundComments = await CommentService.find();
 			if (!foundComments)
 				res.status(HttpStatus.NOT_FOUND).json('comments not found');
 			res.status(HttpStatus.OK).json(foundComments);
 		} catch (error) {
-			throw new Error(error);
+			next(error);
 		}
 	}
 
@@ -34,14 +34,13 @@ class CommentController {
 
 	async create(req, res, next) {
 		const { id } = req.params;
-		console.log('body', req.body);
 
 		try {
 			if (!req.body.comment)
 				res.status(HttpStatus.INTERNAL_SERVER_ERROR).send('not comment');
 
 			const image = await ImageService.findById(id);
-			if (!image) res.status(HttpStatus.NOT_FOUND).send('Img not found');
+			if (!image) res.status(HttpStatus.NOT_FOUND).send('Image not found');
 
 			const comment = {
 				comment: req.body.comment,
@@ -58,16 +57,21 @@ class CommentController {
 	async update(req, res, next) {
 		try {
 			const { id } = req.params;
-			console.log(req.body);
 			const commentUpdate = await CommentService.update(id, req.body);
-			res.json(commentUpdate);
+			res.status(HttpStatus.OK).json(commentUpdate);
 		} catch (error) {
 			next(error);
 		}
 	}
 
 	async delete(req, res, next) {
-		res.json('delete coment');
+		const { id } = req.params;
+		try {
+			const commentDelete = await CommentService.delete(id);
+			res.status(HttpStatus.OK).json(commentDelete);
+		} catch (error) {
+			next(error);
+		}
 	}
 }
 

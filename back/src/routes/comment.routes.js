@@ -12,7 +12,7 @@ router.post('/add-comment/:id', verifyAuth, CommentControllers.create); // id ->
 
 router.put('/update-comment/:id', verifyAuth, CommentControllers.update);
 
-router.delete('/img/comment/delete/:id', verifyAuth, CommentControllers.delete);
+router.delete('/delete-comment/:id', verifyAuth, CommentControllers.delete);
 
 router.get('/:id', verifyAuth, CommentControllers.findByIdImage);
 
