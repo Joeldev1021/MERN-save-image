@@ -57,9 +57,13 @@ export const getCommentsPostApi = async (id: string) => {
 }
 
 export const addCommentByPostApi = async (id: string, comment: string) => {
-    return axiosIn.post(`${API_URL}/img-comment/add-comment/${id}`, { comment })
+    return axiosIn.post<ICommentPost>(`${API_URL}/img-comment/add-comment/${id}`, { comment })
 }
 
 export const updateCommentPostApi = async (id: string, comment: string) => {
-    return axiosIn.put(`${API_URL}/img-comment/update-comment/${id}`, { comment })
+    return axiosIn.put<ICommentPost>(`${API_URL}/img-comment/update-comment/${id}`, { comment })
+}
+
+export const deleteCommentPostApi = async (id: string) => {
+    return axiosIn.delete<ICommentPost>(`${API_URL}/img-comment/delete-comment/${id}`)
 }

@@ -29,6 +29,14 @@ type PostAction =
     | { type: PostActionType.LOAD_ADD_COMMENT_POST }
     | { type: PostActionType.LOAD_ADD_COMMENT_POST_SUCCESS; payload: ICommentPost }
     | { type: PostActionType.LOAD_ADD_COMMENT_POST_ERROR; payload: string }
+    /* update comment */
+    | { type: PostActionType.LOAD_UPDATE_COMMENT_POST; }
+    | { type: PostActionType.LOAD_UPDATE_COMMENT_POST_SUCCESS; payload: ICommentPost }
+    | { type: PostActionType.LOAD_UPDATE_COMMENT_POST_ERROR; payload: string }
+    /* delete comment */
+    | { type: PostActionType.LOAD_DELETE_COMMENT_POST; }
+    | { type: PostActionType.LOAD_DELETE_COMMENT_POST_SUCCESS; payload: string }
+    | { type: PostActionType.LOAD_DELETE_COMMENT_POST_ERROR; payload: string }
 
 export const postReducer = (state: IPostState, action: PostAction) => {
     switch (action.type) {
@@ -105,7 +113,31 @@ export const postReducer = (state: IPostState, action: PostAction) => {
         // add comment post 
         case PostActionType.LOAD_ADD_COMMENT_POST:
             return { ...state, loading: true, errorMessage: null };
+        case PostActionType.LOAD_ADD_COMMENT_POST_SUCCESS:
+            return { ...state, loading: false, commentByPost: [...state.commentByPost, action.payload] }
+        case PostActionType.LOAD_ADD_COMMENT_POST_ERROR:
+            return { ...state, loading: false, errorMessage: action.payload }
+        // update comment post 
+        case PostActionType.LOAD_UPDATE_COMMENT_POST:
+            return { ...state, loading: true, errorMessage: null };
+        case PostActionType.LOAD_UPDATE_COMMENT_POST_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                commentByPost: state.commentByPost.map(cm => cm._id === action.payload._id ? action.payload : cm)
+            }
+        case PostActionType.LOAD_UPDATE_COMMENT_POST_ERROR:
+            return { ...state, loading: false, errorMessage: action.payload }
 
+        // delete comment post
+        case PostActionType.LOAD_DELETE_COMMENT_POST:
+            return { ...state, loading: true }
+        case PostActionType.LOAD_DELETE_COMMENT_POST_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                commentByPost: state.commentByPost.filter(c => c._id !== action.payload)
+            }
         default:
             return { ...state };
     }

@@ -1,6 +1,6 @@
 import { createContext } from 'react';
 import { IPostUser, IPostState } from '../../interface';
-import { IPostEdite, IPostUpload } from '../../interface/post';
+import { IPostUpload } from '../../interface/post';
 
 export type PostContextProps = {
 	state: IPostState;
@@ -12,6 +12,7 @@ export type PostContextProps = {
 	getCommentsPost: (imgId: string) => void;
 	addCommentByPost: (id: string, comment: string) => void;
 	updateCommentPost: (id: string, comment: string) => void;
+	deleteCommentPost: (id: string) => void;
 };
 
 export const PostContext = createContext<PostContextProps>(

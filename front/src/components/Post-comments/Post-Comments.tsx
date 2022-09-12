@@ -10,12 +10,11 @@ function PostComments({ author, desc }: { author: string; desc: string }) {
 	const { state, addCommentByPost } = useContext(PostContext);
 	const [comment, setComment] = useState<string>('');
 
-	const handleSubmit = (e: FormEvent) => {
+	const handleSubmit = async (e: FormEvent) => {
 		e.preventDefault();
-		addCommentByPost(id!, comment);
+		await addCommentByPost(id!, comment);
 		setComment('');
 	};
-	console.log(state.commentByPost);
 	return (
 		<section className="place-items-center border   h-auto  ">
 			<div className="px-2 py-4 bg-white rounded-xl  mx-auto w-4/5 sm:max-w-md sm:px-5 ">

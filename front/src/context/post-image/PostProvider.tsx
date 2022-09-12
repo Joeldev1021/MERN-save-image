@@ -9,6 +9,7 @@ import {
 	updateCommentPostApi,
 	getPostByUserApi,
 	deletePostApi,
+	deleteCommentPostApi,
 } from '../../api/postApi';
 import { IPostUser, IPostState } from '../../interface';
 import {
@@ -155,17 +156,51 @@ export const PostProvider = ({ children }: Props) => {
 	};
 
 	const addCommentByPost = async (id: string, comment: string) => {
+		dispatch({ type: PostActionType.LOAD_ADD_COMMENT_POST });
 		try {
 			const response = await addCommentByPostApi(id, comment);
 			console.log(response);
+			if (response.data) {
+				dispatch({
+					type: PostActionType.LOAD_ADD_COMMENT_POST_SUCCESS,
+					payload: response.data,
+				});
+			}
 		} catch (error) {
-			console.log('cathch', error);
+			console.log('catch', error);
 		}
 	};
 
-	const updateCommentPost = async (id: string, comment: string) => {
-		const response = await updateCommentPostApi(id, comment);
-		console.log(response);
+	const updateCommentPost = async (postId: string, comment: string) => {
+		dispatch({ type: PostActionType.LOAD_UPDATE_COMMENT_POST });
+		try {
+			const response = await updateCommentPostApi(postId, comment);
+			if (response.data) {
+				const updateComment = { ...response.data, comment };
+				dispatch({
+					type: PostActionType.LOAD_UPDATE_COMMENT_POST_SUCCESS,
+					payload: updateComment,
+				});
+			}
+		} catch (error) {
+			console.log('catch', error);
+		}
+	};
+
+	const deleteCommentPost = async (id: string) => {
+		dispatch({ type: PostActionType.LOAD_DELETE_COMMENT_POST });
+		try {
+			const response = await deleteCommentPostApi(id);
+			if (response.data) {
+				console.log(response);
+				dispatch({
+					type: PostActionType.LOAD_DELETE_COMMENT_POST_SUCCESS,
+					payload: response.data._id,
+				});
+			}
+		} catch (error) {
+			console.log('error', error);
+		}
 	};
 
 	/**
@@ -197,6 +232,7 @@ export const PostProvider = ({ children }: Props) => {
 				getCommentsPost,
 				addCommentByPost,
 				updateCommentPost,
+				deleteCommentPost,
 			}}
 		>
 			{children}

@@ -1,6 +1,7 @@
 import { useContext, useState } from 'react';
 import { FaEllipsisV } from 'react-icons/fa';
 import { AuthContext } from '../../context/auth/AuthContext';
+import { PostContext } from '../../context/post-image/PostContext';
 import IconReply from '../Icons/IconReply';
 import IconShare from '../Icons/IconShare';
 import ListGroupCmt from '../ListGroupCmt';
@@ -25,6 +26,7 @@ const CommentSection = ({
 	desc,
 }: CommentProps) => {
 	const { state } = useContext(AuthContext);
+	const { deleteCommentPost } = useContext(PostContext);
 	const [showListGroup, setShowListGroup] = useState<boolean>(false);
 	const [showModal, setShowModal] = useState<boolean>(false);
 	const [isUser] = useState<boolean>(username === state.user?.username);
@@ -37,6 +39,9 @@ const CommentSection = ({
 		if (actionCase === 'edite') {
 			setShowListGroup(false);
 			setShowModal(true);
+		}
+		if (actionCase === 'delete') {
+			deleteCommentPost(id!);
 		}
 	};
 
