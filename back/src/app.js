@@ -13,16 +13,14 @@ const indexRoute = require('./routes/index');
 // midleware
 app.use(morgan('dev'));
 app.use(cors());
+
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-
 /// upload imgaes
 app.use(fileUploadImage);
-
 // routes
 app.use(indexRoute);
 app.use(errorMiddleware);
-
 // listen
 const server = app.listen(PORT, () => {
 	console.log(`app listening at ${PORT}`);

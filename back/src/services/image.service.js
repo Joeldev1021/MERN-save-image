@@ -2,21 +2,13 @@ const Image = require('../models/img.schema');
 
 class ImageService {
 	async findAll() {
-		try {
-			return Image.find().populate('userId', {
-				password: 0,
-			});
-		} catch (error) {
-			throw error;
-		}
+		return Image.find().populate('userId', {
+			password: 0,
+		});
 	}
 
 	async findById(id) {
-		try {
-			return Image.findById(id);
-		} catch (error) {
-			throw error;
-		}
+		return Image.findById(id);
 	}
 
 	async findByUserId({ userId }) {
