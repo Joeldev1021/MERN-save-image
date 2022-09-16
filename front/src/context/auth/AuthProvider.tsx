@@ -1,7 +1,6 @@
-/* eslint-disable no-unused-vars */
-import axios, { AxiosError } from 'axios';
 import { useReducer } from 'react';
-import { getProfileApi, loginApi, logoutApi } from '../../api/authApi';
+import { loginApi, logoutApi } from '../../api/authApi';
+import { getProfileApi } from '../../api/userApi';
 import { AuthState, IUserLogin } from '../../interface';
 import { AuthContext } from './AuthContext';
 import { authReducer } from './authReducer';
@@ -33,9 +32,9 @@ export const AuthProvider = ({ children }: Props) => {
 		try {
 			const { data } = await loginApi(userLogin);
 			if (data.token) {
-				const resUser = await getProfileApi(data.token);
 				localStorage.setItem('token', data.token);
 
+				const resUser = await getProfileApi();
 				if (resUser.data) {
 					dispatch({
 						type: 'LOGIN_SUCCESS',
@@ -54,10 +53,10 @@ export const AuthProvider = ({ children }: Props) => {
 	};
 
 	const logout = async () => {
-		const token = localStorage.getItem('token');
 		try {
-			const response = await logoutApi(token!);
-			if (response.token) {
+			const response = await logoutApi();
+			console.log(response.data);
+			if (response.data) {
 				dispatch({ type: 'LOGOUT_SUCCESS' });
 				localStorage.setItem('token', '');
 				localStorage.setItem('user', '');

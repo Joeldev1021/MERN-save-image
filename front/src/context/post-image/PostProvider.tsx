@@ -205,7 +205,8 @@ export const PostProvider = ({ children }: Props) => {
 				type: PostActionType.LOAD_ADD_LIKE_POST_SUCCESS,
 				payload: { idPost, userIdByLike },
 			});
-			await likePostApi(idPost);
+			const response = await likePostApi(idPost);
+			console.log(response);
 		} catch (error) {
 			console.log('error', error);
 		}
@@ -217,7 +218,8 @@ export const PostProvider = ({ children }: Props) => {
 				type: PostActionType.LOAD_REMOVE_LIKE_POST_SUCCESS,
 				payload: { idPost, userIdByLike },
 			});
-			await likePostApi(idPost);
+			const response = await likePostApi(idPost);
+			console.log(response);
 		} catch (error) {
 			console.log('error', error);
 		}

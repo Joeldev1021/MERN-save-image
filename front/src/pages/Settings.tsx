@@ -6,7 +6,7 @@ const Settings = () => {
 		<div id="view" className="h-full w-screen flex flex-row">
 			<SideBar />
 			{/* side right */}
-			<form className="ml-10 w-1/3">
+			<form className="ml-10 mt-36 w-1/3">
 				<div className="mb-6">
 					<label
 						htmlFor="email"

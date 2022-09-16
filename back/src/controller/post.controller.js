@@ -4,7 +4,7 @@ const { cloudinaryAdd, cloudinaryDelete } = require('../helper/cloudinary');
 const { isValidHttpUrlImage } = require('../helper/isValidHttpUrl');
 const ImageService = require('../services/image.service');
 
-class ImageController {
+class PostController {
 	// find all image
 	async findAll(req, res, next) {
 		try {
@@ -145,4 +145,4 @@ class ImageController {
 	}
 }
 
-module.exports = new ImageController();
+module.exports = new PostController();

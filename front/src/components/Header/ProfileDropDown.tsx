@@ -40,7 +40,7 @@ const ProfileDropDown = (props: any) => {
 				<button
 					ref={profileRef}
 					className="w-10 h-10 outline-none rounded-full ring-offset-2 ring-gray-200 ring-2 lg:focus:ring-indigo-600"
-					onClick={e => handleDropDownProfile()}
+					onClick={handleDropDownProfile}
 				>
 					<img
 						src="https://randomuser.me/api/portraits/men/46.jpg"
@@ -63,7 +63,7 @@ const ProfileDropDown = (props: any) => {
 							key={index}
 							className="block text-gray-600 lg:hover:bg-gray-50 lg:p-2.5"
 							href={navItem.path}
-							onClick={e => handleClickDropdown(navItem.title)}
+							onClick={() => handleClickDropdown(navItem.title)}
 						>
 							{navItem.title}
 						</a>

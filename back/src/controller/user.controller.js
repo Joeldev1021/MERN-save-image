@@ -45,13 +45,13 @@ class UserController {
 	async update(req, res, next) {
 		const { id } = req.params;
 		try {
+			if (!req.body)
+				res.status(HttpStatus.BAD_REQUEST).sen('not content update');
 			const user = await UserService.update(id, req.body);
-			if (!user) throw new Error('user not found');
+			if (!user) res.status(HttpStatus.NOT_FOUND).send('not found');
+			const userE = 'iidao';
 
-			res.status(200).json({
-				message: 'update user success',
-				user,
-			});
+			res.status(200).json(user);
 		} catch (error) {
 			next(error);
 		}

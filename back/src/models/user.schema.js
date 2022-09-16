@@ -23,7 +23,6 @@ const userSchema = new Schema(
 			type: String,
 			default: avatarDefault,
 		},
-		noteId: { type: Schema.Types.ObjectId, ref: 'notes' }, // ref : "Note"
 	},
 	{
 		timestamps: {

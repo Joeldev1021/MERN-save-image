@@ -40,9 +40,11 @@ type PostAction =
     /* add like post */
     | { type: PostActionType.LOAD_ADD_LIKE_POST }
     | { type: PostActionType.LOAD_ADD_LIKE_POST_SUCCESS; payload: { idPost: string, userIdByLike: string } }
+    | { type: PostActionType.LOAD_ADD_LIKE_POST_ERROR, payload: string }
     /* remove delete */
     | { type: PostActionType.LOAD_REMOVE_LIKE_POST }
     | { type: PostActionType.LOAD_REMOVE_LIKE_POST_SUCCESS; payload: { idPost: string, userIdByLike: string } }
+    | { type: PostActionType.LOAD_REMOVE_LIKE_POST_ERROR, payload: string }
 
 export const postReducer = (state: IPostState, action: PostAction) => {
     switch (action.type) {
@@ -145,7 +147,7 @@ export const postReducer = (state: IPostState, action: PostAction) => {
             }
         // add like post 
         case PostActionType.LOAD_ADD_LIKE_POST:
-            return { ...state, loading: true }
+            return { ...state, loading: true, errorMessage: null }
         case PostActionType.LOAD_ADD_LIKE_POST_SUCCESS:
             return {
                 ...state,
@@ -153,11 +155,14 @@ export const postReducer = (state: IPostState, action: PostAction) => {
                     ? { ...post, likes: [...post.likes, action.payload.userIdByLike] }
                     : post
                 ),
-                loading: false
+                loading: false,
+                errorMessage: null
             }
+        case PostActionType.LOAD_REMOVE_LIKE_POST_ERROR:
+            return { ...state, loading: false, errorMessage: action.payload }
         // remove like post
         case PostActionType.LOAD_REMOVE_LIKE_POST:
-            return { ...state, loading: true }
+            return { ...state, loading: true, errorMessage: null }
         case PostActionType.LOAD_REMOVE_LIKE_POST_SUCCESS:
             return {
                 ...state,

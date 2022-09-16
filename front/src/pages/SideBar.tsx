@@ -1,22 +1,25 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { AuthContext } from '../context/auth/AuthContext';
 
 const SideBar = () => {
+	const { state } = useContext(AuthContext);
 	return (
 		<div
 			id="sidebar"
-			className="bg-white h-screen md:block shadow-xl px-3 w-30 md:w-60 lg:w-60 overflow-x-hidden transition-transform duration-300 ease-in-out"
-			x-show="sidenav"
+			className="bg-white mt-32 h-screen md:block shadow-xl px-3 w-30 md:w-60 lg:w-60 overflow-x-hidden transition-transform duration-300 ease-in-out"
 		>
 			<div className="space-y-6 md:space-y-10 mt-10">
-				<div id="profile" className="space-y-3">
-					<img
-						src="https://pbs.twimg.com/profile_images/1467997254929854470/mDYbXoVl_400x400.jpg"
-						alt="Avatar user"
-						className="w-10 md:w-16 rounded-full mx-auto"
-					/>
+				<div className="space-y-3">
+					<button className="mx-auto block outline-none rounded-full ring-offset-2 ring-gray-200 ring-2 lg:hover:ring-indigo-600">
+						<img
+							src="https://randomuser.me/api/portraits/men/46.jpg"
+							alt="Avatar user"
+							className="w-10 md:w-16 rounded-full mx-auto"
+						/>
+					</button>
 					<div>
 						<h2 className="font-medium text-xs md:text-sm text-center text-teal-500">
-							Eduard Pantazi
+							{state.user ? state.user.username : 'Eduard Pantazi'}
 						</h2>
 						<p className="text-xs text-gray-500 text-center">Administrator</p>
 					</div>
