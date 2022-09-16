@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { BsHeart } from 'react-icons/bs';
+import { BsHeart, BsHeartFill } from 'react-icons/bs';
 import { FaEllipsisV } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import TimeAgo from 'react-timeago';
@@ -7,6 +7,7 @@ import ListGroup from './ListGroup';
 import IconComment from './Icons/IconComment';
 import PostComments from './Post-comments/Post-Comments';
 import { AuthContext } from '../context/auth/AuthContext';
+import { PostContext } from '../context/post-image/PostContext';
 
 interface CardProps {
 	id: string;
@@ -35,7 +36,17 @@ const Card = ({
 }: CardProps) => {
 	const navigate = useNavigate();
 	const { state } = useContext(AuthContext);
+	const { addLikePost, removeLikePost } = useContext(PostContext);
+
 	const [showListGroupPost, setShowListGroupPost] = useState(false);
+
+	const handleLikePost = async () => {
+		if (state.user) {
+			const userId = state.user?._id || '';
+			if (likes.includes(userId)) removeLikePost(id, userId);
+			else addLikePost(id, userId);
+		}
+	};
 
 	const handleClick = async (id: string) => {
 		navigate(`/post/${id}`, { replace: true });
@@ -66,7 +77,13 @@ const Card = ({
 					<p className="text-sm text-gray-700 px-2 mr-1">{desc}</p>
 					<div className="flex items-center justify-between mt-2 mx-6">
 						<p className="flex items-center text-red-500  -ml-3 text-[19px]">
-							<BsHeart />
+							<span className="cursor-pointer" onClick={() => handleLikePost()}>
+								{state.user && likes.includes(state.user?._id) ? (
+									<BsHeartFill />
+								) : (
+									<BsHeart />
+								)}
+							</span>
 							<span className="text-gray-700 ml-1 text-[16px]">
 								{likes && likes.length}
 							</span>

@@ -3,11 +3,7 @@ import SideBar from './SideBar';
 
 const Settings = () => {
 	return (
-		<div
-			id="view"
-			className="h-full w-screen flex flex-row"
-			x-data="{ sidenav: true }"
-		>
+		<div id="view" className="h-full w-screen flex flex-row">
 			<SideBar />
 			{/* side right */}
 			<form className="ml-10 w-1/3">

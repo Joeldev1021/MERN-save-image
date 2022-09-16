@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig } from 'axios';
 import { IPostUser } from '../interface';
 import { ICommentPost, IPostUpload } from '../interface/post';
 
-const API_URL = 'http://localhost:5000'
+const API_URL = 'http://localhost:4000'
 
 const axiosIn = axios.create({
     baseURL: API_URL
@@ -32,7 +32,7 @@ export const getPostByUserApi = async () => {
 }
 
 export const getAllPostsApi = async () => {
-    return axios.get<IPostUser[]>("http://localhost:5000/img/all")
+    return axios.get<IPostUser[]>(`${API_URL}/img/all`)
 }
 
 export const uploadPostApi = async (data: IPostUpload) => {
@@ -66,4 +66,8 @@ export const updateCommentPostApi = async (id: string, comment: string) => {
 
 export const deleteCommentPostApi = async (id: string) => {
     return axiosIn.delete<ICommentPost>(`${API_URL}/img-comment/delete-comment/${id}`)
+}
+
+export const likePostApi = async (id: string) => {
+    return axiosIn.post<IPostUser>(`${API_URL}/img-like/${id}`)
 }

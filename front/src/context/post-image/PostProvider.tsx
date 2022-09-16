@@ -10,6 +10,7 @@ import {
 	getPostByUserApi,
 	deletePostApi,
 	deleteCommentPostApi,
+	likePostApi,
 } from '../../api/postApi';
 import { IPostUser, IPostState } from '../../interface';
 import {
@@ -37,6 +38,7 @@ export const PostProvider = ({ children }: Props) => {
 	const [state, dispatch] = useReducer(postReducer, INITIAL_STATE);
 
 	const getAllPosts = async () => {
+		dispatch({ type: PostActionType.LOAD_ALL_POST });
 		try {
 			const response = await getAllPostsApi();
 			if (response.data) {
@@ -121,13 +123,7 @@ export const PostProvider = ({ children }: Props) => {
 				});
 			}
 		} catch (error) {
-			console.log(error); // change code
-			if (error instanceof Error) {
-				dispatch({
-					type: PostActionType.LOAD_POST_USER_ERROR,
-					payload: error.message,
-				});
-			}
+			console.log('error', error); // change code
 		}
 	};
 	/**
@@ -203,6 +199,30 @@ export const PostProvider = ({ children }: Props) => {
 		}
 	};
 
+	const addLikePost = async (idPost: string, userIdByLike: string) => {
+		try {
+			dispatch({
+				type: PostActionType.LOAD_ADD_LIKE_POST_SUCCESS,
+				payload: { idPost, userIdByLike },
+			});
+			await likePostApi(idPost);
+		} catch (error) {
+			console.log('error', error);
+		}
+	};
+
+	const removeLikePost = async (idPost: string, userIdByLike: string) => {
+		try {
+			dispatch({
+				type: PostActionType.LOAD_REMOVE_LIKE_POST_SUCCESS,
+				payload: { idPost, userIdByLike },
+			});
+			await likePostApi(idPost);
+		} catch (error) {
+			console.log('error', error);
+		}
+	};
+
 	/**
 	 * Find a post by id, if isUser is true, search in postsByUser, otherwise search in postAll
 	 * @param {string} id - string - the id of the post
@@ -233,6 +253,8 @@ export const PostProvider = ({ children }: Props) => {
 				addCommentByPost,
 				updateCommentPost,
 				deleteCommentPost,
+				addLikePost,
+				removeLikePost,
 			}}
 		>
 			{children}
