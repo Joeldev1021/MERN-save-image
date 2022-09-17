@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const { Schema, model } = mongoose;
 
-const ImgSchema = new Schema(
+const PostSchema = new Schema(
     {
         title: { type: String, required: true },
         description: { type: String, required: true },
@@ -17,4 +17,4 @@ const ImgSchema = new Schema(
     }
 );
 
-module.exports = model('Img', ImgSchema);
+module.exports = model('Img', PostSchema);

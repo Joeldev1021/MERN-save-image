@@ -6,7 +6,6 @@ const { fileUploadImage } = require('./middleware/fileUpload');
 const app = express();
 require('dotenv').config();
 const PORT = process.env.PORT || 4000;
-const port = 1000;
 // export server conect database
 require('./service');
 // export router
