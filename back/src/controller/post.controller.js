@@ -8,13 +8,13 @@ class PostController {
     // find all image
     async findAll(req, res, next) {
         try {
-            const images = await PostService.findAll();
-            if (!images)
+            const posts = await PostService.findAll();
+            if (!posts)
                 res.status(HttpStatus.NOT_FOUND).send({
-                    errorMessage: 'Images not found',
+                    errorMessage: 'posts not found',
                 });
 
-            return res.status(HttpStatus.OK).json(images);
+            return res.status(HttpStatus.OK).json(posts);
         } catch (error) {
             next(error);
         }
@@ -23,13 +23,13 @@ class PostController {
     async findById(req, res, next) {
         const { id } = req.params;
         try {
-            const img = await PostService.findById(id);
+            const post = await PostService.findById(id);
 
-            if (!img)
+            if (!post)
                 res.status(HttpStatus.NOT_FOUND).send({
                     errorMessage: 'image find  not found',
                 });
-            return res.json(img);
+            return res.json(post);
         } catch (error) {
             next(error);
         }
@@ -39,12 +39,12 @@ class PostController {
     async findByUserId(req, res, next) {
         const { id } = req.user;
         try {
-            const images = await PostService.findByUserId({ userId: id });
-            if (!images)
+            const posts = await PostService.findByUserId({ userId: id });
+            if (!posts)
                 res.status(HttpStatus.NOT_FOUND).send({
-                    errorMessage: 'images by user not found',
+                    errorMessage: 'posts by user not found',
                 });
-            res.status(HttpStatus.OK).json(images);
+            res.status(HttpStatus.OK).json(posts);
         } catch (error) {
             next(error);
         }
@@ -79,13 +79,13 @@ class PostController {
                     });
             }
 
-            const image = {
+            const post = {
                 title: req.body.title,
                 description: req.body.description,
                 userId: req.user._id,
                 imgUrl: imgCloud.url ? imgCloud.url : req.body.imgUrl,
             };
-            const imgSave = await PostService.create(image);
+            const imgSave = await PostService.create(post);
             fs.unlink(req.files.image.tempFilePath, () =>
                 console.log('deleted files')
             );
@@ -103,26 +103,26 @@ class PostController {
                 res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({
                     errorMessage: 'fill is required',
                 });
-            const findImage = await PostService.findById(id);
-            if (!findImage)
+            const postFound = await PostService.findById(id);
+            if (!postFound)
                 res.status(HttpStatus.NOT_FOUND).send({
                     errorMessage: ' not found',
                 });
 
             // parse id to string
-            if (String(findImage.userId) !== String(req.user._id)) {
+            if (String(postFound.userId) !== String(req.user._id)) {
                 res.status(HttpStatus.UNAUTHORIZED).send({
                     errorMessage: 'not authorizated',
                 });
             }
 
-            const imgUpdate = await PostService.update(id, req.body);
-            if (!imgUpdate)
+            const postUpdate = await PostService.update(id, req.body);
+            if (!postUpdate)
                 res.status(HttpStatus.BAD_REQUEST).send({
                     errorMessage: 'image not updated',
                 });
 
-            return res.status(HttpStatus.OK).json(imgUpdate);
+            return res.status(HttpStatus.OK).json(postUpdate);
         } catch (error) {
             next(error);
         }
@@ -131,14 +131,14 @@ class PostController {
     async delete(req, res, next) {
         const { id } = req.params;
         try {
-            const image = await PostService.delete(id);
-            if (!image)
-                res.status(HttpStatus.NOT_FOUND).send('image not deleted');
+            const post = await PostService.delete(id);
+            if (!post)
+                res.status(HttpStatus.NOT_FOUND).send('post not deleted');
             // cut url
-            const imgCut = image.imgUrl.split('/')[7].split('.')[0];
+            const imgCut = post.imgUrl.split('/')[7].split('.')[0];
             await cloudinaryDelete(imgCut); // delete img cloudinary
 
-            return res.status(HttpStatus.OK).json(image);
+            return res.status(HttpStatus.OK).json(post);
         } catch (error) {
             next(error);
         }

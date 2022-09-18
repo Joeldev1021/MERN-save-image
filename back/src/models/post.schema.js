@@ -8,7 +8,7 @@ const PostSchema = new Schema(
         imgUrl: String,
         likes: [{ type: Schema.Types.ObjectId, ref: 'User' }],
         comments: [{ type: Schema.Types.ObjectId, ref: 'Coment' }],
-        userId: { type: Schema.ObjectId, ref: 'User' },
+        userId: { type: Schema.Types.ObjectId, ref: 'User' },
     },
     {
         timestamps: {
@@ -17,4 +17,4 @@ const PostSchema = new Schema(
     }
 );
 
-module.exports = model('Img', PostSchema);
+module.exports = model('Img', PostSchema); // img => post

@@ -1,4 +1,4 @@
-const Post = require('../models/postschema');
+const Post = require('../models/post.schema');
 
 class PostService {
     async findAll() {

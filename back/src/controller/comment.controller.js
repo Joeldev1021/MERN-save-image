@@ -20,11 +20,11 @@ class CommentController {
     async findAllByIdImage(req, res, next) {
         const { id } = req.params;
         try {
-            const comment = await CommentService.findAllByIdImg(id);
-            if (!comment)
+            const comments = await CommentService.findAllByIdImg(id);
+            if (!comments)
                 res.status(HttpStatus.NOT_FOUND).send('comment not found');
 
-            res.status(200).json(comment);
+            res.status(200).json(comments);
         } catch (error) {
             next(error);
         }
