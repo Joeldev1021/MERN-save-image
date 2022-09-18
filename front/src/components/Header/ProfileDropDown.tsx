@@ -3,11 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/auth/AuthContext';
 import { INavigation } from '../../interface';
 
+const avatarRandom = 'https://randomuser.me/api/portraits/men/46.jpg';
+
 const ProfileDropDown = (props: any) => {
-	const [state, setState] = useState<boolean>(false);
-	/* const profileRef = useRef<HTMLButtonElement>() */
+	const [stateHidden, setStateHidden] = useState<boolean>(false);
 	const profileRef = useRef<HTMLButtonElement>({} as HTMLButtonElement);
-	const { logout } = useContext(AuthContext);
+	const { logout, state } = useContext(AuthContext);
 
 	const navigate = useNavigate();
 
@@ -27,10 +28,10 @@ const ProfileDropDown = (props: any) => {
 	};
 
 	const handleDropDownProfile = () => {
-		if (state) {
-			setState(false);
+		if (stateHidden) {
+			setStateHidden(false);
 		} else {
-			setState(true);
+			setStateHidden(true);
 		}
 	};
 
@@ -43,7 +44,7 @@ const ProfileDropDown = (props: any) => {
 					onClick={handleDropDownProfile}
 				>
 					<img
-						src="https://randomuser.me/api/portraits/men/46.jpg"
+						src={state.user ? state.user.avatar : avatarRandom}
 						className="w-full h-full rounded-full"
 					/>
 				</button>
@@ -54,7 +55,7 @@ const ProfileDropDown = (props: any) => {
 			</div>
 			<ul
 				className={`bg-white top-12 right-0 mt-5 space-y-5 lg:absolute lg:border lg:rounded-md lg:text-sm lg:w-52 lg:shadow-md lg:space-y-0 lg:mt-0 ${
-					state ? '' : 'lg:hidden'
+					stateHidden ? '' : 'lg:hidden'
 				}`}
 			>
 				{navigation.map((navItem: INavigation, index: number) => (
