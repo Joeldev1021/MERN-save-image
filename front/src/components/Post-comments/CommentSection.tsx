@@ -13,6 +13,8 @@ interface CommentProps {
 	createdAt: string;
 	username: string;
 	comment: string;
+	userId: string;
+	likes: string[];
 	author: string;
 	desc: string;
 }
@@ -22,12 +24,14 @@ const CommentSection = ({
 	avatar,
 	username,
 	comment,
+	userId,
+	likes,
 	createdAt,
 	author,
 	desc,
 }: CommentProps) => {
 	const { state } = useContext(AuthContext);
-	const { deleteCommentPost } = useContext(PostContext);
+	const { deleteCommentPost, addLikeComment } = useContext(PostContext);
 	const [showListGroup, setShowListGroup] = useState<boolean>(false);
 	const [showModal, setShowModal] = useState<boolean>(false);
 	const [isUser] = useState<boolean>(username === state.user?.username);
@@ -53,6 +57,9 @@ const CommentSection = ({
 		if (e.target.classList.contains('fixed')) {
 			setShowModal(false);
 		}
+	};
+	const handleLikeComment = () => {
+		addLikeComment(id, userId);
 	};
 
 	return (
@@ -103,14 +110,16 @@ const CommentSection = ({
 						<span className="font-semibold">2 Reply</span>
 					</a>
 					<p className="flex items-center text-red-500 hover:text-red-600 group">
-						{/* <span className="cursor-pointer" onClick={() => handleLikePost()}>
+						<span
+							className="cursor-pointer"
+							onClick={() => handleLikeComment()}
+						>
 							{state.user && likes.includes(state.user?._id) ? (
 								<BsHeartFill />
 							) : (
 								<BsHeart />
 							)}
-						</span> */}
-						<BsHeart />
+						</span>
 						<span className="font-semibold mx-1">11</span>
 					</p>
 					<a
