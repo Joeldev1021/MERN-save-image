@@ -10,6 +10,7 @@ import Settings from './pages/Settings';
 import EditePost from './pages/EditePost';
 
 function App() {
+	console.log('hola');
 	return (
 		<>
 			<Header />
