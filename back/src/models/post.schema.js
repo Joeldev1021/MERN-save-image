@@ -1,14 +1,14 @@
 const mongoose = require('mongoose');
 const { Schema, model } = mongoose;
 
-const ImgSchema = new Schema(
+const PostSchema = new Schema(
     {
         title: { type: String, required: true },
         description: { type: String, required: true },
         imgUrl: String,
         likes: [{ type: Schema.Types.ObjectId, ref: 'User' }],
         comments: [{ type: Schema.Types.ObjectId, ref: 'Coment' }],
-        userId: { type: Schema.ObjectId, ref: 'User' },
+        userId: { type: Schema.Types.ObjectId, ref: 'User' },
     },
     {
         timestamps: {
@@ -17,4 +17,4 @@ const ImgSchema = new Schema(
     }
 );
 
-module.exports = model('Img', ImgSchema);
+module.exports = model('Img', PostSchema); // img => post

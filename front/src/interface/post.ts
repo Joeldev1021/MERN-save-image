@@ -9,6 +9,7 @@ export interface ICommentPost {
     comment: string
     created_at: string
     imgId: string
+    likes: string[]
     updatedAt: string
     userId: IUser
     __v?: number

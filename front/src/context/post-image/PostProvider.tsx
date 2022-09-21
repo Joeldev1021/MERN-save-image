@@ -2,16 +2,18 @@ import { AxiosError } from 'axios';
 import { useReducer, useEffect } from 'react';
 import {
 	getAllPostsApi,
-	getCommentsPostApi,
 	updatePostApi,
 	uploadPostApi,
-	addCommentByPostApi,
-	updateCommentPostApi,
 	getPostByUserApi,
 	deletePostApi,
-	deleteCommentPostApi,
-	likePostApi,
 } from '../../api/postApi';
+import {
+	addCommentByPostApi,
+	deleteCommentPostApi,
+	getCommentsPostApi,
+	updateCommentPostApi,
+} from '../../api/commentApi';
+import { likeCommentApi, likePostApi } from '../../api/likeApi';
 import { IPostUser, IPostState } from '../../interface';
 import {
 	ErrorPostResponse,
@@ -225,6 +227,12 @@ export const PostProvider = ({ children }: Props) => {
 		}
 	};
 
+	const addLikeComment = async (idComment: string, userIdByLike: string) => {
+		console.log('idComment', idComment);
+		const response = await likeCommentApi(idComment);
+		console.log(response);
+	};
+
 	/**
 	 * Find a post by id, if isUser is true, search in postsByUser, otherwise search in postAll
 	 * @param {string} id - string - the id of the post
@@ -257,6 +265,7 @@ export const PostProvider = ({ children }: Props) => {
 				deleteCommentPost,
 				addLikePost,
 				removeLikePost,
+				addLikeComment,
 			}}
 		>
 			{children}

@@ -1,20 +1,44 @@
 const { HttpStatus } = require('../config/httpStatus');
-const ImageService = require('../services/image.service');
+const PostService = require('../services/post.service');
 const LikeService = require('../services/like.service');
+const commentService = require('../services/comment.service');
 
 class LikeController {
-	async addLike(req, res, next) {
-		const { id } = req.params;
-		try {
-			const userId = req.user._id;
-			const imgFound = await ImageService.findById(id);
-			if (!imgFound) res.status(HttpStatus.NOT_FOUND).send('not found img');
+    async addLikePost(req, res, next) {
+        const { id } = req.params;
+        try {
+            const userId = req.user._id;
+            const postFound = await PostService.findById(id);
+            if (!postFound)
+                res.status(HttpStatus.NOT_FOUND).send('not found img');
 
-			const imgUpdateLike = await LikeService.like(imgFound, userId);
-			res.status(HttpStatus.OK).json(imgUpdateLike);
-		} catch (error) {
-			next(error);
-		}
-	}
+            const postUpdateLike = await LikeService.likePost(
+                postFound,
+                userId
+            );
+            res.status(HttpStatus.OK).json(postUpdateLike);
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    async addLikeComment(req, res, next) {
+        const { id } = req.params;
+        try {
+            const userId = req.user._id;
+            const foundComment = await commentService.findById(id);
+            if (!foundComment)
+                res.status(HttpStatus.NOT_FOUND).send(
+                    'not found comment by id'
+                );
+            const likeComment = await LikeService.likeComment(
+                foundComment,
+                userId
+            );
+            res.status(HttpStatus.OK).json(likeComment);
+        } catch (error) {
+            console.log(error);
+        }
+    }
 }
 module.exports = new LikeController();

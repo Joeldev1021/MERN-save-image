@@ -1,6 +1,8 @@
 import React, { useContext } from 'react';
 import { AuthContext } from '../context/auth/AuthContext';
 
+const avatarRandom = 'https://randomuser.me/api/portraits/men/46.jpg';
+
 const SideBar = () => {
 	const { state } = useContext(AuthContext);
 	return (
@@ -9,11 +11,12 @@ const SideBar = () => {
 			className="bg-white mt-32 h-screen md:block shadow-xl px-3 w-30 md:w-60 lg:w-60 overflow-x-hidden transition-transform duration-300 ease-in-out"
 		>
 			<div className="space-y-6 md:space-y-10 mt-10">
-				<div className="space-y-3">
-					<button className="mx-auto block outline-none rounded-full ring-offset-2 ring-gray-200 ring-2 lg:hover:ring-indigo-600">
+				<div className="space-y-3 ">
+					<button className="mx-auto group relative block outline-none rounded-full ring-offset-2 ring-gray-200 ring-2 lg:hover:ring-indigo-600">
+						<div className="hidden absolute"></div>
 						<img
-							src="https://randomuser.me/api/portraits/men/46.jpg"
-							alt="Avatar user"
+							src={state.user ? state.user?.avatar : avatarRandom}
+							alt="Avatar"
 							className="w-10 md:w-16 rounded-full mx-auto"
 						/>
 					</button>

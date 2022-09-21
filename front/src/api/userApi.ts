@@ -1,6 +1,6 @@
 import { IUser } from "../interface"
-import { axiosIn } from "./utils"
+import { axiosInter } from "./utils"
 
 export const getProfileApi = async () => {
-    return axiosIn.get<IUser>('/user/profile')
+    return axiosInter.get<IUser>('/user/profile')
 }

@@ -1,6 +1,5 @@
-import axios from 'axios'
-import { IUser, IUserLogin } from "../interface";
-import { axiosIn } from './utils';
+import { IUserLogin } from "../interface";
+import { axiosInter } from './utils';
 
 
 interface ILoginApi {
@@ -9,10 +8,10 @@ interface ILoginApi {
 
 
 
-export const loginApi = async (user: IUserLogin) => axiosIn.post<ILoginApi>(`/auth/signin`, user);
+export const loginApi = async (user: IUserLogin) => axiosInter.post<ILoginApi>(`/auth/signin`, user);
 
 export const logoutApi = async () => {
-    return axiosIn.post('/auth/logout')
+    return axiosInter.post('/auth/logout')
 
 }
 

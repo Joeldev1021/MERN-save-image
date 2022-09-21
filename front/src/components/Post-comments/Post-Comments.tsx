@@ -15,6 +15,7 @@ function PostComments({ author, desc }: { author: string; desc: string }) {
 		await addCommentByPost(id!, comment);
 		setComment('');
 	};
+
 	return (
 		<section className="place-items-center border   h-auto  ">
 			<div className="px-2 py-4 bg-white rounded-xl  mx-auto w-4/5 sm:max-w-md sm:px-5 ">
@@ -34,6 +35,8 @@ function PostComments({ author, desc }: { author: string; desc: string }) {
 								id={cm._id}
 								avatar={cm.userId.avatar!}
 								username={cm.userId.username}
+								userId={cm.userId._id}
+								likes={cm.likes}
 								comment={cm.comment}
 								createdAt={cm.created_at}
 								author={author}

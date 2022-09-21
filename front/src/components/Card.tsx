@@ -48,7 +48,7 @@ const Card = ({
 		}
 	};
 
-	const handleClick = async (id: string) => {
+	const handleClick = async () => {
 		navigate(`/post/${id}`, { replace: true });
 	};
 
@@ -63,7 +63,7 @@ const Card = ({
 				className="absolute right-[20px] top-[40px] cursor-pointer"
 			/>
 			<div className="bg-white shadow-2xl   rounded-lg mb-6 tracking-wide">
-				<div className="md:flex-shrink-0" onClick={() => handleClick(id)}>
+				<div className="md:flex-shrink-0" onClick={() => handleClick()}>
 					<img
 						src={img || urlMontain}
 						alt="mountains"
@@ -88,7 +88,10 @@ const Card = ({
 								{likes && likes.length}
 							</span>
 						</p>
-						<p className="flex text-gray-700">
+						<p
+							onClick={() => handleClick()}
+							className="flex text-gray-700 hover:cursor-pointer"
+						>
 							<IconComment />
 							{comments && comments.length}
 						</p>

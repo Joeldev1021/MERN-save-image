@@ -1,13 +1,8 @@
-.sticky-nav {
-     animation: sticky-nav 300ms;
-}
-    
-@keyframes sticky-nav {
-    0% {
-        transform: translateY(-6em)
-    }
-
-    100% {
-        transform: translateY(0)
-    }
+.setting-avatar:hover::after {
+	content: '';
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background: red;
+	z-index: 100;
 }

@@ -1,4 +1,5 @@
 import { useContext, useState } from 'react';
+import { BsHeart, BsHeartFill } from 'react-icons/bs';
 import { FaEllipsisV } from 'react-icons/fa';
 import { AuthContext } from '../../context/auth/AuthContext';
 import { PostContext } from '../../context/post-image/PostContext';
@@ -7,11 +8,13 @@ import IconShare from '../Icons/IconShare';
 import ListGroupCmt from '../ListGroupCmt';
 import ModalEditeComment from '../ModalEditeComment';
 interface CommentProps {
-	id?: string;
+	id: string;
 	avatar: string;
 	createdAt: string;
 	username: string;
 	comment: string;
+	userId: string;
+	likes: string[];
 	author: string;
 	desc: string;
 }
@@ -21,12 +24,14 @@ const CommentSection = ({
 	avatar,
 	username,
 	comment,
+	userId,
+	likes,
 	createdAt,
 	author,
 	desc,
 }: CommentProps) => {
 	const { state } = useContext(AuthContext);
-	const { deleteCommentPost } = useContext(PostContext);
+	const { deleteCommentPost, addLikeComment } = useContext(PostContext);
 	const [showListGroup, setShowListGroup] = useState<boolean>(false);
 	const [showModal, setShowModal] = useState<boolean>(false);
 	const [isUser] = useState<boolean>(username === state.user?.username);
@@ -52,6 +57,9 @@ const CommentSection = ({
 		if (e.target.classList.contains('fixed')) {
 			setShowModal(false);
 		}
+	};
+	const handleLikeComment = () => {
+		addLikeComment(id, userId);
 	};
 
 	return (
@@ -101,24 +109,19 @@ const CommentSection = ({
 						<IconReply />
 						<span className="font-semibold">2 Reply</span>
 					</a>
-					<a
-						href="#"
-						className="flex items-center text-red-500 hover:text-red-600 group"
-					>
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							className="h-4 w-4 group-hover:text-red-600 mr-1"
-							viewBox="0 0 20 20"
-							fill="currentColor"
+					<p className="flex items-center text-red-500 hover:text-red-600 group">
+						<span
+							className="cursor-pointer"
+							onClick={() => handleLikeComment()}
 						>
-							<path
-								fillRule="evenodd"
-								d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
-								clipRule="evenodd"
-							/>
-						</svg>
-						<span className="font-semibold ">11</span>
-					</a>
+							{state.user && likes.includes(state.user?._id) ? (
+								<BsHeartFill />
+							) : (
+								<BsHeart />
+							)}
+						</span>
+						<span className="font-semibold mx-1">11</span>
+					</p>
 					<a
 						href="#"
 						className="flex items-center text-blue-500 hover:text-blue-600"
