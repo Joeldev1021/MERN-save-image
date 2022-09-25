@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import { BsHeart, BsHeartFill } from 'react-icons/bs';
 import { FaEllipsisV } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
-import TimeAgo from 'react-timeago';
+import TimeAgo from 'timeago-react';
 import ListGroup from './ListGroup';
 import IconComment from './Icons/IconComment';
 import PostComments from './Post-comments/Post-Comments';
@@ -21,6 +21,7 @@ interface CardProps {
 	comments: string[];
 	showComments?: boolean;
 }
+
 const urlMontain = 'https://ik.imagekit.io/q5edmtudmz/post1_fOFO9VDzENE.jpg';
 const Card = ({
 	id,
@@ -44,6 +45,7 @@ const Card = ({
 		if (state.user) {
 			const userId = state.user?._id || '';
 			if (likes.includes(userId)) removeLikePost(id, userId);
+			// add like post
 			else addLikePost(id, userId);
 		}
 	};
@@ -107,7 +109,7 @@ const Card = ({
 						<h2 className="text-sm tracking-tighter text-gray-900">
 							<span>{username || 'By Mohammed Ibrahim'} </span>{' '}
 							<span className="text-gray-600">
-								<TimeAgo date={createdAt} />
+								<TimeAgo datetime={createdAt} locale="vi" />
 							</span>
 						</h2>
 					</div>

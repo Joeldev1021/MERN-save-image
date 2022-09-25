@@ -228,9 +228,21 @@ export const PostProvider = ({ children }: Props) => {
 	};
 
 	const addLikeComment = async (idComment: string, userIdByLike: string) => {
-		console.log('idComment', idComment);
+		dispatch({
+			type: PostActionType.LOAD_ADD_LIKE_COMMENT_SUCCESS,
+			payload: { idComment, userIdByLike },
+		});
+		console.log(state.commentByPost);
 		const response = await likeCommentApi(idComment);
 		console.log(response);
+	};
+
+	const removeLikeComment = async (idComment: string, userIdByLike: string) => {
+		dispatch({
+			type: PostActionType.LOAD_REMOVE_LIKE_COMMENT_SUCCESS,
+			payload: { idComment, userIdByLike },
+		});
+		const response = await likeCommentApi(idComment);
 	};
 
 	/**
@@ -266,6 +278,7 @@ export const PostProvider = ({ children }: Props) => {
 				addLikePost,
 				removeLikePost,
 				addLikeComment,
+				removeLikeComment,
 			}}
 		>
 			{children}

@@ -1,6 +1,7 @@
 import { useContext, useState } from 'react';
 import { BsHeart, BsHeartFill } from 'react-icons/bs';
 import { FaEllipsisV } from 'react-icons/fa';
+import TimeAgo from 'timeago-react';
 import { AuthContext } from '../../context/auth/AuthContext';
 import { PostContext } from '../../context/post-image/PostContext';
 import IconReply from '../Icons/IconReply';
@@ -13,7 +14,6 @@ interface CommentProps {
 	createdAt: string;
 	username: string;
 	comment: string;
-	userId: string;
 	likes: string[];
 	author: string;
 	desc: string;
@@ -24,14 +24,14 @@ const CommentSection = ({
 	avatar,
 	username,
 	comment,
-	userId,
 	likes,
 	createdAt,
 	author,
 	desc,
 }: CommentProps) => {
 	const { state } = useContext(AuthContext);
-	const { deleteCommentPost, addLikeComment } = useContext(PostContext);
+	const { deleteCommentPost, addLikeComment, removeLikeComment } =
+		useContext(PostContext);
 	const [showListGroup, setShowListGroup] = useState<boolean>(false);
 	const [showModal, setShowModal] = useState<boolean>(false);
 	const [isUser] = useState<boolean>(username === state.user?.username);
@@ -59,7 +59,11 @@ const CommentSection = ({
 		}
 	};
 	const handleLikeComment = () => {
-		addLikeComment(id, userId);
+		const userId = state.user?._id;
+		if (userId) {
+			if (likes.includes(userId)) removeLikeComment(id, userId);
+			else addLikeComment(id, userId);
+		}
 	};
 
 	return (
@@ -96,8 +100,8 @@ const CommentSection = ({
 			<div className="flex-1 pl-1">
 				<div className="text-base font-semibold text-gray-600">
 					{username}
-					<span className="text-sm font-normal text-gray-500">
-						- Feb 11, 2022
+					<span className="text-sm mx-2 font-normal text-gray-500">
+						<TimeAgo datetime={createdAt} locale="vi" />
 					</span>
 				</div>
 				<div className="text-sm text-gray-600">{comment}</div>
@@ -120,7 +124,7 @@ const CommentSection = ({
 								<BsHeart />
 							)}
 						</span>
-						<span className="font-semibold mx-1">11</span>
+						<span className="font-semibold mx-1">{likes.length}</span>
 					</p>
 					<a
 						href="#"

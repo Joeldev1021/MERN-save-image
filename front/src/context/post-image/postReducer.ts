@@ -41,10 +41,15 @@ type PostAction =
     | { type: PostActionType.LOAD_ADD_LIKE_POST }
     | { type: PostActionType.LOAD_ADD_LIKE_POST_SUCCESS; payload: { idPost: string, userIdByLike: string } }
     | { type: PostActionType.LOAD_ADD_LIKE_POST_ERROR, payload: string }
-    /* remove delete */
+    /* remove delete post */
     | { type: PostActionType.LOAD_REMOVE_LIKE_POST }
     | { type: PostActionType.LOAD_REMOVE_LIKE_POST_SUCCESS; payload: { idPost: string, userIdByLike: string } }
     | { type: PostActionType.LOAD_REMOVE_LIKE_POST_ERROR, payload: string }
+    /* add like comment */
+    | { type: PostActionType.LOAD_ADD_LIKE_COMMENT; }
+    | { type: PostActionType.LOAD_ADD_LIKE_COMMENT_SUCCESS; payload: { idComment: string, userIdByLike: string } }
+    /* remove like comment */
+    | { type: PostActionType.LOAD_REMOVE_LIKE_COMMENT_SUCCESS; payload: { idComment: string, userIdByLike: string } }
 
 export const postReducer = (state: IPostState, action: PostAction) => {
     switch (action.type) {
@@ -171,34 +176,35 @@ export const postReducer = (state: IPostState, action: PostAction) => {
                     : post),
                 loading: false
             }
+        case PostActionType.LOAD_ADD_LIKE_COMMENT_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                commentByPost: state.commentByPost.map(cm => cm._id === action.payload.idComment
+                    ? {
+                        ...cm, likes: cm.likes.includes(action.payload.userIdByLike)
+                            ? cm.likes
+                            : [...cm.likes, action.payload.userIdByLike]
+                    }
+                    : cm),
+                errorMessage: null
+            }
+        case PostActionType.LOAD_REMOVE_LIKE_COMMENT_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                commentByPost: state.commentByPost.map(cm => cm._id === action.payload.idComment
+                    ? {
+                        ...cm, likes: cm.likes.includes(action.payload.userIdByLike)
+                            ? cm.likes.filter(like => like !== action.payload.userIdByLike)
+                            : cm.likes
+                    }
+                    : cm),
+                errorMessage: null
+            }
 
         default:
             return { ...state };
     }
 };
 
-/* case PostActionType.LOAD_LIKE_POST:
-            return { ...state, loading: true }
-        case PostActionType.LOAD_LIKE_POST_SUCCESS:
-            return {
-                ...state,
-                postAll: state.postAll.map(post => {
-                    if (post._id === action.payload.idPost) {
-                        post.likes = action.payload.likes
-                        console.log(post.likes)
-                         console.log("userid", action.payload.userId)
-                        console.log("likes", post.likes)
-                        console.log(post.likes.includes(action.payload.userId))
-                        if (post.likes.includes(action.payload.userId)) {
-                            post.likes = post.likes.filter(like => like !== action.payload.userId)
-                            console.log('dislike')
-                        } else {
-                            post.likes = [...post.likes, action.payload.userId]
-                            console.log('add like')
-                        } 
-                    }
-return post
-                }),
-loading: false
-            }
-        */
