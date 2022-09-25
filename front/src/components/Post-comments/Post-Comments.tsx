@@ -35,7 +35,6 @@ function PostComments({ author, desc }: { author: string; desc: string }) {
 								id={cm._id}
 								avatar={cm.userId.avatar!}
 								username={cm.userId.username}
-								userId={cm.userId._id}
 								likes={cm.likes}
 								comment={cm.comment}
 								createdAt={cm.created_at}
