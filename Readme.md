@@ -69,5 +69,5 @@ run dev
 ```  
 
 And ready 🔥, go to back [localhost:4000](http://localhost:4000/).
-And ready 🔥, to to front [localhost:5173](http://localhost:5173/).
+And ready 🔥, go to front [localhost:5173](http://localhost:5173/).
 
