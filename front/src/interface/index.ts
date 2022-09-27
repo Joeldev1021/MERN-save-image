@@ -56,3 +56,9 @@ export interface INotes {
     userId: string
     __v?: number
 }
+
+
+export interface IListGroupItem {
+    title: string;
+    component: React.ReactNode;
+}

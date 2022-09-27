@@ -1,12 +1,14 @@
 import { useContext, useState } from 'react';
 import { BsHeart, BsHeartFill } from 'react-icons/bs';
 import { FaEllipsisV } from 'react-icons/fa';
+import { IoMdClose } from 'react-icons/io';
+import { MdDelete, MdModeEdit } from 'react-icons/md';
 import TimeAgo from 'timeago-react';
 import { AuthContext } from '../../context/auth/AuthContext';
 import { PostContext } from '../../context/post-image/PostContext';
 import IconReply from '../Icons/IconReply';
 import IconShare from '../Icons/IconShare';
-import ListGroupCmt from '../ListGroupCmt';
+import ListGroup from '../ListGroup/ListGroup';
 import ModalEditeComment from '../ModalEditeComment';
 interface CommentProps {
 	id: string;
@@ -18,6 +20,12 @@ interface CommentProps {
 	author: string;
 	desc: string;
 }
+
+const listGroupItem = [
+	{ title: 'Edite', component: <MdModeEdit /> },
+	{ title: 'Delete', component: <MdDelete /> },
+	{ title: 'Close', component: <IoMdClose /> },
+];
 
 const CommentSection = ({
 	id,
@@ -74,7 +82,11 @@ const CommentSection = ({
 				className="absolute right-[20px] top-[20px] cursor-pointer"
 			/>
 			{showListGroup && isUser && (
-				<ListGroupCmt handleListGroup={handleListGroup} />
+				// <ListGroupCmt handleListGroup={handleListGroup} />
+				<ListGroup
+					handleListGroup={handleListGroup}
+					listGroupItem={listGroupItem}
+				/>
 			)}
 			{showModal && (
 				<ModalEditeComment

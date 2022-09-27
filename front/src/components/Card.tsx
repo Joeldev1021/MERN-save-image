@@ -3,11 +3,13 @@ import { BsHeart, BsHeartFill } from 'react-icons/bs';
 import { FaEllipsisV } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import TimeAgo from 'timeago-react';
-import ListGroup from './ListGroup';
+import ListGroup from './ListGroup/ListGroup';
 import IconComment from './Icons/IconComment';
 import PostComments from './Post-comments/Post-Comments';
 import { AuthContext } from '../context/auth/AuthContext';
 import { PostContext } from '../context/post-image/PostContext';
+import { MdDelete, MdModeEdit, MdOutlineCopyAll } from 'react-icons/md';
+import { IoMdClose } from 'react-icons/io';
 
 interface CardProps {
 	id: string;
@@ -21,6 +23,13 @@ interface CardProps {
 	comments: string[];
 	showComments?: boolean;
 }
+
+const listGroupItem = [
+	{ title: 'Edite', component: <MdModeEdit /> },
+	{ title: 'Delete', component: <MdDelete /> },
+	{ title: 'Copy Link', component: <MdOutlineCopyAll /> },
+	{ title: 'Close', component: <IoMdClose /> },
+];
 
 const urlMontain = 'https://ik.imagekit.io/q5edmtudmz/post1_fOFO9VDzENE.jpg';
 const Card = ({
@@ -57,7 +66,11 @@ const Card = ({
 	return (
 		<div className="mx-auto  px-4 py-8 max-w-xl my-2 relative">
 			{showListGroupPost && state.user?._id === authorId && (
-				<ListGroup id={id} />
+				<ListGroup
+					id={id}
+					listGroupItem={listGroupItem}
+					setShowListGroup={setShowListGroupPost}
+				/>
 			)}
 			<FaEllipsisV
 				color="white"
