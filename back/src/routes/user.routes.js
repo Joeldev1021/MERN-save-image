@@ -6,6 +6,7 @@ const verifyAuth = require('../middleware/verifyAuth');
 router.get('/all', UserController.findAll);
 router.get('/profile', verifyAuth, UserController.findProfile);
 router.get('/email/:email', UserController.findByEmail);
+router.post('/update/avatar/:id', UserController.updateAvatar)
 router.get('/:id', UserController.findById); /// problem not match
 router.put('/:id', UserController.update);
 router.delete('/:id', UserController.delete);
