@@ -8,6 +8,9 @@ type AuthAction =
     | { type: "LOGOUT_LOADING" }
     | { type: "LOGOUT_SUCCESS" }
     | { type: "LOGOUT_ERROR" }
+    | { type: "LOADING_UPDATE_AVATAR" }
+    | { type: "LOADING_UPDATE_AVATAR_SUCCESS", payload: IUser }
+    | { type: "LOADING_UPDATE_AVATAR_ERROR" }
 
 export const authReducer = (state: AuthState, action: AuthAction) => {
 
@@ -24,6 +27,10 @@ export const authReducer = (state: AuthState, action: AuthAction) => {
             return { ...state, token: '', user: null, loading: false }
         case "LOGOUT_ERROR":
             return { ...state, errorMessage: "not logout" }
+        case "LOADING_UPDATE_AVATAR":
+            return { ...state, loading: true }
+        case "LOADING_UPDATE_AVATAR_SUCCESS":
+            return { ...state, user: action.payload, loading: false }
         default:
             return { ...state }
     }

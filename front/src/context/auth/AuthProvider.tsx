@@ -1,6 +1,6 @@
 import { useReducer } from 'react';
 import { loginApi, logoutApi } from '../../api/authApi';
-import { getProfileApi } from '../../api/userApi';
+import { getProfileApi, updateAvatarApi } from '../../api/userApi';
 import { AuthState, IUserLogin } from '../../interface';
 import { AuthContext } from './AuthContext';
 import { authReducer } from './authReducer';
@@ -65,9 +65,25 @@ export const AuthProvider = ({ children }: Props) => {
 			dispatch({ type: 'LOGOUT_ERROR' });
 		}
 	};
+	const updateAvatar = async (avatar: File) => {
+		const id = state.user?._id || '';
+		dispatch({ type: 'LOADING_UPDATE_AVATAR' });
+		try {
+			const response = await updateAvatarApi(id, avatar);
+			if (response.data) {
+				dispatch({
+					type: 'LOADING_UPDATE_AVATAR_SUCCESS',
+					payload: response.data,
+				});
+				localStorage.setItem('user', response.data);
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	};
 
 	return (
-		<AuthContext.Provider value={{ state, login, logout }}>
+		<AuthContext.Provider value={{ state, login, logout, updateAvatar }}>
 			{children}
 		</AuthContext.Provider>
 	);
