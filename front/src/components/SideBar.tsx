@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../context/auth/AuthContext';
 import AvatarListGroup from './AvatarListGroup';
+import ButtonAvatar from './ButtonAvatar';
 
 const avatarRandom =
 	'https://st3.depositphotos.com/19428878/35584/v/450/depositphotos_355846362-stock-illustration-default-avatar-profile-icon-social.jpg';
@@ -22,16 +23,10 @@ const SideBar = () => {
 			<div className="space-y-6 md:space-y-10 mt-10">
 				<div className="space-y-3 ">
 					<div className="relative">
-						<button
-							onClick={() => setShowModalProfile(!showModalProfile)}
-							className="mx-auto group relative block outline-none rounded-full ring-offset-2 ring-gray-200 ring-2 lg:hover:ring-indigo-600"
-						>
-							<img
-								src={avatarFile}
-								alt="Avatar"
-								className="w-10 md:w-16 rounded-full mx-auto"
-							/>
-						</button>
+						<ButtonAvatar
+							setShowMenu={setShowModalProfile}
+							avatar={avatarFile}
+						/>
 						{showModalProfile && (
 							<AvatarListGroup setAvatarFile={setAvatarFile} />
 						)}

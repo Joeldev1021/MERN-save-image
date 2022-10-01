@@ -1,5 +1,5 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { IUserLogin } from '../interface';
 import AlertForm from './AlertForm';
 import Button from './Button/Button';
@@ -17,6 +17,7 @@ interface LoginProps {
 const FormLogin = ({ login, errorMessage, loading }: LoginProps) => {
 	const [errorMsg, setErrorMsg] = useState<string | undefined>(errorMessage);
 	const [formData, setFormData] = useState<IUserLogin>({} as IUserLogin);
+	const navigateRoutes = useNavigate();
 
 	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setFormData((prev: IUserLogin) => ({
@@ -27,7 +28,8 @@ const FormLogin = ({ login, errorMessage, loading }: LoginProps) => {
 
 	const handleSubmit = async (e: FormEvent) => {
 		e.preventDefault();
-		login(formData);
+		await login(formData);
+		navigateRoutes('/my-post');
 	};
 
 	useEffect(() => {

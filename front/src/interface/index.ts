@@ -1,9 +1,6 @@
 import { ICommentPost } from "./post"
 
-export interface INavigation {
-    title: string,
-    path: string
-}
+
 export interface IUserLogin {
     email: string
     password: string

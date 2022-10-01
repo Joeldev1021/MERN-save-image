@@ -16,9 +16,7 @@ const Upload = () => {
 		e.preventDefault();
 		if (formPost.description && formPost.title && formPost.image) {
 			await uploadPost(formPost);
-			if (!state.loading) {
-				navigate('/my-post');
-			}
+			navigate('/my-post');
 		}
 	};
 

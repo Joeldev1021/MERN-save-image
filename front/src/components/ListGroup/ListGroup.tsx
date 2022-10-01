@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
 import { PostContext } from '../../context/post-image/PostContext';
 import { IListGroupItem } from '../../interface';
 import ListItemGroup from './ListItemGroup';
@@ -37,7 +36,6 @@ const ListGroup = ({
 			>
 				{listGroupItem.map(item => {
 					if (handleListGroup) {
-						console.log('hola');
 						return (
 							<li
 								className="flex items-center py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
