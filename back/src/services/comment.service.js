@@ -1,4 +1,3 @@
-const commentSchema = require('../models/comment.schema');
 const CommentSchema = require('../models/comment.schema');
 
 class CommentService {
@@ -44,7 +43,12 @@ class CommentService {
     }
 
     async delete(id) {
-        return commentSchema.findByIdAndDelete(id);
+        return CommentSchema.findByIdAndDelete(id);
+
+    }
+
+    async getCommentPopulate(id, value) {
+        return CommentSchema.findById(id).populate(value, { password: 0 });
     }
 }
 

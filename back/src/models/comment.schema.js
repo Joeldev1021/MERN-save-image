@@ -7,6 +7,7 @@ const ComentSchema = new Schema(
         imgId: { type: Schema.Types.ObjectId, ref: 'Post' }, // rename=> postId
         userId: { type: Schema.Types.ObjectId, ref: 'User' },
         likes: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+        replyToId: [{ type: Schema.Types.ObjectId, ref: 'ReplyTo' }]
         // replyTo: { type: Schema.Types.ObjectId, ref: 'ReplyTo' },
     },
     {
