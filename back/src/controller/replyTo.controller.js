@@ -16,27 +16,29 @@ class ReplyToController {
         }
     }
 
+
     async findById(req, res, next) {
         const foundReplys = await ReplyToService.findAll()
         res.send(foundReplys);
     }
 
     async create(req, res, next) {
-
         const { id } = req.params
         const userId = req.user._id
-        const commentFound = await CommentService.findById(id);
-        if (!commentFound) return res.status(HttpStatus.NOT_FOUND).json('not found')
+        try {
+            const commentFound = await CommentService.findById(id);
+            if (!commentFound) return res.status(HttpStatus.NOT_FOUND).json('not found')
 
-        if (req.body) {
-            const replyTo = {
-                replyTo: req.body.replyTo,
-                userId,
+            if (req.body) {
+                const replyTo = {
+                    comment: req.body.comment,
+                    userId,
+                }
+                const commentReply = await ReplyToService.create(commentFound, replyTo)
+                res.status(HttpStatus.OK).send(commentReply)
             }
-            const commentReply = await ReplyToService.create(commentFound, replyTo)
-            // const newReplyTo = new ReplyToSchema(replyTo)
-            // commentFound.replyTo.push(userId)
-            res.send(commentReply)
+        } catch (error) {
+            next(error)
         }
 
     }

@@ -71,19 +71,7 @@ const Upload = () => {
 							onChange={e => handleChange(e)}
 						/>
 					</div>
-					{/* url images -- ready */}
-					{/* <div className="grid grid-cols-1 space-y-2">
-						<label className="text-sm font-bold text-gray-500 tracking-wide">
-							URL Image
-						</label>
-						<input
-							className="text-base p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500"
-							type="text"
-							placeholder="URL Image"
-							name="url image"
-							onChange={e => handleChange(e)}
-						/>
-					</div> */}
+
 					<div className="grid grid-cols-1 space-y-2">
 						<label className="text-sm font-bold text-gray-500 tracking-wide">
 							Attach Document
@@ -121,7 +109,7 @@ const Upload = () => {
 						</div>
 					</div>
 					<p className="text-sm text-gray-300">
-						<span>File type: doc,pdf,types of images</span>
+						<span>File type: png jpg of images</span>
 					</p>
 					<div>
 						<Button

@@ -25,10 +25,12 @@ const userSchema = new Schema(
 		},
 	},
 	{
-		timestamps: {
-			createdAt: 'created_at',
-		},
-		versionKey: false,
+		toJSON: {
+			transform(doc, ret) {
+				delete ret.password;
+				delete ret.__v;
+			},
+		}
 	}
 );
 

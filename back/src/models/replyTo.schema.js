@@ -3,7 +3,7 @@ const { Schema, model } = mongoose;
 
 const ReplyToSchema = new Schema(
     {
-        replyTo: { type: String, required: true },
+        comment: { type: String, required: true },
         // imgId: { type: Schema.Types.ObjectId, ref: 'Post' }, // rename=> postId
         userId: { type: Schema.Types.ObjectId, ref: 'User' },
         likes: [{ type: Schema.Types.ObjectId, ref: 'User' }],

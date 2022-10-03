@@ -6,10 +6,12 @@ import { MdDelete, MdModeEdit } from 'react-icons/md';
 import TimeAgo from 'timeago-react';
 import { AuthContext } from '../../context/auth/AuthContext';
 import { PostContext } from '../../context/post-image/PostContext';
+import { ICommentPost } from '../../interface/post';
 import IconReply from '../Icons/IconReply';
 import IconShare from '../Icons/IconShare';
 import ListGroup from '../ListGroup/ListGroup';
-import ModalEditeComment from '../ModalEditeComment';
+import ModalComment from './ModalComment';
+import ReplyComment from './ReplyComment';
 interface CommentProps {
 	id: string;
 	avatar: string;
@@ -19,6 +21,7 @@ interface CommentProps {
 	likes: string[];
 	author: string;
 	desc: string;
+	replyTo: ICommentPost[] | [];
 }
 
 const listGroupItem = [
@@ -26,6 +29,10 @@ const listGroupItem = [
 	{ title: 'Delete', component: <MdDelete /> },
 	{ title: 'Close', component: <IoMdClose /> },
 ];
+enum actionModalComment {
+	EDITE_COMMENT = 'EDITE_COMMENT',
+	ADD_REPLY_COMMENT = 'ADD_REPLY_COMMENT',
+}
 
 const CommentSection = ({
 	id,
@@ -36,12 +43,14 @@ const CommentSection = ({
 	createdAt,
 	author,
 	desc,
+	replyTo,
 }: CommentProps) => {
 	const { state } = useContext(AuthContext);
 	const { deleteCommentPost, addLikeComment, removeLikeComment } =
 		useContext(PostContext);
 	const [showListGroup, setShowListGroup] = useState<boolean>(false);
 	const [showModal, setShowModal] = useState<boolean>(false);
+	const [showModalReply, setShowModalReply] = useState<boolean>(false);
 	const [isUser] = useState<boolean>(username === state.user?.username);
 
 	const handleListGroup = (action: string) => {
@@ -59,13 +68,12 @@ const CommentSection = ({
 	};
 
 	const onClose = (e: any) => {
-		if (e === 'close') {
-			return setShowModal(false);
-		}
 		if (e.target.classList.contains('fixed')) {
 			setShowModal(false);
+			setShowModalReply(false);
 		}
 	};
+
 	const handleLikeComment = () => {
 		const userId = state.user?._id;
 		if (userId) {
@@ -89,9 +97,11 @@ const CommentSection = ({
 				/>
 			)}
 			{showModal && (
-				<ModalEditeComment
+				<ModalComment
+					action={actionModalComment.EDITE_COMMENT}
 					onClose={onClose}
 					author={author}
+					setShowModal={setShowModal}
 					desc={desc}
 					comment={comment}
 					id={id!}
@@ -109,7 +119,7 @@ const CommentSection = ({
 					/>
 				</div>
 			</div>
-			<div className="flex-1 pl-1">
+			<div className="flex-1 pl-1 ">
 				<div className="text-base font-semibold text-gray-600">
 					{username}
 					<span className="text-sm mx-2 font-normal text-gray-500">
@@ -118,13 +128,21 @@ const CommentSection = ({
 				</div>
 				<div className="text-sm text-gray-600">{comment}</div>
 				<div className="flex items-center text-sm mt-1 space-x-3">
-					<a
-						href="#"
+					{showModalReply && (
+						<ModalComment
+							action={actionModalComment.ADD_REPLY_COMMENT}
+							setShowModal={setShowModalReply}
+							onClose={onClose}
+							id={id}
+						/>
+					)}
+					<button
+						onClick={() => setShowModalReply(!showModalReply)}
 						className="flex items-center text-blue-500 hover:text-blue-600"
 					>
 						<IconReply />
 						<span className="font-semibold">2 Reply</span>
-					</a>
+					</button>
 					<p className="flex items-center text-red-500 hover:text-red-600 group">
 						<span
 							className="cursor-pointer"
@@ -146,36 +164,19 @@ const CommentSection = ({
 						<span className="font-semibold">Share</span>
 					</a>
 				</div>
-				{/* --- */}
-				<ReplyComment />
+				{replyTo.length > 0 &&
+					replyTo.map(reply => (
+						<ReplyComment
+							key={reply._id}
+							username={reply.userId.username}
+							avatar={reply.userId.avatar}
+							comment={reply.comment}
+							createdAt={reply.created_at}
+						/>
+					))}
 			</div>
 		</div>
 	);
 };
 
 export default CommentSection;
-
-const ReplyComment = () => {
-	return (
-		<div className="flex flex-row mx-auto justify-between mt-4">
-			<div className="flex mr-2">
-				<div className="items-center justify-center w-10 h-10 mx-auto">
-					<img
-						alt="profil"
-						src="https://images.unsplash.com/photo-1604238473951-bf1492b379f8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTF8fHdvbWVuJTIwYXNpYXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
-						className="object-cover w-10 h-10 mx-auto rounded-full"
-					/>
-				</div>
-			</div>
-			<div className="flex-1">
-				<div className="text-base font-semibold text-gray-600">
-					Amanda J. Rich{' '}
-					<span className="text-sm font-normal text-gray-500">
-						- Feb 11, 2022
-					</span>
-				</div>
-				<div className="text-sm text-gray-600">Lorem ipsum dolor sit amet.</div>
-			</div>
-		</div>
-	);
-};

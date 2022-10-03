@@ -33,13 +33,14 @@ function PostComments({ author, desc }: { author: string; desc: string }) {
 							<CommentSection
 								key={cm._id}
 								id={cm._id}
-								avatar={cm.userId.avatar!}
+								avatar={cm.userId.avatar}
 								username={cm.userId.username}
 								likes={cm.likes}
 								comment={cm.comment}
 								createdAt={cm.created_at}
 								author={author}
 								desc={desc}
+								replyTo={cm.replyToId}
 							/>
 						))}
 				</div>

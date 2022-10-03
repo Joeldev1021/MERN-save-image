@@ -5,16 +5,20 @@ export interface IPostUpload {
     description: string;
     image: File
 }
+
 export interface ICommentPost {
     comment: string
     created_at: string
     imgId: string
     likes: string[]
     updatedAt: string
+    replyToId: ICommentPost[]
     userId: IUser
     __v?: number
     _id: string
 }
+
+
 export interface IPostEdite {
     id: string;
     title: string;
@@ -25,3 +29,4 @@ export interface IPostEdite {
 export interface ErrorPostResponse {
     errorMessage: string;
 }
+

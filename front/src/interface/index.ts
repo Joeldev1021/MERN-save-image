@@ -9,11 +9,11 @@ export interface IUserLogin {
 
 export interface IUser {
     _id: string
-    avatar?: string
+    avatar: string
     username: string
-    email: string
-    created_at: string
-    updatedAt: string
+    email?: string
+    created_at?: string
+    updatedAt?: string
     __v?: number
 }
 export interface AuthState {

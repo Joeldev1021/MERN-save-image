@@ -9,6 +9,7 @@ import {
 } from '../../api/postApi';
 import {
 	addCommentByPostApi,
+	addReplyCommentApi,
 	deleteCommentPostApi,
 	getCommentsPostApi,
 	updateCommentPostApi,
@@ -139,6 +140,7 @@ export const PostProvider = ({ children }: Props) => {
 			const response = await getCommentsPostApi(imgId);
 			if (response.data) {
 				const comments: ICommentPost[] = response.data;
+				console.log(comments);
 				dispatch({
 					type: PostActionType.LOAD_COMMENTS_POST_SUCCESS,
 					payload: comments,
@@ -199,6 +201,11 @@ export const PostProvider = ({ children }: Props) => {
 		} catch (error) {
 			console.log('error', error);
 		}
+	};
+
+	const addReplyComment = async (idComment: string, comment: string) => {
+		const response = await addReplyCommentApi(idComment, comment);
+		console.log(response);
 	};
 
 	const addLikePost = async (idPost: string, userIdByLike: string) => {
@@ -279,6 +286,7 @@ export const PostProvider = ({ children }: Props) => {
 				removeLikePost,
 				addLikeComment,
 				removeLikeComment,
+				addReplyComment,
 			}}
 		>
 			{children}

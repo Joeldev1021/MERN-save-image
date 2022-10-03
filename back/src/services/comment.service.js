@@ -10,9 +10,21 @@ class CommentService {
     }
 
     async findAllByIdImg(imgId) {
-        return CommentSchema.find({ imgId })
-            .populate('userId', { password: 0 })
-            .sort({ createdAt: -1 });
+        /*       return CommentSchema.find({ imgId })
+                   .populate('userId', { password: 0 })
+                   .sort({ createdAt: -1 });
+         */
+        return CommentSchema.find({ imgId }).populate([{
+            path: 'userId',
+            select: ['username', 'avatar']
+
+        }, {
+            path: 'replyToId',
+            populate: {
+                path: 'userId',
+                select: ['username', 'avatar']
+            }
+        }]);
     }
     /**
      * It creates a new comment, saves it, then populates the userId field with the user's data, and then
@@ -53,3 +65,10 @@ class CommentService {
 }
 
 module.exports = new CommentService();
+/*  return CommentSchema.findById('61b5227d9f17b3964c539849').populate({
+            path: 'replyToId',
+            populate: {
+                path: 'userId',
+                select: ['username', 'avatar']
+            }
+        }) */

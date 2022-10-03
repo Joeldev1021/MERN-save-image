@@ -17,6 +17,7 @@ export type PostContextProps = {
 	removeLikePost: (idPost: string, userIdBylike: string) => void;
 	addLikeComment: (idComment: string, userIdByLike: string) => void;
 	removeLikeComment: (idComment: string, userIdByLike: string) => void;
+	addReplyComment: (idComment: string, comment: string) => void;
 };
 
 export const PostContext = createContext<PostContextProps>(

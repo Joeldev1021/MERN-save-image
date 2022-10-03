@@ -4,11 +4,12 @@ const ReplyToController = require('../controller/replyTo.controller')
 
 const router = express.Router();
 
+router.get('/find-populate', ReplyToController.findCommentPopulate);
+
 router.get('/', ReplyToController.findAll);
 
 router.get('/:id', ReplyToController.findById)
 
-router.get('/find-populate', ReplyToController.findCommentPopulate);
 
 router.post('/add-replyTo/:id', verifyAuth, ReplyToController.create);
 

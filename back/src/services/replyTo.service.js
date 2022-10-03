@@ -13,23 +13,23 @@ class ReplyToService {
 
 
     async create(comment, replyTo) {
-        console.log('create')
         const newReply = new ReplyToSchema(replyTo)
         await newReply.save()
         comment.replyToId.push(newReply._id)
         await comment.save()
-        const commentPopulateReply = await CommentService.findById(comment._id)
+        const commentPopulateReply = await CommentService.getCommentPopulate(comment._id, 'replyToId')
         return commentPopulateReply
     }
 
     async findPopulateReply() {
-        console.log('hola')
-        // const findReply = await ReplyToSchema.findById("63385e9f0a7ad354291bb6c1").populate('commentId')
-        const findComment = await CommentSchema.findById('6195150f4163965718ce6184').populate('replyToId')
-        console.log('findComment', findComment)
-        //        console.log(findReply)
-        // replyID =63385e9f0a7ad354291bb6c1
-        // user 614520a2b9f7762db09b1393
+        /* Populating the replyToId field of the comment with the userId field of the replyToId. */
+        return CommentSchema.findById('61b5227d9f17b3964c539849').populate({
+            path: 'replyToId',
+            populate: {
+                path: 'userId',
+                select: ['username', 'avatar']
+            }
+        })
     }
 
     async update(id, data) {
