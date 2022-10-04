@@ -2,7 +2,12 @@ import { useState } from 'react';
 import ProfileDropDown from './ProfileDropDown';
 import { Link } from 'react-router-dom';
 
-const NavBar = () => {
+interface Props {
+	setSearchPost: (value: string) => void;
+	searchPost: string;
+}
+
+const Header = ({ setSearchPost, searchPost }: Props) => {
 	const [menuState, setMenuState] = useState<boolean>(false);
 
 	const navigation = [
@@ -59,6 +64,8 @@ const NavBar = () => {
 								className="w-full outline-none appearance-none placeholder-gray-500 text-gray-500 sm:w-auto"
 								type="text"
 								placeholder="Search"
+								value={searchPost}
+								onChange={e => setSearchPost(e.target.value)}
 							/>
 						</form>
 						<ProfileDropDown class="hidden lg:block" />
@@ -104,4 +111,4 @@ const NavBar = () => {
 		</header>
 	);
 };
-export default NavBar;
+export default Header;

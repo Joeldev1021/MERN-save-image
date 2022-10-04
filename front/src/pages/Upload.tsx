@@ -3,14 +3,15 @@ import { useNavigate } from 'react-router-dom';
 import Button from '../components/Button/Button';
 import { PostContext } from '../context/post-image/PostContext';
 import { IPostUpload } from '../interface/post';
+import DragAndDropZone from './DragAndDropZone';
 
-const URL_UPLOAD =
+export const URL_UPLOAD =
 	'https://img.freepik.com/free-vector/image-upload-concept-landing-page_52683-27130.jpg?size=338&ext=jpg';
 
 const Upload = () => {
 	const { uploadPost, state } = useContext(PostContext);
 	const navigate = useNavigate();
-	const [formPost, setformPost] = useState<IPostUpload>({} as IPostUpload);
+	const [formPost, setFormPost] = useState<IPostUpload>({} as IPostUpload);
 
 	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -23,12 +24,12 @@ const Upload = () => {
 	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
 		if (e.target.files) {
 			const file = e.target.files[0];
-			setformPost((prev: IPostUpload) => ({
+			setFormPost((prev: IPostUpload) => ({
 				...prev,
 				[e.target.name]: file,
 			}));
 		} else {
-			setformPost((prev: IPostUpload) => ({
+			setFormPost((prev: IPostUpload) => ({
 				...prev,
 				[e.target.name]: e.target.value,
 			}));
@@ -76,37 +77,12 @@ const Upload = () => {
 						<label className="text-sm font-bold text-gray-500 tracking-wide">
 							Attach Document
 						</label>
-						<div className="flex items-center justify-center w-full">
-							<label className="flex flex-col rounded-lg border-4 border-dashed w-full h-60 p-10 group text-center">
-								<div className="h-full w-full text-center flex flex-col items-center justify-center   ">
-									<div className="flex flex-auto max-h-48 w-2/5 mx-auto -mt-10">
-										<img
-											className="has-mask h-36 object-contain"
-											src={
-												formPost.image
-													? URL.createObjectURL(formPost.image)
-													: URL_UPLOAD
-											}
-											alt="freepik image"
-										/>
-									</div>
-									<p className="pointer-none text-gray-500 ">
-										<span className="text-sm">Drag and drop</span> files here{' '}
-										<br /> or{' '}
-										<span id="" className="text-blue-600 hover:underline">
-											select a file
-										</span>{' '}
-										from your computer
-									</p>
-								</div>
-								<input
-									type="file"
-									name="image"
-									onChange={e => handleChange(e)}
-									className="hidden"
-								/>
-							</label>
-						</div>
+						{/* drogAndDropZone */}
+						<DragAndDropZone
+							formPost={formPost}
+							setFormPost={setFormPost}
+							handleChange={handleChange}
+						/>
 					</div>
 					<p className="text-sm text-gray-300">
 						<span>File type: png jpg of images</span>

@@ -1,10 +1,22 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { PostContext } from '../context/post-image/PostContext';
 import { IPostUser } from '../interface';
 import Card from './Card';
 
-const CardList = () => {
+interface Props {
+	searchPost: string;
+}
+
+const CardList = ({ searchPost }: Props) => {
 	const { state } = useContext(PostContext);
+	const [filterPost, setFilterPost] = useState<IPostUser[]>(state.postAll);
+
+	useEffect(() => {
+		setFilterPost(
+			filterPost.filter(post => !post.title.toLowerCase().includes(searchPost))
+		);
+	}, [searchPost, state.postAll]);
+
 	return (
 		<section className="mt-40 mx-auto px-4 max-w-screen-xl lg:px-8">
 			<div className="text-center">
