@@ -156,13 +156,10 @@ const CommentSection = ({
 						</span>
 						<span className="font-semibold mx-1">{likes.length}</span>
 					</p>
-					<a
-						href="#"
-						className="flex items-center text-blue-500 hover:text-blue-600"
-					>
+					<p className="flex items-center text-blue-500 hover:text-blue-600">
 						<IconShare />
 						<span className="font-semibold">Share</span>
-					</a>
+					</p>
 				</div>
 				{replyTo.length > 0 &&
 					replyTo.map(reply => (

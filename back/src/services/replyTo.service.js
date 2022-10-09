@@ -17,7 +17,7 @@ class ReplyToService {
         await newReply.save()
         comment.replyToId.push(newReply._id)
         await comment.save()
-        const commentPopulateReply = await CommentService.getCommentPopulate(comment._id, 'replyToId')
+        const commentPopulateReply = await CommentService.getCommentPopulateByReply(comment._id)
         return commentPopulateReply
     }
 

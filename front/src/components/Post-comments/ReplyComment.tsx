@@ -12,7 +12,7 @@ interface ReplyProps {
 
 const ReplyComment = ({ avatar, username, comment, createdAt }: ReplyProps) => {
 	return (
-		<div className="bg-red-400">
+		<div className="">
 			<div className="flex flex-row mx-auto justify-between mt-4 ">
 				<div className="flex mr-2">
 					<div className="items-center justify-center w-10 h-10 mx-auto">

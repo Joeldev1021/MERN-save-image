@@ -62,13 +62,16 @@ class CommentService {
     async getCommentPopulate(id, value) {
         return CommentSchema.findById(id).populate(value, { password: 0 });
     }
-}
 
-module.exports = new CommentService();
-/*  return CommentSchema.findById('61b5227d9f17b3964c539849').populate({
+    async getCommentPopulateByReply(idComment) {
+        return CommentSchema.findById(idComment).populate([{
             path: 'replyToId',
             populate: {
                 path: 'userId',
                 select: ['username', 'avatar']
             }
-        }) */
+        }]);
+    }
+}
+
+module.exports = new CommentService();

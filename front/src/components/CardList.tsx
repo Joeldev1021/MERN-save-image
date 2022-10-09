@@ -12,11 +12,19 @@ const CardList = ({ searchPost }: Props) => {
 	const [filterPost, setFilterPost] = useState<IPostUser[]>(state.postAll);
 
 	useEffect(() => {
-		setFilterPost(
-			filterPost.filter(post => !post.title.toLowerCase().includes(searchPost))
-		);
+		if (searchPost.length > 0) {
+			setFilterPost(
+				state.postAll.filter(
+					post =>
+						post.title.toLocaleLowerCase().includes(searchPost) ||
+						post.description.toLocaleLowerCase().includes(searchPost)
+				)
+			);
+		} else {
+			setFilterPost(state.postAll);
+		}
 	}, [searchPost, state.postAll]);
-
+	console.log('filter post', filterPost);
 	return (
 		<section className="mt-40 mx-auto px-4 max-w-screen-xl lg:px-8">
 			<div className="text-center">
@@ -26,7 +34,7 @@ const CardList = ({ searchPost }: Props) => {
 				</p>
 			</div>
 			{state.postAll &&
-				state.postAll.map((post: IPostUser) => {
+				filterPost.map((post: IPostUser) => {
 					const authorId =
 						typeof post.userId === 'object' ? post.userId._id : post.userId;
 					const username =

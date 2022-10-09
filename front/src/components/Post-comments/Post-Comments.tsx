@@ -15,6 +15,7 @@ function PostComments({ author, desc }: { author: string; desc: string }) {
 		await addCommentByPost(id!, comment);
 		setComment('');
 	};
+	console.log(state.commentByPost);
 
 	return (
 		<section className="place-items-center border   h-auto  ">
