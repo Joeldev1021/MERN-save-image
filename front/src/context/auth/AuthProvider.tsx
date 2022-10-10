@@ -1,5 +1,5 @@
-import { useReducer } from 'react';
-import { loginApi, logoutApi } from '../../api/authApi';
+import { useEffect, useReducer } from 'react';
+import { loginApi, logoutApi, refreshTokenApi } from '../../api/authApi';
 import { getProfileApi, updateAvatarApi } from '../../api/userApi';
 import { AuthState, IUserLogin } from '../../interface';
 import { AuthContext } from './AuthContext';
@@ -82,6 +82,27 @@ export const AuthProvider = ({ children }: Props) => {
 			console.log(error);
 		}
 	};
+
+	const refresToken = async () => {
+		dispatch({ type: 'LOADING_REFRESH_TOKEN' });
+		try {
+			const { data } = await refreshTokenApi();
+			if (data.token) {
+				dispatch({
+					type: 'LOADING_REFRESH_TOKEN_SUCCESS',
+					payload: { token: data.token },
+				});
+
+				localStorage.setItem('token', data.token);
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	useEffect(() => {
+		refresToken();
+	}, []);
 
 	return (
 		<AuthContext.Provider value={{ state, login, logout, updateAvatar }}>

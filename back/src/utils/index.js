@@ -6,6 +6,8 @@ const generateToken = async user => {
 	});
 };
 
+
+
 const destroyToken = async authToken => {
 	return jwt.sign({ authToken }, 'logout', { expiresIn: 1 });
 };

@@ -46,6 +46,15 @@ class AuthService {
         }
     }
 
+    async refreshToken(user) {
+        try {
+            return generateToken(user);
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
     async logout(authToken) {
         try {
             const isLogout = await destroyToken(authToken);

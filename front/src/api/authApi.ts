@@ -12,6 +12,7 @@ export const loginApi = async (user: IUserLogin) => axiosInter.post<ILoginApi>(`
 
 export const logoutApi = async () => {
     return axiosInter.post('/auth/logout')
-
 }
+
+export const refreshTokenApi = async () => axiosInter.post<ILoginApi>('/auth/refresh')
 
