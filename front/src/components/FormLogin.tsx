@@ -29,7 +29,6 @@ const FormLogin = ({ login, errorMessage, loading }: LoginProps) => {
 	const handleSubmit = async (e: FormEvent) => {
 		e.preventDefault();
 		await login(formData);
-		console.log(errorMessage);
 		if (errorMessage === undefined) {
 			navigateRoutes('/my-post');
 		}

@@ -6,18 +6,28 @@ export interface IPostUpload {
     image: File
 }
 
+export interface IComment {
+    _id: string
+    comment: string
+    likes: string[]
+    updatedAt: string
+    created_at: string
+}
+export interface IReply extends IComment {
+    userId: IUser,
+}
+
 export interface ICommentPost {
+    _id: string
     comment: string
     created_at: string
     imgId: string
     likes: string[]
     updatedAt: string
-    replyToId: ICommentPost[]
+    replyToId: IReply[]
     userId: IUser
     __v?: number
-    _id: string
 }
-
 
 export interface IPostEdite {
     id: string;

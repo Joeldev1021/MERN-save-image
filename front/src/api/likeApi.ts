@@ -8,3 +8,7 @@ export const likePostApi = async (id: string) => {
 export const likeCommentApi = async (idComment: string) => {
     return axiosInter.post(`/post-like/comment/${idComment}`)
 }
+
+export const likeReplyApi = async (idComment: string) => {
+    return axiosInter.post(`/reply-like/${idComment}`)
+}

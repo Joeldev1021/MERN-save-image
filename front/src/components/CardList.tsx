@@ -24,7 +24,6 @@ const CardList = ({ searchPost }: Props) => {
 			setFilterPost(state.postAll);
 		}
 	}, [searchPost, state.postAll]);
-	console.log('filter post', filterPost);
 	return (
 		<section className="mt-40 mx-auto px-4 max-w-screen-xl lg:px-8">
 			<div className="text-center">

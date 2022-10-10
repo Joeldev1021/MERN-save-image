@@ -1,5 +1,5 @@
 import { IPostUser, IPostState } from '../../interface';
-import { ICommentPost } from '../../interface/post';
+import { ICommentPost, IReply } from '../../interface/post';
 import { PostActionType } from '../actions/post';
 
 type PostAction =
@@ -50,6 +50,8 @@ type PostAction =
     | { type: PostActionType.LOAD_ADD_LIKE_COMMENT_SUCCESS; payload: { idComment: string, userIdByLike: string } }
     /* remove like comment */
     | { type: PostActionType.LOAD_REMOVE_LIKE_COMMENT_SUCCESS; payload: { idComment: string, userIdByLike: string } }
+    /* reply comment */
+    | { type: PostActionType.LOAD_REPLY_COMMENT_SUCCESS; payload: { reply: IReply, idComment: string } }
 
 export const postReducer = (state: IPostState, action: PostAction) => {
     switch (action.type) {
@@ -202,6 +204,15 @@ export const postReducer = (state: IPostState, action: PostAction) => {
                     : cm),
                 errorMessage: null
             }
+        case PostActionType.LOAD_REPLY_COMMENT_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                commentByPost: state.commentByPost.map(cm => cm._id === action.payload.idComment ? {
+                    ...cm, replyToId: [...cm.replyToId, action.payload.reply]
+                } : cm)
+            }
+
 
         default:
             return { ...state };

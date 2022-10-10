@@ -1,5 +1,5 @@
 import { IPostUser } from '../interface';
-import { ICommentPost, IPostUpload } from '../interface/post';
+import { IPostUpload } from '../interface/post';
 import { axiosInter } from './utils';
 
 

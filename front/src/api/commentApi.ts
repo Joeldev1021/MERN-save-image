@@ -1,4 +1,4 @@
-import { ICommentPost } from "../interface/post"
+import { ICommentPost, IReply } from "../interface/post"
 import { axiosInter } from "./utils"
 
 export const getCommentsPostApi = async (id: string) => {
@@ -18,6 +18,6 @@ export const deleteCommentPostApi = async (id: string) => {
 }
 
 export const addReplyCommentApi = async (idComment: string, comment: string) => {
-    return axiosInter.post<ICommentPost>(`/replyTo/add-replyTo/${idComment}`, { comment })
+    return axiosInter.post<IReply>(`/replyTo/add-replyTo/${idComment}`, { comment })
 }
 

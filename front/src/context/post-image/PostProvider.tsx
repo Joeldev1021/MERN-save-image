@@ -14,7 +14,7 @@ import {
 	getCommentsPostApi,
 	updateCommentPostApi,
 } from '../../api/commentApi';
-import { likeCommentApi, likePostApi } from '../../api/likeApi';
+import { likeCommentApi, likePostApi, likeReplyApi } from '../../api/likeApi';
 import { IPostUser, IPostState } from '../../interface';
 import {
 	ErrorPostResponse,
@@ -205,7 +205,17 @@ export const PostProvider = ({ children }: Props) => {
 
 	const addReplyComment = async (idComment: string, comment: string) => {
 		const response = await addReplyCommentApi(idComment, comment);
-		console.log(response);
+		try {
+			console.log(response);
+			if (response.data) {
+				dispatch({
+					type: PostActionType.LOAD_REPLY_COMMENT_SUCCESS,
+					payload: { reply: response.data, idComment },
+				});
+			}
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	const addLikePost = async (idPost: string, userIdByLike: string) => {
@@ -250,6 +260,12 @@ export const PostProvider = ({ children }: Props) => {
 			payload: { idComment, userIdByLike },
 		});
 		const response = await likeCommentApi(idComment);
+		console.log(response);
+	};
+
+	const addLikeReply = async (idReply: string) => {
+		const response = await likeReplyApi(idReply);
+		console.log(response);
 	};
 
 	/**
@@ -287,6 +303,7 @@ export const PostProvider = ({ children }: Props) => {
 				addLikeComment,
 				removeLikeComment,
 				addReplyComment,
+				addLikeReply,
 			}}
 		>
 			{children}

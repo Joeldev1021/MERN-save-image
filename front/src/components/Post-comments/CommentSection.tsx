@@ -1,17 +1,17 @@
-import { useContext, useState } from 'react';
-import { BsHeart, BsHeartFill } from 'react-icons/bs';
-import { FaEllipsisV } from 'react-icons/fa';
-import { IoMdClose } from 'react-icons/io';
-import { MdDelete, MdModeEdit } from 'react-icons/md';
 import TimeAgo from 'timeago-react';
-import { AuthContext } from '../../context/auth/AuthContext';
-import { PostContext } from '../../context/post-image/PostContext';
-import { ICommentPost } from '../../interface/post';
 import IconReply from '../Icons/IconReply';
 import IconShare from '../Icons/IconShare';
 import ListGroup from '../ListGroup/ListGroup';
 import ModalComment from './ModalComment';
 import ReplyComment from './ReplyComment';
+import { useContext, useState } from 'react';
+import { BsHeart, BsHeartFill } from 'react-icons/bs';
+import { FaEllipsisV } from 'react-icons/fa';
+import { IoMdClose } from 'react-icons/io';
+import { MdDelete, MdModeEdit } from 'react-icons/md';
+import { AuthContext } from '../../context/auth/AuthContext';
+import { PostContext } from '../../context/post-image/PostContext';
+import { IReply } from '../../interface/post';
 interface CommentProps {
 	id: string;
 	avatar: string;
@@ -21,7 +21,7 @@ interface CommentProps {
 	likes: string[];
 	author: string;
 	desc: string;
-	replyTo: ICommentPost[] | [];
+	replyTo: IReply[];
 }
 
 const listGroupItem = [
@@ -141,7 +141,7 @@ const CommentSection = ({
 						className="flex items-center text-blue-500 hover:text-blue-600"
 					>
 						<IconReply />
-						<span className="font-semibold">2 Reply</span>
+						<span className="font-semibold">{replyTo.length}</span>
 					</button>
 					<p className="flex items-center text-red-500 hover:text-red-600 group">
 						<span
@@ -165,9 +165,11 @@ const CommentSection = ({
 					replyTo.map(reply => (
 						<ReplyComment
 							key={reply._id}
+							idReply={reply._id}
 							username={reply.userId.username}
 							avatar={reply.userId.avatar}
 							comment={reply.comment}
+							likes={reply.likes}
 							createdAt={reply.created_at}
 						/>
 					))}

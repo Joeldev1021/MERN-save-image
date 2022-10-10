@@ -65,6 +65,7 @@ export const AuthProvider = ({ children }: Props) => {
 			dispatch({ type: 'LOGOUT_ERROR' });
 		}
 	};
+
 	const updateAvatar = async (avatar: File) => {
 		const id = state.user?._id || '';
 		dispatch({ type: 'LOADING_UPDATE_AVATAR' });
@@ -75,7 +76,7 @@ export const AuthProvider = ({ children }: Props) => {
 					type: 'LOADING_UPDATE_AVATAR_SUCCESS',
 					payload: response.data,
 				});
-				localStorage.setItem('user', response.data);
+				localStorage.setItem('user', JSON.stringify(response.data));
 			}
 		} catch (error) {
 			console.log(error);

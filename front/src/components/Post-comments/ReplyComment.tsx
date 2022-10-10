@@ -1,16 +1,35 @@
-import { BsHeartFill } from 'react-icons/bs';
+import { useContext } from 'react';
+import { BsHeart, BsHeartFill } from 'react-icons/bs';
 import TimeAgo from 'timeago-react';
+import { AuthContext } from '../../context/auth/AuthContext';
+import { PostContext } from '../../context/post-image/PostContext';
 import IconReply from '../Icons/IconReply';
 import IconShare from '../Icons/IconShare';
 
 interface ReplyProps {
+	idReply: string;
 	avatar: string;
 	username: string;
 	comment: string;
+	likes: string[];
 	createdAt: string;
 }
 
-const ReplyComment = ({ avatar, username, comment, createdAt }: ReplyProps) => {
+const ReplyComment = ({
+	idReply,
+	avatar,
+	username,
+	comment,
+	likes,
+	createdAt,
+}: ReplyProps) => {
+	const { addLikeReply } = useContext(PostContext);
+	const { state } = useContext(AuthContext);
+
+	const handleLikeReply = () => {
+		addLikeReply(idReply);
+	};
+
 	return (
 		<div className="">
 			<div className="flex flex-row mx-auto justify-between mt-4 ">
@@ -31,6 +50,29 @@ const ReplyComment = ({ avatar, username, comment, createdAt }: ReplyProps) => {
 						</span>
 					</div>
 					<div className="text-sm text-gray-600">{comment}</div>
+					<div className="flex items-center text-sm mt-1 space-x-3">
+						<button className="flex items-center text-blue-500 hover:text-blue-600">
+							<IconReply />
+							<span className="font-semibold">2 Reply</span>
+						</button>
+						<p className="flex items-center text-red-500 hover:text-red-600 group">
+							<span
+								className="cursor-pointer"
+								onClick={() => handleLikeReply()}
+							>
+								{state.user && likes.includes(state.user?._id) ? (
+									<BsHeartFill />
+								) : (
+									<BsHeart />
+								)}
+							</span>
+							<span className="font-semibold mx-1">{likes.length}</span>
+						</p>
+						<p className="flex items-center text-blue-500 hover:text-blue-600">
+							<IconShare />
+							<span className="font-semibold">Share</span>
+						</p>
+					</div>
 				</div>
 			</div>
 		</div>

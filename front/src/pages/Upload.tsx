@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Button from '../components/Button/Button';
 import { PostContext } from '../context/post-image/PostContext';
 import { IPostUpload } from '../interface/post';
-import DragAndDropZone from './DragAndDropZone';
+import DragAndDropZone from '../components/DragAndDropZone';
 
 export const URL_UPLOAD =
 	'https://img.freepik.com/free-vector/image-upload-concept-landing-page_52683-27130.jpg?size=338&ext=jpg';
