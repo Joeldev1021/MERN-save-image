@@ -1,6 +1,4 @@
-const CommentSchema = require("../models/comment.schema")
 const ReplyToSchema = require("../models/replyTo.schema")
-const CommentService = require("./comment.service")
 
 class ReplyToService {
     async findById(id) {
@@ -11,25 +9,27 @@ class ReplyToService {
         return ReplyToSchema.find()
     }
 
-
     async create(comment, replyTo) {
         const newReply = new ReplyToSchema(replyTo)
         await newReply.save()
         comment.replyToId.push(newReply._id)
         await comment.save()
-        const commentPopulateReply = await CommentService.getCommentPopulateByReply(comment._id)
-        return commentPopulateReply
+        /* const commentPopulateReply = await CommentService.getCommentPopulateByReply(comment._id)
+        return commentPopulateReply */
+        return ReplyToSchema.findById(newReply._id).populate({
+            path: "userId",
+            select: ["username", "avatar"]
+        })
     }
 
     async findPopulateReply() {
         /* Populating the replyToId field of the comment with the userId field of the replyToId. */
-        return CommentSchema.findById('61b5227d9f17b3964c539849').populate({
-            path: 'replyToId',
-            populate: {
-                path: 'userId',
-                select: ['username', 'avatar']
-            }
+        return ReplyToSchema.findById('633c33c89737ee6185cc88b5').populate({
+            path: 'userId',
+            select: ['username', 'avatar']
+
         })
+        // return CommentService.getCommentPopulateByReply('6195140618144b6604eff0c7')
     }
 
     async update(id, data) {

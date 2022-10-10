@@ -18,7 +18,18 @@ class LikeService {
                 (like) => like.toString() !== userId.toString()
             );
         }
-        return await comment.save();
+        return comment.save();
+    }
+
+    async likeReply(reply, userId) {
+        if (!reply.likes.includes(userId)) {
+            reply.likes = reply.likes.concat(userId);
+        } else {
+            reply.likes = reply.likes.filter(
+                (like) => like.toString() !== userId.toString()
+            );
+        }
+        return reply.save();
     }
 }
 

@@ -17,10 +17,10 @@ class ReplyToController {
     }
 
 
-    async findById(req, res, next) {
+    /* async findById(req, res, next) {
         const foundReplys = await ReplyToService.findAll()
         res.send(foundReplys);
-    }
+    } */
 
     async create(req, res, next) {
         const { id } = req.params

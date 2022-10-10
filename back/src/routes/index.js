@@ -14,5 +14,6 @@ router.use('/post', postRoutes);
 router.use('/post-comment', commentRoutes);
 router.use('/post-like', likeRoutes);
 router.use('/replyTo', replyToRoutes);
+router.use('/reply-like', likeRoutes);
 
 module.exports = router;

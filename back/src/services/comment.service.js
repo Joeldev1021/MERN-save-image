@@ -72,6 +72,16 @@ class CommentService {
             }
         }]);
     }
+
+    async getCommentPopulateAux(idComment) {
+        return CommentSchema.findById("61951550eb99ce160cc3cd15").populate([{
+            path: 'replyToId',
+            populate: {
+                path: 'userId',
+                select: ['username', 'avatar']
+            }
+        }]);
+    }
 }
 
 module.exports = new CommentService();
