@@ -10,6 +10,10 @@ class AuthService {
             if (userFoundEmail) {
                 throw new Error(`User with this email ${user.email} already`);
             }
+            const userFoundByUsername = await UserService.findByUsername(user.username);
+            if (userFoundByUsername) {
+                throw new Error(`username ${user.username} alredy exists`)
+            }
 
             const hashedPassword = await bcrypt.hash(user.password, 10);
             const userSave = await UserService.create({
@@ -21,7 +25,7 @@ class AuthService {
                 token: tokenData,
             };
         } catch (error) {
-            throw new Error(error);
+            throw new Error(error)
         }
     }
 
@@ -47,11 +51,7 @@ class AuthService {
     }
 
     async refreshToken(user) {
-        try {
-            return generateToken(user);
-        } catch (error) {
-            console.log(error)
-        }
+        return generateToken(user);
 
     }
 
