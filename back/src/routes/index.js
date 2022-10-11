@@ -15,5 +15,9 @@ router.use('/post-comment', commentRoutes);
 router.use('/post-like', likeRoutes);
 router.use('/replyTo', replyToRoutes);
 router.use('/reply-like', likeRoutes);
+router.get('/', (req, res) => {
+
+    res.send('hello word')
+})
 
 module.exports = router;
