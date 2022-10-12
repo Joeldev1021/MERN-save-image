@@ -1,10 +1,7 @@
 import { ICommentPost } from "./post"
 
 
-export interface IUserLogin {
-    email: string
-    password: string
-}
+
 
 
 export interface IUser {
@@ -17,7 +14,7 @@ export interface IUser {
     __v?: number
 }
 export interface AuthState {
-    token: string
+    token: string | null
     user: IUser | null
     loading: boolean
     errorMessage?: string

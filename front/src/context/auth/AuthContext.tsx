@@ -1,9 +1,11 @@
 import { createContext } from 'react';
-import { AuthState, IUserLogin } from '../../interface';
+import { AuthState, IUser } from '../../interface';
+import { IUserRegister, IUserLogin } from '../../interface/auth';
 
 export type AuthContextProps = {
 	state: AuthState;
-	login: (userLogin: IUserLogin) => void;
+	login: (userLogin: IUserLogin) => Promise<IUser | undefined>;
+	register: (userRegister: IUserRegister) => Promise<IUser | undefined>;
 	logout: () => void;
 	updateAvatar: (avatar: any) => void;
 };

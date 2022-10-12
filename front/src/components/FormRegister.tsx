@@ -1,26 +1,55 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, {
+	ChangeEvent,
+	FormEvent,
+	useContext,
+	useEffect,
+	useState,
+} from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/auth/AuthContext';
+import { IUserRegister } from '../interface/auth';
+import AlertForm from './AlertForm';
 import Button from './Button/Button';
 import Input from './Input';
 
-interface IRegisterUser {
-	username: string;
-	email: string;
-	password: string;
-}
-
 const FormRegister = () => {
-	const [registerUser, setRegisterUser] = useState<IRegisterUser>(
-		{} as IRegisterUser
+	const { state, register } = useContext(AuthContext);
+	const [errorMsg, setErrorMsg] = useState<string | undefined>(
+		state.errorMessage
 	);
+	const navigateRoute = useNavigate();
+
+	const [registerUser, setRegisterUser] = useState<IUserRegister>(
+		{} as IUserRegister
+	);
+
 	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-		setRegisterUser((prev: IRegisterUser) => ({
+		setRegisterUser((prev: IUserRegister) => ({
 			...prev,
 			[e.target.name]: e.target.value,
 		}));
 	};
 
+	const handleSubmit = async (e: FormEvent) => {
+		e.preventDefault();
+		const user = await register(registerUser);
+		if (user) {
+			navigateRoute('/');
+		}
+	};
+
+	useEffect(() => {
+		if (state.errorMessage) {
+			setErrorMsg(state.errorMessage);
+		}
+		setTimeout(() => {
+			setErrorMsg(undefined);
+		}, 3000);
+	}, [state.errorMessage]);
+
 	return (
-		<form action="">
+		<form onSubmit={handleSubmit}>
+			{errorMsg && <AlertForm errorMsg={errorMsg} />}
 			<Input
 				handleChange={handleChange}
 				defaultValue={registerUser.username}
@@ -52,17 +81,12 @@ const FormRegister = () => {
 			</Button>
 			<p className="text-center">
 				Already have an account?
-				<a className="text-blue-600" href="">
+				<Link className="text-blue-600 pl-2" to="/login">
 					Login here
-				</a>{' '}
+				</Link>{' '}
 			</p>
 		</form>
 	);
 };
 
 export default FormRegister;
-/*     {
-	"username": "sebastian",
-	"email": "sebastian.gmail.com",
-	"password": "1234"
-} */

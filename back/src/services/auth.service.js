@@ -1,23 +1,24 @@
-const UserService = require('./user.service');
+const UserService = require('../services/user.service');
 const bcrypt = require('bcrypt');
 const { generateToken, destroyToken } = require('../utils');
 // const { HttpStatus } = require('../config/httpStatus');
 
 class AuthService {
-    async register({ user }) {
+    async register(username, email, password) {
         try {
-            const userFoundEmail = await UserService.findByEmail(user.email);
+            const userFoundEmail = await UserService.findByEmail(email);
             if (userFoundEmail) {
-                throw new Error(`User with this email ${user.email} already`);
+                throw new Error(`User with this email ${email} already`);
             }
-            const userFoundByUsername = await UserService.findByUsername(user.username);
+            const userFoundByUsername = await UserService.findByUsername(username);
             if (userFoundByUsername) {
-                throw new Error(`username ${user.username} alredy exists`)
+                throw new Error(`username ${username} alredy exists`)
             }
 
-            const hashedPassword = await bcrypt.hash(user.password, 10);
+            const hashedPassword = await bcrypt.hash(password, 10);
             const userSave = await UserService.create({
-                ...user,
+                username,
+                email,
                 password: hashedPassword,
             });
             const tokenData = await generateToken(userSave);

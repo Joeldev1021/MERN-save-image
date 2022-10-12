@@ -3,15 +3,20 @@ const AuthService = require('../services/auth.service');
 
 class AuthController {
     async register(req, res, next) {
+        const { username, email, password, ...rest } = req.body
         try {
-            const responseUser = await AuthService.register({ user: req.body });
-            if (!responseUser)
-                res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(
-                    'user not registered'
-                );
-            res.status(200).send({
-                token: responseUser.token,
-            });
+            if (!username && !password && !email) {
+                throw new Error('missing username or password or email')
+            }
+            if (Object.keys(rest).length > 0) {
+                throw new Error('unnecessary fields ')
+            }
+            const responseUser = await AuthService.register(username, email, password);
+            if (responseUser) {
+                res.status(200).send({
+                    token: responseUser.token,
+                });
+            }
         } catch (error) {
             next(error);
         }

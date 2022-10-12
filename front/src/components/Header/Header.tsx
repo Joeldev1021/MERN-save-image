@@ -11,7 +11,7 @@ const Header = ({ setSearchPost, searchPost }: Props) => {
 	const [menuState, setMenuState] = useState<boolean>(false);
 
 	const navigation = [
-		{ title: 'Login', path: '/login' },
+		{ title: 'Register', path: '/register' },
 		{ title: 'My Post', path: '/my-post' },
 		{ title: 'Upload', path: '/upload' },
 	];

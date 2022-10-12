@@ -2,6 +2,9 @@ import { AuthState, IUser } from "../../interface"
 
 
 type AuthAction =
+    | { type: "SIGNUP_LOADING" }
+    | { type: "SIGNUP_SUCCESS", payload: { token: string, user: IUser } }
+    | { type: "SIGNUP_ERROR", payload: string }
     | { type: "LOGIN_LOADING" }
     | { type: "LOGIN_SUCCESS", payload: { token: string, user: IUser } }
     | { type: "LOGIN_ERROR", payload: string }
@@ -18,18 +21,28 @@ type AuthAction =
 export const authReducer = (state: AuthState, action: AuthAction) => {
 
     switch (action.type) {
+        /* ==== signup ===== */
+        case "SIGNUP_LOADING":
+            return { ...state, token: null, user: null, loading: true, errorMessage: undefined }
+        case "SIGNUP_SUCCESS":
+            return { ...state, token: action.payload.token, user: action.payload.user, errorMessage: undefined, loading: false }
+        case "SIGNUP_ERROR":
+            return { ...state, token: null, user: null, errorMessage: action.payload, loading: false }
+        /* loguin */
         case "LOGIN_LOADING":
             return { ...state, loading: true, errorMessage: undefined }
         case "LOGIN_SUCCESS":
             return { ...state, token: action.payload.token, user: action.payload.user, errorMessage: undefined, loading: false }
         case "LOGIN_ERROR":
-            return { ...state, errorMessage: action.payload, loading: false }
+            return { ...state, token: null, user: null, errorMessage: action.payload, loading: false }
+        /* logout */
         case "LOGOUT_LOADING":
-            return { ...state, loading: true }
+            return { ...state, errorMessage: undefined, loading: true }
         case "LOGOUT_SUCCESS":
-            return { ...state, token: '', user: null, loading: false }
+            return { ...state, token: null, user: null, loading: false }
         case "LOGOUT_ERROR":
             return { ...state, errorMessage: "not logout" }
+        /* refresh token */
         case "LOADING_REFRESH_TOKEN":
             return { ...state, errorMessage: undefined, loading: false }
         case "LOADING_REFRESH_TOKEN_SUCCESS":

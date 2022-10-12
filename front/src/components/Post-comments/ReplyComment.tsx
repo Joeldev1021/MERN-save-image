@@ -1,10 +1,9 @@
 import { useContext } from 'react';
-import { BsHeart, BsHeartFill } from 'react-icons/bs';
+import { BsHeart, BsHeartFill, BsTrashFill } from 'react-icons/bs';
+import { AiFillEdit } from 'react-icons/ai';
 import TimeAgo from 'timeago-react';
 import { AuthContext } from '../../context/auth/AuthContext';
 import { PostContext } from '../../context/post-image/PostContext';
-import IconReply from '../Icons/IconReply';
-import IconShare from '../Icons/IconShare';
 
 interface ReplyProps {
 	idReply: string;
@@ -51,9 +50,8 @@ const ReplyComment = ({
 					</div>
 					<div className="text-sm text-gray-600">{comment}</div>
 					<div className="flex items-center text-sm mt-1 space-x-3">
-						<button className="flex items-center text-blue-500 hover:text-blue-600">
-							<IconReply />
-							<span className="font-semibold">2 Reply</span>
+						<button className="flex items-center text-base text-blue-500 hover:text-blue-600">
+							<AiFillEdit />
 						</button>
 						<p className="flex items-center text-red-500 hover:text-red-600 group">
 							<span
@@ -68,9 +66,8 @@ const ReplyComment = ({
 							</span>
 							<span className="font-semibold mx-1">{likes.length}</span>
 						</p>
-						<p className="flex items-center text-blue-500 hover:text-blue-600">
-							<IconShare />
-							<span className="font-semibold">Share</span>
+						<p className="flex items-center text-red-500 text-base hover:text-blue-600">
+							<BsTrashFill />
 						</p>
 					</div>
 				</div>

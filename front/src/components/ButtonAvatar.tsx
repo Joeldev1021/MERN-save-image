@@ -1,5 +1,4 @@
 import React, { Dispatch, SetStateAction } from 'react';
-import { IUser } from '../interface';
 
 const avatarRandom = 'https://randomuser.me/api/portraits/men/46.jpg';
 

@@ -1,11 +1,7 @@
-import React, { useContext } from 'react';
 import BannerForm from '../../components/BannerForm';
 import FormLogin from '../../components/FormLogin';
-import { AuthContext } from '../../context/auth/AuthContext';
 
 const LoginPage = () => {
-	const { login, state } = useContext(AuthContext);
-
 	return (
 		<section className="h-screen mt-20">
 			{/* {state.token && <Navigate to="/" />} */}
@@ -13,11 +9,7 @@ const LoginPage = () => {
 				<div className="flex justify-center items-center flex-wrap h-full g-6 text-gray-800">
 					<BannerForm />
 					<div className="md:w-8/12 lg:w-5/12 lg:ml-20">
-						<FormLogin
-							login={login}
-							errorMessage={state.errorMessage}
-							loading={state.loading}
-						/>
+						<FormLogin />
 					</div>
 				</div>
 			</div>

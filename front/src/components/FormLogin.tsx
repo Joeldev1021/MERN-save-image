@@ -1,6 +1,3 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { IUserLogin } from '../interface';
 import AlertForm from './AlertForm';
 import Button from './Button/Button';
 import ButtonSocialForm from './Button/ButtonSocialForm';
@@ -8,17 +5,18 @@ import Facebook from './Icons/Facebook';
 import Twitter from './Icons/Twitter';
 import Input from './Input';
 
-interface LoginProps {
-	loading: boolean;
-	errorMessage: string | undefined;
-	login: (userLogin: IUserLogin) => void;
-}
+import { ChangeEvent, FormEvent, useContext, useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/auth/AuthContext';
+import { IUserLogin } from '../interface/auth';
 
-const FormLogin = ({ login, errorMessage, loading }: LoginProps) => {
-	const [errorMsg, setErrorMsg] = useState<string | undefined>(errorMessage);
+const FormLogin = () => {
+	const { login, state } = useContext(AuthContext);
+	const [errorMsg, setErrorMsg] = useState<string | undefined>(
+		state.errorMessage
+	);
 	const [formData, setFormData] = useState<IUserLogin>({} as IUserLogin);
 	const navigateRoutes = useNavigate();
-
 	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setFormData((prev: IUserLogin) => ({
 			...prev,
@@ -28,23 +26,25 @@ const FormLogin = ({ login, errorMessage, loading }: LoginProps) => {
 
 	const handleSubmit = async (e: FormEvent) => {
 		e.preventDefault();
-		await login(formData);
-		if (errorMessage === undefined) {
-			navigateRoutes('/my-post');
+		const userResponse = await login(formData);
+		console.log(userResponse);
+		if (userResponse) {
+			console.log(userResponse);
+			navigateRoutes('/');
 		}
+		/* if (userResponse) {
+			navigateRoutes('/my-post');
+		} */
 	};
 
 	useEffect(() => {
+		if (state.errorMessage) {
+			setErrorMsg(state.errorMessage);
+		}
 		setTimeout(() => {
 			setErrorMsg(undefined);
 		}, 5000);
-	}, [errorMessage]);
-
-	useEffect(() => {
-		if (errorMessage) {
-			setErrorMsg(errorMessage);
-		}
-	}, [errorMessage]);
+	}, [state.errorMessage]);
 
 	return (
 		<form onSubmit={e => handleSubmit(e)}>
@@ -65,7 +65,7 @@ const FormLogin = ({ login, errorMessage, loading }: LoginProps) => {
 			/>
 			<Button
 				disabled={!formData.email || !formData.password}
-				loading={loading}
+				loading={state.loading}
 			>
 				Sign in
 			</Button>
