@@ -1,8 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import Card from '../components/Card';
 import { PostContext } from '../context/post-image/PostContext';
 import { IPostUser } from '../interface';
+import Card from '../components/Card';
+import Spinner from '../components/Spinner';
 
 const ProfilePost = () => {
 	const [postById, setPostById] = useState<IPostUser>();
@@ -16,8 +17,7 @@ const ProfilePost = () => {
 	useEffect(() => {
 		const postFound = findPostById(id!);
 		setPostById(postFound);
-	}, [id]);
-
+	}, []);
 	return (
 		<div className="mt-32">
 			{postById ? (
@@ -35,7 +35,7 @@ const ProfilePost = () => {
 					showComments={true}
 				/>
 			) : (
-				<h2>loading...</h2>
+				<Spinner />
 			)}
 		</div>
 	);

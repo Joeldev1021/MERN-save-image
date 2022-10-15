@@ -1,5 +1,5 @@
 import { IPostUser } from '../interface';
-import { IPostUpload } from '../interface/post';
+import { IPostUpload, IPostWidthComent } from '../interface/post';
 import { axiosInter } from './utils';
 
 
@@ -27,4 +27,7 @@ export const updatePostApi = async (data: IPostUser) => {
 export const deletePostApi = async (id: string) => {
     return axiosInter.delete<IPostUser>(`/post/${id}`)
 }
-/* =================== comment===================  */
+
+export const getPostWidthCommentApi = async (id: string) => {
+    return axiosInter.get<IPostWidthComent>(`/post/comment-all/${id} `)
+}

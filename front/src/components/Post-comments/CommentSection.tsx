@@ -166,6 +166,7 @@ const CommentSection = ({
 						<ReplyComment
 							key={reply._id}
 							idReply={reply._id}
+							idComment={id}
 							username={reply.userId.username}
 							avatar={reply.userId.avatar}
 							comment={reply.comment}

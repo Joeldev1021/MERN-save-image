@@ -34,21 +34,14 @@ export interface IPostUser {
 }
 
 
+
+
 export interface IPostState {
     postsByUser: IPostUser[] | []
     postAll: IPostUser[] | []
     commentByPost: ICommentPost[] | []
     errorMessage: string | null
     loading: boolean
-}
-
-// notes interface
-export interface INotes {
-    _id: string
-    title: string
-    description: string
-    userId: string
-    __v?: number
 }
 
 
