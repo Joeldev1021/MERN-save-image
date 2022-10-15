@@ -21,3 +21,6 @@ export const addReplyCommentApi = async (idComment: string, comment: string) => 
     return axiosInter.post<IReply>(`/replyTo/add-replyTo/${idComment}`, { comment })
 }
 
+export const deleteReplyApi = async (idReply: string) => {
+    return axiosInter.delete<IReply>(`/replyTo/${idReply}`)
+}

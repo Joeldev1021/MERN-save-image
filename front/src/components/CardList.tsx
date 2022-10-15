@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { PostContext } from '../context/post-image/PostContext';
 import { IPostUser } from '../interface';
 import Card from './Card';
+import Spinner from './Spinner';
 
 interface Props {
 	searchPost: string;
@@ -32,7 +33,7 @@ const CardList = ({ searchPost }: Props) => {
 					Blogs that are loved by the community. Updated every hour.
 				</p>
 			</div>
-			{state.postAll &&
+			{state.postAll.length > 0 ? (
 				filterPost.map((post: IPostUser) => {
 					const authorId =
 						typeof post.userId === 'object' ? post.userId._id : post.userId;
@@ -52,7 +53,10 @@ const CardList = ({ searchPost }: Props) => {
 							comments={post.comments}
 						/>
 					);
-				})}
+				})
+			) : (
+				<Spinner />
+			)}
 		</section>
 	);
 };
