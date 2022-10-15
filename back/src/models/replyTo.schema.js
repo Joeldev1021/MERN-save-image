@@ -9,13 +9,18 @@ const ReplyToSchema = new Schema(
         likes: [{ type: Schema.Types.ObjectId, ref: 'User' }],
         commentId: { type: Schema.Types.ObjectId, ref: 'Comment' }
         // replyTo: { type: Schema.Types.ObjectId, ref: 'ReplyTo' },
+    }, {
+    timestamps: {
+        createdAt: 'created_at',
     },
-    {
-        timestamps: {
-            createdAt: 'created_at',
+    versionKey: false,
+}, {
+    toJSON: {
+        transform(doc, ret) {
+            delete ret.__v;
         },
-        versionKey: false,
     }
+}
 );
 
 module.exports = model('ReplyTo', ReplyToSchema);

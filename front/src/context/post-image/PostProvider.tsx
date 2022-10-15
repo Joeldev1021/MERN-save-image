@@ -6,21 +6,19 @@ import {
 	uploadPostApi,
 	getPostByUserApi,
 	deletePostApi,
+	getPostWidthCommentApi,
 } from '../../api/postApi';
 import {
 	addCommentByPostApi,
 	addReplyCommentApi,
 	deleteCommentPostApi,
+	deleteReplyApi,
 	getCommentsPostApi,
 	updateCommentPostApi,
 } from '../../api/commentApi';
 import { likeCommentApi, likePostApi, likeReplyApi } from '../../api/likeApi';
 import { IPostUser, IPostState } from '../../interface';
-import {
-	ErrorPostResponse,
-	ICommentPost,
-	IPostUpload,
-} from '../../interface/post';
+import { ErrorPostResponse, IPostUpload } from '../../interface/post';
 import { PostActionType } from '../actions/post';
 import { PostContext } from './PostContext';
 import { postReducer } from './postReducer';
@@ -106,7 +104,6 @@ export const PostProvider = ({ children }: Props) => {
 		} catch (error) {
 			const err = error as AxiosError;
 			const data = err.response?.data as ErrorPostResponse;
-			console.log(data);
 			dispatch({
 				type: PostActionType.LOAD_DELETE_POST_ERROR,
 				payload: data.errorMessage,
@@ -134,16 +131,16 @@ export const PostProvider = ({ children }: Props) => {
 	 * resolves to an array of comments.
 	 * @param {string} imgId - string
 	 */
+
 	const getCommentsPost = async (imgId: string) => {
 		dispatch({ type: PostActionType.LOAD_COMMENTS_POST });
 		try {
 			const response = await getCommentsPostApi(imgId);
+			console.log('data', response.data);
 			if (response.data) {
-				const comments: ICommentPost[] = response.data;
-				console.log(comments);
 				dispatch({
 					type: PostActionType.LOAD_COMMENTS_POST_SUCCESS,
-					payload: comments,
+					payload: response.data,
 				});
 			}
 		} catch (error) {
@@ -154,6 +151,8 @@ export const PostProvider = ({ children }: Props) => {
 			});
 		}
 	};
+
+	// const getCommentsPost = async (imgId: string) => {};
 
 	const addCommentByPost = async (id: string, comment: string) => {
 		dispatch({ type: PostActionType.LOAD_ADD_COMMENT_POST });
@@ -268,6 +267,19 @@ export const PostProvider = ({ children }: Props) => {
 		console.log(response);
 	};
 
+	const deleteReply = async (idReply: string, idComment: string) => {
+		console.log(idReply, idComment);
+		try {
+			const { data } = await deleteReplyApi(idReply);
+			if (data) {
+				dispatch({
+					type: PostActionType.LOAD_DELETE_REPLY_COMMENT_SUCCESS,
+					payload: { idReply, idComment },
+				});
+			}
+		} catch (error) {}
+	};
+
 	/**
 	 * Find a post by id, if isUser is true, search in postsByUser, otherwise search in postAll
 	 * @param {string} id - string - the id of the post
@@ -275,9 +287,12 @@ export const PostProvider = ({ children }: Props) => {
 	 * user or all posts.
 	 * @returns the postFound variable.
 	 */
-	const findPostById = (id: string, isUser?: boolean) => {
+	const findPostById = (
+		id: string,
+		isUser?: boolean
+	): IPostUser | undefined => {
 		const posts = isUser ? state.postsByUser : state.postAll;
-		const postFound: IPostUser | undefined = posts.find(p => p._id === id);
+		const postFound = posts.find(p => p._id === id);
 		return postFound;
 	};
 
@@ -304,6 +319,7 @@ export const PostProvider = ({ children }: Props) => {
 				removeLikeComment,
 				addReplyComment,
 				addLikeReply,
+				deleteReply,
 			}}
 		>
 			{children}

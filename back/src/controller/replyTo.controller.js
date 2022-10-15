@@ -16,12 +16,6 @@ class ReplyToController {
         }
     }
 
-
-    /* async findById(req, res, next) {
-        const foundReplys = await ReplyToService.findAll()
-        res.send(foundReplys);
-    } */
-
     async create(req, res, next) {
         const { id } = req.params
         const userId = req.user._id
@@ -53,8 +47,14 @@ class ReplyToController {
 
     async delete(req, res, next) {
         const { id } = req.params
-        const deleteReply = await ReplyToService.delete(id)
-        res.send(deleteReply)
+        try {
+            const deleteReply = await ReplyToService.delete(id)
+            if (!deleteReply) res.status(HttpStatus.NOT_FOUND).json('not found reply delete')
+            res.status(HttpStatus.OK).send(deleteReply)
+        } catch (error) {
+            next(error)
+        }
+
     }
 
 

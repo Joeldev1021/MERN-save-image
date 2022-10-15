@@ -29,10 +29,16 @@ class PostController {
                 res.status(HttpStatus.NOT_FOUND).send({
                     errorMessage: 'image find  not found',
                 });
-            return res.json(post);
+            return res.status(HttpStatus.OK).json(post);
         } catch (error) {
             next(error);
         }
+    }
+
+    async findCommentPost(req, res, next) {
+        const { id } = req.params
+        const post = await PostService.findCommentWithUser(id);
+        res.send(post)
     }
 
     // get img by id user
@@ -143,6 +149,8 @@ class PostController {
             next(error);
         }
     }
+
+
 }
 
 module.exports = new PostController();

@@ -14,7 +14,13 @@ const ComentSchema = new Schema(
         timestamps: {
             createdAt: 'created_at',
         },
+    }, {
+    toJSON: {
+        transform(doc, ret) {
+            delete ret.__v;
+        },
     }
+}
 );
 
 module.exports = model('Coment', ComentSchema);

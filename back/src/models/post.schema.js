@@ -14,6 +14,13 @@ const PostSchema = new Schema(
         timestamps: {
             createdAt: 'created_at',
         },
+    },
+    {
+        toJSON: {
+            transform(doc, ret) {
+                delete ret.__v;
+            },
+        }
     }
 );
 

@@ -52,6 +52,9 @@ type PostAction =
     | { type: PostActionType.LOAD_REMOVE_LIKE_COMMENT_SUCCESS; payload: { idComment: string, userIdByLike: string } }
     /* reply comment */
     | { type: PostActionType.LOAD_REPLY_COMMENT_SUCCESS; payload: { reply: IReply, idComment: string } }
+    /* delete reply */
+    | { type: PostActionType.LOAD_DELETE_REPLY_COMMENT_SUCCESS; payload: { idReply: string, idComment: string } }
+
 
 export const postReducer = (state: IPostState, action: PostAction) => {
     switch (action.type) {
@@ -210,6 +213,14 @@ export const postReducer = (state: IPostState, action: PostAction) => {
                 loading: false,
                 commentByPost: state.commentByPost.map(cm => cm._id === action.payload.idComment ? {
                     ...cm, replyToId: [...cm.replyToId, action.payload.reply]
+                } : cm)
+            }
+        case PostActionType.LOAD_DELETE_REPLY_COMMENT_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                commentByPost: state.commentByPost.map(cm => cm._id === action.payload.idComment ? {
+                    ...cm, replyToId: cm.replyToId.filter(reply => reply._id !== action.payload.idReply)
                 } : cm)
             }
 

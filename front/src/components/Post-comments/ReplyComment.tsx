@@ -6,6 +6,7 @@ import { AuthContext } from '../../context/auth/AuthContext';
 import { PostContext } from '../../context/post-image/PostContext';
 
 interface ReplyProps {
+	idComment: string;
 	idReply: string;
 	avatar: string;
 	username: string;
@@ -15,6 +16,7 @@ interface ReplyProps {
 }
 
 const ReplyComment = ({
+	idComment,
 	idReply,
 	avatar,
 	username,
@@ -22,7 +24,7 @@ const ReplyComment = ({
 	likes,
 	createdAt,
 }: ReplyProps) => {
-	const { addLikeReply } = useContext(PostContext);
+	const { addLikeReply, deleteReply } = useContext(PostContext);
 	const { state } = useContext(AuthContext);
 
 	const handleLikeReply = () => {
@@ -66,9 +68,12 @@ const ReplyComment = ({
 							</span>
 							<span className="font-semibold mx-1">{likes.length}</span>
 						</p>
-						<p className="flex items-center text-red-500 text-base hover:text-blue-600">
+						<button
+							onClick={() => deleteReply(idReply, idComment)}
+							className="flex items-center text-red-500 text-base hover:cursor-pointer"
+						>
 							<BsTrashFill />
-						</p>
+						</button>
 					</div>
 				</div>
 			</div>

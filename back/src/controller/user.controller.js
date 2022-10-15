@@ -90,7 +90,7 @@ class UserController {
                 ...updateUser,
                 avatar: avatarCloud.url
             }
-            res.status(200).json(user)
+            res.status(HttpStatus.OK).json(user)
         }
     }
 
