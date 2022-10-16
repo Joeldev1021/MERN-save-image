@@ -13,11 +13,15 @@ class PostService {
     }
 
     async findByUserId({ userId }) {
-        return Post.find({ userId });
+        return Post.find({ userId }).populate([
+            {
+                path: 'userId',
+                select: ['username', 'avatar']
+            }
+        ])
     }
 
     async findCommentWithUser(id) {
-        console.log("find.....")
         return Post.findById(id).populate([{
             path: 'userId',
             select: ['username', 'avatar']
@@ -37,17 +41,6 @@ class PostService {
                 }
             }
         }]).sort({ 'created_at': -1 })
-        // return CommentSchema.find({ imgId }).populate([{
-        /*   path: 'userId',
-          select: ['username', 'avatar']
-
-      }, {
-          path: 'replyToId',
-          populate: {
-              path: 'userId',
-              select: ['username', 'avatar']
-          }
-      }]); */
     }
 
     async create(post) {
