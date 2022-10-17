@@ -12,9 +12,8 @@ router.use('/auth', authRoutes);
 router.use('/user', userRoutes);
 router.use('/post', postRoutes);
 router.use('/post-comment', commentRoutes);
-router.use('/post-like', likeRoutes);
+router.use('/like', likeRoutes);
 router.use('/replyTo', replyToRoutes);
-router.use('/reply-like', likeRoutes);
 router.get('/', (req, res) => {
     res.send('hello word')
 })
