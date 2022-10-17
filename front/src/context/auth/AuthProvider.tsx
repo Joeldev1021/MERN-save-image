@@ -34,6 +34,7 @@ export const AuthProvider = ({ children }: Props) => {
 		dispatch({ type: 'SIGNUP_LOADING' });
 		try {
 			const { data } = await registerApi(user);
+			console.log(data);
 			if (data.token) {
 				localStorage.setItem('token', data.token);
 				const resUser = await getProfileApi();
@@ -153,7 +154,9 @@ export const AuthProvider = ({ children }: Props) => {
 	};
 
 	useEffect(() => {
-		refresToken();
+		if (state.token) {
+			refresToken();
+		}
 	}, []);
 
 	return (

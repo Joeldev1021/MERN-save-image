@@ -19,7 +19,6 @@ const ListGroup = ({
 	const { deletePost } = useContext(PostContext);
 
 	const handleClick = (title: string) => {
-		console.log(title);
 		if (title === 'Delete') {
 			deletePost(id!);
 		}
@@ -38,7 +37,7 @@ const ListGroup = ({
 					if (handleListGroup) {
 						return (
 							<li
-								className="flex items-center py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+								className="flex items-center cursor-pointer py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
 								key={item.title}
 								onClick={() => handleListGroup(item.title)}
 							>

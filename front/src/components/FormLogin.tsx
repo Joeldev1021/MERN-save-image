@@ -27,14 +27,9 @@ const FormLogin = () => {
 	const handleSubmit = async (e: FormEvent) => {
 		e.preventDefault();
 		const userResponse = await login(formData);
-		console.log(userResponse);
 		if (userResponse) {
-			console.log(userResponse);
 			navigateRoutes('/');
 		}
-		/* if (userResponse) {
-			navigateRoutes('/my-post');
-		} */
 	};
 
 	useEffect(() => {

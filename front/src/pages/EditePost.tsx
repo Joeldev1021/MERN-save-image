@@ -1,10 +1,4 @@
-import React, {
-	ChangeEvent,
-	FormEvent,
-	useContext,
-	useEffect,
-	useState,
-} from 'react';
+import { ChangeEvent, FormEvent, useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Button from '../components/Button/Button';
 import Input from '../components/Input';
@@ -22,7 +16,7 @@ function EditePost() {
 		if (postFound) {
 			setEditePost(postFound);
 		}
-	}, [id]);
+	}, []);
 
 	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setEditePost((prev: IPostUser) => ({

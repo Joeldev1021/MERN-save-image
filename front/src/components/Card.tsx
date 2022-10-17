@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import { useState, useContext } from 'react';
 import { BsHeart, BsHeartFill } from 'react-icons/bs';
 import { FaEllipsisV } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
@@ -15,6 +15,7 @@ interface CardProps {
 	id: string;
 	username?: string;
 	authorId?: string;
+	avatar: string;
 	title: string;
 	desc: string;
 	img: string;
@@ -36,6 +37,7 @@ const Card = ({
 	id,
 	username,
 	authorId,
+	avatar,
 	title,
 	desc,
 	img,
@@ -65,18 +67,20 @@ const Card = ({
 
 	return (
 		<div className="mx-auto  px-4 py-8 max-w-xl my-2 relative">
-			{showListGroupPost && state.user?._id === authorId && (
+			{showListGroupPost && (
 				<ListGroup
 					id={id}
 					listGroupItem={listGroupItem}
 					setShowListGroup={setShowListGroupPost}
 				/>
 			)}
-			<FaEllipsisV
-				color="white"
-				onClick={() => setShowListGroupPost(!showListGroupPost)}
-				className="absolute right-[20px] top-[40px] cursor-pointer"
-			/>
+			{state.user?._id === authorId && (
+				<FaEllipsisV
+					color="white"
+					onClick={() => setShowListGroupPost(!showListGroupPost)}
+					className="absolute right-[20px] top-[40px] cursor-pointer"
+				/>
+			)}
 			<div className="bg-white shadow-2xl   rounded-lg mb-6 tracking-wide">
 				<div className="md:flex-shrink-0" onClick={() => handleClick()}>
 					<img
@@ -115,7 +119,7 @@ const Card = ({
 						<div className="user-logo">
 							<img
 								className="w-12 h-12 object-cover rounded-full mx-4  shadow"
-								src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=731&q=80"
+								src={avatar}
 								alt="avatar"
 							/>
 						</div>

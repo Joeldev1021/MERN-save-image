@@ -6,7 +6,6 @@ import {
 	uploadPostApi,
 	getPostByUserApi,
 	deletePostApi,
-	getPostWidthCommentApi,
 } from '../../api/postApi';
 import {
 	addCommentByPostApi,
@@ -50,7 +49,10 @@ export const PostProvider = ({ children }: Props) => {
 				});
 			}
 		} catch (error) {
-			console.log(error);
+			dispatch({
+				type: PostActionType.LOAD_ALL_POST_ERROR,
+				payload: 'ups not posts',
+			});
 		}
 	};
 
@@ -79,7 +81,6 @@ export const PostProvider = ({ children }: Props) => {
 		try {
 			const response = await updatePostApi(post);
 			if (response.data) {
-				console.log(response);
 				dispatch({
 					type: PostActionType.LOAD_UPDATE_POST_SUCCESS,
 					payload: post,
@@ -95,7 +96,6 @@ export const PostProvider = ({ children }: Props) => {
 		try {
 			const response = await deletePostApi(id);
 			if (response.data) {
-				console.log(response.data);
 				dispatch({
 					type: PostActionType.LOAD_DELETE_POST_SUCCESS,
 					payload: response.data._id,
@@ -116,6 +116,7 @@ export const PostProvider = ({ children }: Props) => {
 		try {
 			const response = await getPostByUserApi();
 			if (response.data) {
+				console.log('post-user', response.data);
 				const posts = response.data;
 				dispatch({
 					type: PostActionType.LOAD_POST_USER_SUCCESS,
@@ -136,7 +137,6 @@ export const PostProvider = ({ children }: Props) => {
 		dispatch({ type: PostActionType.LOAD_COMMENTS_POST });
 		try {
 			const response = await getCommentsPostApi(imgId);
-			console.log('data', response.data);
 			if (response.data) {
 				dispatch({
 					type: PostActionType.LOAD_COMMENTS_POST_SUCCESS,
@@ -158,7 +158,6 @@ export const PostProvider = ({ children }: Props) => {
 		dispatch({ type: PostActionType.LOAD_ADD_COMMENT_POST });
 		try {
 			const response = await addCommentByPostApi(id, comment);
-			console.log(response);
 			if (response.data) {
 				dispatch({
 					type: PostActionType.LOAD_ADD_COMMENT_POST_SUCCESS,
@@ -181,9 +180,7 @@ export const PostProvider = ({ children }: Props) => {
 					payload: updateComment,
 				});
 			}
-		} catch (error) {
-			console.log('catch', error);
-		}
+		} catch (error) {}
 	};
 
 	const deleteCommentPost = async (id: string) => {
@@ -248,7 +245,6 @@ export const PostProvider = ({ children }: Props) => {
 			type: PostActionType.LOAD_ADD_LIKE_COMMENT_SUCCESS,
 			payload: { idComment, userIdByLike },
 		});
-		console.log(state.commentByPost);
 		const response = await likeCommentApi(idComment);
 		console.log(response);
 	};
@@ -262,9 +258,13 @@ export const PostProvider = ({ children }: Props) => {
 		console.log(response);
 	};
 
-	const addLikeReply = async (idReply: string) => {
-		const response = await likeReplyApi(idReply);
-		console.log(response);
+	const likeReply = async (idReply: string) => {
+		try {
+			const response = await likeReplyApi(idReply);
+			console.log(response);
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	const deleteReply = async (idReply: string, idComment: string) => {
@@ -277,7 +277,9 @@ export const PostProvider = ({ children }: Props) => {
 					payload: { idReply, idComment },
 				});
 			}
-		} catch (error) {}
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	/**
@@ -318,7 +320,7 @@ export const PostProvider = ({ children }: Props) => {
 				addLikeComment,
 				removeLikeComment,
 				addReplyComment,
-				addLikeReply,
+				likeReply,
 				deleteReply,
 			}}
 		>

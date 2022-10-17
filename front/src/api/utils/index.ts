@@ -2,8 +2,8 @@
 import axios, { AxiosRequestConfig } from 'axios';
 
 
-const API_URL = import.meta.env.API_URL ? import.meta.env.API_URL : 'http://localhost:4000'
-
+// const API_URL = import.meta.env.API_URL ? import.meta.env.API_URL : 'http://localhost:4000'
+const API_URL = import.meta.env.VITE_API_URL
 /* Creating a new instance of axios with the baseURL set to the API_URL. */
 export const axiosInter = axios.create({
     baseURL: API_URL

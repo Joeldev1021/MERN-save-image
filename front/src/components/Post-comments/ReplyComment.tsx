@@ -24,11 +24,11 @@ const ReplyComment = ({
 	likes,
 	createdAt,
 }: ReplyProps) => {
-	const { addLikeReply, deleteReply } = useContext(PostContext);
+	const { likeReply, deleteReply } = useContext(PostContext);
 	const { state } = useContext(AuthContext);
 
 	const handleLikeReply = () => {
-		addLikeReply(idReply);
+		likeReply(idReply);
 	};
 
 	return (

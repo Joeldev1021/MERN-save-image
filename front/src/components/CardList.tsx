@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { PostContext } from '../context/post-image/PostContext';
-import { IPostUser } from '../interface';
+import { IPostUser, IUser } from '../interface';
 import Card from './Card';
 import Spinner from './Spinner';
 
@@ -33,23 +33,20 @@ const CardList = ({ searchPost }: Props) => {
 					Blogs that are loved by the community. Updated every hour.
 				</p>
 			</div>
-			{state.postAll.length > 0 ? (
+			{!state.loading ? (
 				filterPost.map((post: IPostUser) => {
-					const authorId =
-						typeof post.userId === 'object' ? post.userId._id : post.userId;
-					const username =
-						typeof post.userId === 'object' && post.userId.username;
 					return (
 						<Card
 							key={post._id}
 							id={post._id}
-							authorId={authorId}
-							username={username || ''}
+							authorId={post.userId._id}
+							username={post.userId.username}
 							title={post.title}
 							desc={post.description}
 							img={post.imgUrl}
 							createdAt={post.created_at}
 							likes={post.likes}
+							avatar={post.userId.avatar}
 							comments={post.comments}
 						/>
 					);

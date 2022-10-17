@@ -15,21 +15,16 @@ const MyPost = () => {
 	useEffect(() => {
 		getPostUser();
 	}, []);
-
 	return (
 		<div className="mt-40">
 			{state.token && postsByUser.length > 0 ? (
 				postsByUser.map((post: IPostUser) => {
-					/// validate if username exist
-					const user =
-						typeof post.userId !== 'string'
-							? post.userId.username
-							: post.userId;
 					return (
 						<Card
 							key={post._id}
 							id={post._id}
-							authorId={user}
+							avatar={post.userId.avatar}
+							authorId={post.userId._id}
 							title={post.title}
 							desc={post.description}
 							img={post.imgUrl}

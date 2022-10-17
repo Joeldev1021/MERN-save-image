@@ -30,18 +30,24 @@ export interface IPostUser {
     title: string
     updatedAt: string
     __v?: number
-    userId: IUser | string // populated or not populated
+    userId: IUser  // populated or not populated
 }
 
 
 
 
 export interface IPostState {
-    postsByUser: IPostUser[] | []
-    postAll: IPostUser[] | []
-    commentByPost: ICommentPost[] | []
+    postsByUser: IPostUser[]
+    postAll: IPostUser[]
+    commentByPost: ICommentPost[]
     errorMessage: string | null
     loading: boolean
+}
+
+export interface ICmtState {
+    commentByPost: ICommentPost[]
+    loading: boolean
+    errorMessage: string | null
 }
 
 
