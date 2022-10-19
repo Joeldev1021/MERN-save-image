@@ -1,11 +1,11 @@
-import React, { useState, useContext } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { AuthContext } from '../../context/auth/AuthContext';
+import { useAuth } from '../../hooks/useAuth';
 import ButtonAvatar from '../ButtonAvatar';
 
 const ProfileDropDown = (props: any) => {
 	const [stateHidden, setStateHidden] = useState<boolean>(false);
-	const { logout, state } = useContext(AuthContext);
+	const { logout, state } = useAuth();
 
 	return (
 		<div className={`relative ${props.class}`}>

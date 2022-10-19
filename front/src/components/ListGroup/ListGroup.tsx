@@ -1,7 +1,6 @@
-import React, { useContext } from 'react';
-import { PostContext } from '../../context/post-image/PostContext';
 import { IListGroupItem } from '../../interface';
 import ListItemGroup from './ListItemGroup';
+import { usePost } from '../../hooks/usePost';
 
 interface Props {
 	id?: string;
@@ -16,7 +15,7 @@ const ListGroup = ({
 	setShowListGroup,
 	handleListGroup,
 }: Props) => {
-	const { deletePost } = useContext(PostContext);
+	const { deletePost } = usePost();
 
 	const handleClick = (title: string) => {
 		if (title === 'Delete') {

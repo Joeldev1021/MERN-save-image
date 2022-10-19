@@ -1,15 +1,15 @@
-import { ChangeEvent, FormEvent, useContext, useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../components/Button/Button';
-import { PostContext } from '../context/post-image/PostContext';
 import { IPostUpload } from '../interface/post';
 import DragAndDropZone from '../components/DragAndDropZone';
+import { usePost } from '../hooks/usePost';
 
 export const URL_UPLOAD =
 	'https://img.freepik.com/free-vector/image-upload-concept-landing-page_52683-27130.jpg?size=338&ext=jpg';
 
 const Upload = () => {
-	const { uploadPost, state } = useContext(PostContext);
+	const { uploadPost, state } = usePost();
 	const navigate = useNavigate();
 	const [formPost, setFormPost] = useState<IPostUpload>({} as IPostUpload);
 

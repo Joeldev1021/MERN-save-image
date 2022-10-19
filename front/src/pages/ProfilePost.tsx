@@ -1,15 +1,16 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { PostContext } from '../context/post-image/PostContext';
 import { IPostUser } from '../interface';
 import Card from '../components/Card';
 import Spinner from '../components/Spinner';
+import { useComment } from '../hooks/useComment';
+import { usePost } from '../hooks/usePost';
 
 const ProfilePost = () => {
 	const [postById, setPostById] = useState<IPostUser>();
 	const { id } = useParams();
-	const { getCommentsPost, findPostById, state, getPostUser } =
-		useContext(PostContext);
+	const { findPostById, state, getPostUser } = usePost();
+	const { getCommentsPost } = useComment();
 
 	useEffect(() => {
 		getCommentsPost(id!);
@@ -22,7 +23,7 @@ const ProfilePost = () => {
 		const postFound = findPostById(id!);
 		setPostById(postFound);
 	}, [state.postsByUser]);
-
+	console.log(postById);
 	return (
 		<div className="mt-32">
 			{postById ? (

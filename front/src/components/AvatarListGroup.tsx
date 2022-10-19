@@ -1,13 +1,6 @@
-import {
-	ChangeEvent,
-	FormEvent,
-	useContext,
-	useEffect,
-	useRef,
-	useState,
-} from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { MdDelete, MdModeEdit } from 'react-icons/md';
-import { AuthContext } from '../context/auth/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 
 const listGroupProfile = [
 	{ title: 'Upload Image', component: <MdModeEdit /> },
@@ -24,7 +17,7 @@ interface IfileAvatar {
 
 const AvatarListGroup = (props: Props) => {
 	const { setAvatarFile } = props;
-	const { updateAvatar } = useContext(AuthContext);
+	const { updateAvatar } = useAuth();
 	const inputReft = useRef<HTMLInputElement>(null);
 	const [fileAvatar, setFileAvatar] = useState<IfileAvatar>({} as IfileAvatar);
 

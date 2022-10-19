@@ -1,11 +1,5 @@
-import React, {
-	useState,
-	FormEvent,
-	useContext,
-	Dispatch,
-	SetStateAction,
-} from 'react';
-import { PostContext } from '../../context/post-image/PostContext';
+import React, { useState, FormEvent, Dispatch, SetStateAction } from 'react';
+import { useComment } from '../../hooks/useComment';
 import FormComment from './FormComment';
 
 interface Props {
@@ -28,7 +22,7 @@ const ModalComment = ({
 	onClose,
 }: Props) => {
 	const [stateComment, setStateComment] = useState<string>(comment || '');
-	const { updateCommentPost, addReplyComment } = useContext(PostContext);
+	const { updateCommentPost, addReplyComment } = useComment();
 
 	const handleSubmit = (e: FormEvent) => {
 		e.preventDefault();

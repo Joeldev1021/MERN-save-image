@@ -1,14 +1,14 @@
-import { ChangeEvent, FormEvent, useContext, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Button from '../components/Button/Button';
 import Input from '../components/Input';
-import { PostContext } from '../context/post-image/PostContext';
+import { usePost } from '../hooks/usePost';
 import { IPostUser } from '../interface';
 
 function EditePost() {
 	const { id } = useParams();
 	const navigate = useNavigate();
-	const { updatePost, findPostById, state } = useContext(PostContext);
+	const { updatePost, findPostById, state } = usePost();
 	const [editePost, setEditePost] = useState<IPostUser>({} as IPostUser);
 
 	useEffect(() => {

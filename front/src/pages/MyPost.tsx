@@ -1,16 +1,16 @@
-import React, { useContext, useEffect } from 'react';
-import { AuthContext } from '../context/auth/AuthContext';
-import { PostContext } from '../context/post-image/PostContext';
+import React, { useEffect } from 'react';
 import Card from '../components/Card';
 import { IPostUser } from '../interface';
 import Spinner from '../components/Spinner';
+import { usePost } from '../hooks/usePost';
+import { useAuth } from '../hooks/useAuth';
 
 const MyPost = () => {
-	const { state } = useContext(AuthContext);
+	const { state } = useAuth();
 	const {
 		getPostUser,
 		state: { postsByUser },
-	} = useContext(PostContext);
+	} = usePost();
 
 	useEffect(() => {
 		getPostUser();

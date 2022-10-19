@@ -1,19 +1,13 @@
-import React, {
-	ChangeEvent,
-	FormEvent,
-	useContext,
-	useEffect,
-	useState,
-} from 'react';
+import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { AuthContext } from '../context/auth/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 import { IUserRegister } from '../interface/auth';
 import AlertForm from './AlertForm';
 import Button from './Button/Button';
 import Input from './Input';
 
 const FormRegister = () => {
-	const { state, register } = useContext(AuthContext);
+	const { state, register } = useAuth();
 	const [errorMsg, setErrorMsg] = useState<string | undefined>(
 		state.errorMessage
 	);
