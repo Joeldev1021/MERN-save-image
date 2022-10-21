@@ -7,7 +7,7 @@ import {
 	getCommentsPostApi,
 	updateCommentPostApi,
 } from '../../api/commentApi';
-import { likeCommentApi, likeReplyApi } from '../../api/likeApi';
+import { likeReplyApi } from '../../api/likeApi';
 import { ICmtState } from '../../interface';
 import { CmtActionType } from '../actions/comment';
 import { CmtContext } from '../comment/CmtContext';
@@ -34,7 +34,6 @@ export const CmtProvider = ({ children }: Props) => {
 	 */
 
 	const getCommentsPost = async (imgId: string) => {
-		console.log('getCommentsPost');
 		dispatch({ type: CmtActionType.LOAD_COMMENTS_POST });
 		try {
 			const response = await getCommentsPostApi(imgId);
@@ -131,9 +130,19 @@ export const CmtProvider = ({ children }: Props) => {
 		controllerLikeComment({ dispatch, idComment, userId: userIdByLike });
 	};
 
-	const likeReply = async (idReply: string) => {
+	const likeReply = async (
+		idComment: string,
+		idReply: string,
+		userId: string
+	) => {
 		try {
 			const { data } = await likeReplyApi(idReply);
+			if (data) {
+				dispatch({
+					type: CmtActionType.LOAD_LIKE_REPLY_SUCCESS,
+					payload: { idComment, idReply, userId },
+				});
+			}
 		} catch (error) {
 			console.log(error);
 		}

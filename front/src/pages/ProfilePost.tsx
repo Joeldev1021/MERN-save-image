@@ -23,7 +23,7 @@ const ProfilePost = () => {
 		const postFound = findPostById(id!);
 		setPostById(postFound);
 	}, [state.postsByUser]);
-	console.log(postById);
+
 	return (
 		<div className="mt-32">
 			{postById ? (

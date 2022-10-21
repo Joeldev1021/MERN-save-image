@@ -80,11 +80,12 @@ const CommentSection = ({
 
 	return (
 		<div className="flex flex-row mx-auto justify-between px-1 py-1 relative">
-			<FaEllipsisV
-				color="gray"
+			<button
 				onClick={() => setShowListGroup(!showListGroup)}
 				className="absolute right-[20px] top-[20px] cursor-pointer"
-			/>
+			>
+				<FaEllipsisV color="gray" />
+			</button>
 			{showListGroup && isUser && (
 				<ListGroup
 					handleListGroup={handleListGroup}
@@ -139,7 +140,7 @@ const CommentSection = ({
 						<span className="font-semibold">{replyTo.length}</span>
 					</button>
 					<p className="flex items-center text-red-500 hover:text-red-600 group">
-						<span
+						<button
 							className="cursor-pointer"
 							onClick={() => handleLikeComment()}
 						>
@@ -148,7 +149,7 @@ const CommentSection = ({
 							) : (
 								<BsHeart />
 							)}
-						</span>
+						</button>
 						<span className="font-semibold mx-1">{likes.length}</span>
 					</p>
 					<p className="flex items-center text-blue-500 hover:text-blue-600">

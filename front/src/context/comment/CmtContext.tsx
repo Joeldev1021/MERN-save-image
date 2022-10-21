@@ -9,7 +9,7 @@ export type CmtContextProps = {
 	deleteCommentPost: (id: string) => void;
 	addReplyComment: (idComment: string, comment: string) => void;
 	addLikeComment: (idComment: string, userIdByLike: string) => void;
-	likeReply: (idReply: string) => void;
+	likeReply: (idComment: string, idReply: string, userId: string) => void;
 	deleteReply: (idReply: string, idComment: string) => void;
 };
 

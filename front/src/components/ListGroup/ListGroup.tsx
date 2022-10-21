@@ -1,6 +1,7 @@
 import { IListGroupItem } from '../../interface';
 import ListItemGroup from './ListItemGroup';
 import { usePost } from '../../hooks/usePost';
+import toast, { Toaster } from 'react-hot-toast';
 
 interface Props {
 	id?: string;
@@ -17,9 +18,10 @@ const ListGroup = ({
 }: Props) => {
 	const { deletePost } = usePost();
 
-	const handleClick = (title: string) => {
+	const handleClick = async (title: string) => {
 		if (title === 'Delete') {
-			deletePost(id!);
+			await deletePost(id!);
+			toast.success('delete comment successfully');
 		}
 		if (title === 'Close') {
 			setShowListGroup!(false);
@@ -28,6 +30,7 @@ const ListGroup = ({
 
 	return (
 		<div className="z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 absolute right-[40px] top-9">
+			<Toaster />
 			<ul
 				className="py-1 text-sm text-gray-700 dark:text-gray-200"
 				aria-labelledby="dropdownDefault"

@@ -10,6 +10,6 @@ export const likeCommentApi = async (idComment: string) => {
 }
 
 export const likeReplyApi = async (idComment: string) => {
-    return axiosInter.post(`/reply/${idComment}`)
+    return axiosInter.post(`/like/reply/${idComment}`)
 }
 

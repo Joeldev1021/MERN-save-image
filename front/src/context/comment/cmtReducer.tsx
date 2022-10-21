@@ -34,6 +34,10 @@ export type CmtAction =
 	| {
 			type: CmtActionType.LOAD_LIKE_COMMENT_SUCCESS;
 			payload: { idComment: string; userId: string };
+	  }
+	| {
+			type: CmtActionType.LOAD_LIKE_REPLY_SUCCESS;
+			payload: { idComment: string; idReply: string; userId: string };
 	  };
 
 export const cmtReducer = (state: ICmtState, action: CmtAction) => {
@@ -126,6 +130,32 @@ export const cmtReducer = (state: ICmtState, action: CmtAction) => {
 				loading: false,
 			};
 		}
+		case CmtActionType.LOAD_LIKE_REPLY_SUCCESS: {
+			return {
+				...state,
+				commentByPost: state.commentByPost.map(cm =>
+					cm._id === action.payload.idComment
+						? {
+								...cm,
+								replyToId: cm.replyToId.map(reply =>
+									reply._id === action.payload.idReply
+										? {
+												...reply,
+												likes: reply.likes.includes(action.payload.userId)
+													? reply.likes.filter(
+															like => like !== action.payload.userId
+													  )
+													: [...reply.likes, action.payload.userId],
+										  }
+										: { ...reply }
+								),
+						  }
+						: cm
+				),
+				loading: false,
+			};
+		}
+
 		default:
 			return { ...state };
 	}

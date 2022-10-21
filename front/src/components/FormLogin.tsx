@@ -4,6 +4,7 @@ import ButtonSocialForm from './Button/ButtonSocialForm';
 import Facebook from './Icons/Facebook';
 import Twitter from './Icons/Twitter';
 import Input from './Input';
+import toast, { Toaster } from 'react-hot-toast';
 
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -12,9 +13,6 @@ import { useAuth } from '../hooks/useAuth';
 
 const FormLogin = () => {
 	const { login, state } = useAuth();
-	const [errorMsg, setErrorMsg] = useState<string | undefined>(
-		state.errorMessage
-	);
 	const [formData, setFormData] = useState<IUserLogin>({} as IUserLogin);
 	const navigateRoutes = useNavigate();
 	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -30,20 +28,16 @@ const FormLogin = () => {
 		if (userResponse) {
 			navigateRoutes('/');
 		}
+		if (state.errorMessage)
+			toast.error(state.errorMessage, {
+				position: 'top-center',
+				duration: 3000,
+			});
 	};
-
-	useEffect(() => {
-		if (state.errorMessage) {
-			setErrorMsg(state.errorMessage);
-		}
-		setTimeout(() => {
-			setErrorMsg(undefined);
-		}, 5000);
-	}, [state.errorMessage]);
 
 	return (
 		<form onSubmit={e => handleSubmit(e)}>
-			{errorMsg && <AlertForm errorMsg={errorMsg} />}
+			<Toaster />
 			<Input
 				placeholder="email"
 				type="email"

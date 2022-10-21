@@ -5,6 +5,7 @@ import FormComment from './FormComment';
 import { ICommentPost } from '../../interface/post';
 import { useComment } from '../../hooks/useComment';
 import Spinner from '../Spinner';
+import toast, { Toaster } from 'react-hot-toast';
 
 function PostComments({ author, desc }: { author: string; desc: string }) {
 	const { id } = useParams();
@@ -14,11 +15,15 @@ function PostComments({ author, desc }: { author: string; desc: string }) {
 	const handleSubmit = async (e: FormEvent) => {
 		e.preventDefault();
 		await addCommentByPost(id!, comment);
+		toast.success('comment added successfully');
 		setComment('');
 	};
 
+	console.log(state.commentByPost);
+
 	return (
 		<section className="place-items-center border   h-auto  ">
+			<Toaster />
 			<div className="px-2 py-4 bg-white rounded-xl  mx-auto w-4/5 sm:max-w-md sm:px-5 ">
 				<FormComment
 					handleSubmit={handleSubmit}

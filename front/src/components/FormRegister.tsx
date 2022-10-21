@@ -1,16 +1,14 @@
-import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { IUserRegister } from '../interface/auth';
-import AlertForm from './AlertForm';
 import Button from './Button/Button';
 import Input from './Input';
+import toast, { Toaster } from 'react-hot-toast';
 
 const FormRegister = () => {
 	const { state, register } = useAuth();
-	const [errorMsg, setErrorMsg] = useState<string | undefined>(
-		state.errorMessage
-	);
+
 	const navigateRoute = useNavigate();
 
 	const [registerUser, setRegisterUser] = useState<IUserRegister>(
@@ -30,20 +28,17 @@ const FormRegister = () => {
 		if (user) {
 			navigateRoute('/');
 		}
-	};
-
-	useEffect(() => {
 		if (state.errorMessage) {
-			setErrorMsg(state.errorMessage);
+			toast.error(state.errorMessage, {
+				position: 'top-center',
+				duration: 3000,
+			});
 		}
-		setTimeout(() => {
-			setErrorMsg(undefined);
-		}, 3000);
-	}, [state.errorMessage]);
+	};
 
 	return (
 		<form onSubmit={handleSubmit}>
-			{errorMsg && <AlertForm errorMsg={errorMsg} />}
+			<Toaster />
 			<Input
 				handleChange={handleChange}
 				defaultValue={registerUser.username}

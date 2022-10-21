@@ -31,7 +31,9 @@ const ReplyComment = ({
 	const { state } = useAuth();
 
 	const handleLikeReply = () => {
-		likeReply(idReply);
+		if (state.user?._id) {
+			likeReply(idComment, idReply, state.user?._id);
+		}
 	};
 
 	return (
@@ -59,7 +61,7 @@ const ReplyComment = ({
 							<AiFillEdit />
 						</button>
 						<p className="flex items-center text-red-500 hover:text-red-600 group">
-							<span
+							<button
 								className="cursor-pointer"
 								onClick={() => handleLikeReply()}
 							>
@@ -68,7 +70,7 @@ const ReplyComment = ({
 								) : (
 									<BsHeart />
 								)}
-							</span>
+							</button>
 							<span className="font-semibold mx-1">{likes.length}</span>
 						</p>
 						<button

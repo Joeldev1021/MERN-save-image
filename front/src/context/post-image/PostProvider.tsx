@@ -108,7 +108,6 @@ export const PostProvider = ({ children }: Props) => {
 		try {
 			const response = await getPostByUserApi();
 			if (response.data) {
-				console.log('post-user', response.data);
 				const posts = response.data;
 				dispatch({
 					type: PostActionType.LOAD_POST_USER_SUCCESS,
