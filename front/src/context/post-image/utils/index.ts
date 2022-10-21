@@ -1,16 +1,32 @@
+import { Dispatch } from "react";
+import { likePostApi } from "../../../api/likeApi";
+import { PostActionType } from "../../actions/post";
+import { PostAction } from "../postReducer";
 
 interface Props {
-	idReply: string;
-	action: string;
-	likeReplyApi: (idReply: string) => void
+	dispatch: Dispatch<PostAction>;
+	idPost: string;
+	userId: string;
 }
 
-export const controllerLikeReply = async ({ idReply, action, likeReplyApi }: Props) => {
-	console.log(action)
+export const controllerLikePost = async ({
+	dispatch,
+	idPost,
+	userId,
+}: Props) => {
+	dispatch({ type: PostActionType.LOAD_LIKE_POST })
 	try {
-		const response = await likeReplyApi(idReply);
-		console.log(response);
+		const { data } = await likePostApi(idPost);
+		console.log(data)
+		if (data) {
+			dispatch({
+				type: PostActionType.LOAD_LIKE_POST_SUCCESS,
+				payload: { idPost, userId },
+			});
+		}
 	} catch (error) {
-		console.log(error);
+		console.log('error', error);
 	}
+
 };
+

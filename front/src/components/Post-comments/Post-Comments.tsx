@@ -1,13 +1,14 @@
-import React, { useContext, FormEvent, useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { PostContext } from '../../context/post-image/PostContext';
 import CommentSection from './CommentSection';
 import FormComment from './FormComment';
 import { ICommentPost } from '../../interface/post';
+import { useComment } from '../../hooks/useComment';
+import Spinner from '../Spinner';
 
 function PostComments({ author, desc }: { author: string; desc: string }) {
 	const { id } = useParams();
-	const { state, addCommentByPost } = useContext(PostContext);
+	const { state, addCommentByPost } = useComment();
 	const [comment, setComment] = useState<string>('');
 
 	const handleSubmit = async (e: FormEvent) => {
@@ -28,7 +29,7 @@ function PostComments({ author, desc }: { author: string; desc: string }) {
 					<small className="text-base font-bold text-gray-700 ml-1">
 						{state.commentByPost ? state.commentByPost.length : 4} comments
 					</small>
-					{state.commentByPost &&
+					{state.commentByPost.length > 0 ? (
 						state.commentByPost.map((cm: ICommentPost) => (
 							<CommentSection
 								key={cm._id}
@@ -42,7 +43,12 @@ function PostComments({ author, desc }: { author: string; desc: string }) {
 								desc={desc}
 								replyTo={cm.replyToId}
 							/>
-						))}
+						))
+					) : (
+						<div className="relative">
+							<Spinner size="12" />
+						</div>
+					)}
 				</div>
 			</div>
 		</section>

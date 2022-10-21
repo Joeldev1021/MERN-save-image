@@ -4,14 +4,14 @@ import IconShare from '../Icons/IconShare';
 import ListGroup from '../ListGroup/ListGroup';
 import ModalComment from './ModalComment';
 import ReplyComment from './ReplyComment';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { BsHeart, BsHeartFill } from 'react-icons/bs';
 import { FaEllipsisV } from 'react-icons/fa';
 import { IoMdClose } from 'react-icons/io';
 import { MdDelete, MdModeEdit } from 'react-icons/md';
-import { AuthContext } from '../../context/auth/AuthContext';
-import { PostContext } from '../../context/post-image/PostContext';
 import { IReply } from '../../interface/post';
+import { useComment } from '../../hooks/useComment';
+import { useAuth } from '../../hooks/useAuth';
 interface CommentProps {
 	id: string;
 	avatar: string;
@@ -45,9 +45,8 @@ const CommentSection = ({
 	desc,
 	replyTo,
 }: CommentProps) => {
-	const { state } = useContext(AuthContext);
-	const { deleteCommentPost, addLikeComment, removeLikeComment } =
-		useContext(PostContext);
+	const { state } = useAuth();
+	const { deleteCommentPost, addLikeComment } = useComment();
 	const [showListGroup, setShowListGroup] = useState<boolean>(false);
 	const [showModal, setShowModal] = useState<boolean>(false);
 	const [showModalReply, setShowModalReply] = useState<boolean>(false);
@@ -76,10 +75,7 @@ const CommentSection = ({
 
 	const handleLikeComment = () => {
 		const userId = state.user?._id;
-		if (userId) {
-			if (likes.includes(userId)) removeLikeComment(id, userId);
-			else addLikeComment(id, userId);
-		}
+		addLikeComment(id, userId!);
 	};
 
 	return (
@@ -90,7 +86,6 @@ const CommentSection = ({
 				className="absolute right-[20px] top-[20px] cursor-pointer"
 			/>
 			{showListGroup && isUser && (
-				// <ListGroupCmt handleListGroup={handleListGroup} />
 				<ListGroup
 					handleListGroup={handleListGroup}
 					listGroupItem={listGroupItem}

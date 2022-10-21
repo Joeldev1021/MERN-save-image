@@ -1,12 +1,12 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { AuthContext } from '../context/auth/AuthContext';
+import { useEffect, useState } from 'react';
+import { useAuth } from '../hooks/useAuth';
 import AvatarListGroup from './AvatarListGroup';
 import ButtonAvatar from './ButtonAvatar';
 
 const avatarRandom =
 	'https://st3.depositphotos.com/19428878/35584/v/450/depositphotos_355846362-stock-illustration-default-avatar-profile-icon-social.jpg';
 const SideBar = () => {
-	const { state } = useContext(AuthContext);
+	const { state } = useAuth();
 	const [showModalProfile, setShowModalProfile] = useState<boolean>(false);
 	const [avatarFile, setAvatarFile] = useState(
 		state.user?.avatar || avatarRandom

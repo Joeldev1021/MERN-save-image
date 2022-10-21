@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import { BsHeart, BsHeartFill } from 'react-icons/bs';
 import { FaEllipsisV } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
@@ -6,11 +6,19 @@ import TimeAgo from 'timeago-react';
 import ListGroup from './ListGroup/ListGroup';
 import IconComment from './Icons/IconComment';
 import PostComments from './Post-comments/Post-Comments';
-import { AuthContext } from '../context/auth/AuthContext';
-import { PostContext } from '../context/post-image/PostContext';
 import { MdDelete, MdModeEdit, MdOutlineCopyAll } from 'react-icons/md';
 import { IoMdClose } from 'react-icons/io';
+import { usePost } from '../hooks/usePost';
+import { useAuth } from '../hooks/useAuth';
 
+const listGroupItem = [
+	{ title: 'Edite', component: <MdModeEdit /> },
+	{ title: 'Delete', component: <MdDelete /> },
+	{ title: 'Copy Link', component: <MdOutlineCopyAll /> },
+	{ title: 'Close', component: <IoMdClose /> },
+];
+
+const urlMontain = 'https://ik.imagekit.io/q5edmtudmz/post1_fOFO9VDzENE.jpg';
 interface CardProps {
 	id: string;
 	username?: string;
@@ -25,14 +33,6 @@ interface CardProps {
 	showComments?: boolean;
 }
 
-const listGroupItem = [
-	{ title: 'Edite', component: <MdModeEdit /> },
-	{ title: 'Delete', component: <MdDelete /> },
-	{ title: 'Copy Link', component: <MdOutlineCopyAll /> },
-	{ title: 'Close', component: <IoMdClose /> },
-];
-
-const urlMontain = 'https://ik.imagekit.io/q5edmtudmz/post1_fOFO9VDzENE.jpg';
 const Card = ({
 	id,
 	username,
@@ -47,17 +47,15 @@ const Card = ({
 	showComments,
 }: CardProps) => {
 	const navigate = useNavigate();
-	const { state } = useContext(AuthContext);
-	const { addLikePost, removeLikePost } = useContext(PostContext);
+	const { state } = useAuth();
+	const { addLikePost } = usePost();
 
 	const [showListGroupPost, setShowListGroupPost] = useState(false);
 
 	const handleLikePost = async () => {
 		if (state.user) {
 			const userId = state.user?._id || '';
-			if (likes.includes(userId)) removeLikePost(id, userId);
-			// add like post
-			else addLikePost(id, userId);
+			addLikePost(id, userId);
 		}
 	};
 

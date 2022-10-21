@@ -1,8 +1,7 @@
 import { IPostUser, IPostState } from '../../interface';
-import { ICommentPost, IReply } from '../../interface/post';
 import { PostActionType } from '../actions/post';
 
-type PostAction =
+export type PostAction =
     | { type: PostActionType.LOAD_ALL_POST }
     | { type: PostActionType.LOAD_ALL_POST_SUCCESS; payload: IPostUser[] }
     | { type: PostActionType.LOAD_ALL_POST_ERROR; payload: string }
@@ -21,39 +20,10 @@ type PostAction =
     | { type: PostActionType.LOAD_DELETE_POST }
     | { type: PostActionType.LOAD_DELETE_POST_SUCCESS; payload: string }
     | { type: PostActionType.LOAD_DELETE_POST_ERROR; payload: string }
-    /* get comment action */
-    | { type: PostActionType.LOAD_COMMENTS_POST }
-    | { type: PostActionType.LOAD_COMMENTS_POST_SUCCESS; payload: ICommentPost[] }
-    | { type: PostActionType.LOAD_COMMENTS_POST_ERROR; payload: string }
-    /* add comment */
-    | { type: PostActionType.LOAD_ADD_COMMENT_POST }
-    | { type: PostActionType.LOAD_ADD_COMMENT_POST_SUCCESS; payload: ICommentPost }
-    | { type: PostActionType.LOAD_ADD_COMMENT_POST_ERROR; payload: string }
-    /* update comment */
-    | { type: PostActionType.LOAD_UPDATE_COMMENT_POST; }
-    | { type: PostActionType.LOAD_UPDATE_COMMENT_POST_SUCCESS; payload: ICommentPost }
-    | { type: PostActionType.LOAD_UPDATE_COMMENT_POST_ERROR; payload: string }
-    /* delete comment */
-    | { type: PostActionType.LOAD_DELETE_COMMENT_POST; }
-    | { type: PostActionType.LOAD_DELETE_COMMENT_POST_SUCCESS; payload: string }
-    | { type: PostActionType.LOAD_DELETE_COMMENT_POST_ERROR; payload: string }
-    /* add like post */
-    | { type: PostActionType.LOAD_ADD_LIKE_POST }
-    | { type: PostActionType.LOAD_ADD_LIKE_POST_SUCCESS; payload: { idPost: string, userIdByLike: string } }
-    | { type: PostActionType.LOAD_ADD_LIKE_POST_ERROR, payload: string }
-    /* remove delete post */
-    | { type: PostActionType.LOAD_REMOVE_LIKE_POST }
-    | { type: PostActionType.LOAD_REMOVE_LIKE_POST_SUCCESS; payload: { idPost: string, userIdByLike: string } }
-    | { type: PostActionType.LOAD_REMOVE_LIKE_POST_ERROR, payload: string }
-    /* add like comment */
-    | { type: PostActionType.LOAD_ADD_LIKE_COMMENT; }
-    | { type: PostActionType.LOAD_ADD_LIKE_COMMENT_SUCCESS; payload: { idComment: string, userIdByLike: string } }
-    /* remove like comment */
-    | { type: PostActionType.LOAD_REMOVE_LIKE_COMMENT_SUCCESS; payload: { idComment: string, userIdByLike: string } }
-    /* reply comment */
-    | { type: PostActionType.LOAD_REPLY_COMMENT_SUCCESS; payload: { reply: IReply, idComment: string } }
-    /* delete reply */
-    | { type: PostActionType.LOAD_DELETE_REPLY_COMMENT_SUCCESS; payload: { idReply: string, idComment: string } }
+    /* like post */
+    | { type: PostActionType.LOAD_LIKE_POST }
+    | { type: PostActionType.LOAD_LIKE_POST_SUCCESS; payload: { idPost: string, userId: string } }
+    | { type: PostActionType.LOAD_LIKE_POST_ERROR, payload: string }
 
 
 export const postReducer = (state: IPostState, action: PostAction) => {
@@ -121,109 +91,24 @@ export const postReducer = (state: IPostState, action: PostAction) => {
             };
         case PostActionType.LOAD_DELETE_POST_ERROR:
             return { ...state, errorMessage: action.payload, loading: false };
-        // get comment post
-        case PostActionType.LOAD_COMMENTS_POST:
-            return { ...state, loading: true };
-        case PostActionType.LOAD_COMMENTS_POST_SUCCESS:
-            return { ...state, loading: false, commentByPost: action.payload };
-        case PostActionType.LOAD_COMMENTS_POST_ERROR:
-            return { ...state, errorMessage: action.payload, loading: false };
-        // add comment post 
-        case PostActionType.LOAD_ADD_COMMENT_POST:
-            return { ...state, loading: true, errorMessage: null };
-        case PostActionType.LOAD_ADD_COMMENT_POST_SUCCESS:
-            return { ...state, loading: false, commentByPost: [...state.commentByPost, action.payload] }
-        case PostActionType.LOAD_ADD_COMMENT_POST_ERROR:
-            return { ...state, loading: false, errorMessage: action.payload }
-        // update comment post 
-        case PostActionType.LOAD_UPDATE_COMMENT_POST:
-            return { ...state, loading: true, errorMessage: null };
-        case PostActionType.LOAD_UPDATE_COMMENT_POST_SUCCESS:
-            return {
-                ...state,
-                loading: false,
-                commentByPost: state.commentByPost.map(cm => cm._id === action.payload._id ? action.payload : cm)
-            }
-        case PostActionType.LOAD_UPDATE_COMMENT_POST_ERROR:
-            return { ...state, loading: false, errorMessage: action.payload }
-        // delete comment post
-        case PostActionType.LOAD_DELETE_COMMENT_POST:
-            return { ...state, loading: true }
-        case PostActionType.LOAD_DELETE_COMMENT_POST_SUCCESS:
-            return {
-                ...state,
-                loading: false,
-                commentByPost: state.commentByPost.filter(c => c._id !== action.payload)
-            }
-        // add like post 
-        case PostActionType.LOAD_ADD_LIKE_POST:
+
+        case PostActionType.LOAD_LIKE_POST:
             return { ...state, loading: true, errorMessage: null }
-        case PostActionType.LOAD_ADD_LIKE_POST_SUCCESS:
+
+        case PostActionType.LOAD_LIKE_POST_SUCCESS:
             return {
                 ...state,
                 postAll: state.postAll.map(post => post._id === action.payload.idPost
-                    ? { ...post, likes: [...post.likes, action.payload.userIdByLike] }
-                    : post
-                ),
-                loading: false,
-                errorMessage: null
-            }
-        case PostActionType.LOAD_REMOVE_LIKE_POST_ERROR:
-            return { ...state, loading: false, errorMessage: action.payload }
-        // remove like post
-        case PostActionType.LOAD_REMOVE_LIKE_POST:
-            return { ...state, loading: true, errorMessage: null }
-        case PostActionType.LOAD_REMOVE_LIKE_POST_SUCCESS:
-            return {
-                ...state,
-                postAll: state.postAll.map(post => post._id === action.payload.idPost
-                    ? { ...post, likes: post.likes.filter(like => like !== action.payload.userIdByLike) }
+                    ? {
+                        ...post, likes: post.likes.includes(action.payload.userId)
+                            ? post.likes.filter(like => like !== action.payload.userId)
+                            : [...post.likes, action.payload.userId]
+                    }
                     : post),
                 loading: false
             }
-        case PostActionType.LOAD_ADD_LIKE_COMMENT_SUCCESS:
-            return {
-                ...state,
-                loading: false,
-                commentByPost: state.commentByPost.map(cm => cm._id === action.payload.idComment
-                    ? {
-                        ...cm, likes: cm.likes.includes(action.payload.userIdByLike)
-                            ? cm.likes
-                            : [...cm.likes, action.payload.userIdByLike]
-                    }
-                    : cm),
-                errorMessage: null
-            }
-        case PostActionType.LOAD_REMOVE_LIKE_COMMENT_SUCCESS:
-            return {
-                ...state,
-                loading: false,
-                commentByPost: state.commentByPost.map(cm => cm._id === action.payload.idComment
-                    ? {
-                        ...cm, likes: cm.likes.includes(action.payload.userIdByLike)
-                            ? cm.likes.filter(like => like !== action.payload.userIdByLike)
-                            : cm.likes
-                    }
-                    : cm),
-                errorMessage: null
-            }
-        case PostActionType.LOAD_REPLY_COMMENT_SUCCESS:
-            return {
-                ...state,
-                loading: false,
-                commentByPost: state.commentByPost.map(cm => cm._id === action.payload.idComment ? {
-                    ...cm, replyToId: [...cm.replyToId, action.payload.reply]
-                } : cm)
-            }
-        case PostActionType.LOAD_DELETE_REPLY_COMMENT_SUCCESS:
-            return {
-                ...state,
-                loading: false,
-                commentByPost: state.commentByPost.map(cm => cm._id === action.payload.idComment ? {
-                    ...cm, replyToId: cm.replyToId.filter(reply => reply._id !== action.payload.idReply)
-                } : cm)
-            }
-
+        case PostActionType.LOAD_LIKE_POST_ERROR:
+            return { ...state, loading: false, errorMessage: action.payload }
 
         default:
             return { ...state };

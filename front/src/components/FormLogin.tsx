@@ -5,13 +5,13 @@ import Facebook from './Icons/Facebook';
 import Twitter from './Icons/Twitter';
 import Input from './Input';
 
-import { ChangeEvent, FormEvent, useContext, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { AuthContext } from '../context/auth/AuthContext';
 import { IUserLogin } from '../interface/auth';
+import { useAuth } from '../hooks/useAuth';
 
 const FormLogin = () => {
-	const { login, state } = useContext(AuthContext);
+	const { login, state } = useAuth();
 	const [errorMsg, setErrorMsg] = useState<string | undefined>(
 		state.errorMessage
 	);

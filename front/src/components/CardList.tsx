@@ -1,6 +1,6 @@
-import { useContext, useEffect, useState } from 'react';
-import { PostContext } from '../context/post-image/PostContext';
-import { IPostUser, IUser } from '../interface';
+import { useEffect, useState } from 'react';
+import { usePost } from '../hooks/usePost';
+import { IPostUser } from '../interface';
 import Card from './Card';
 import Spinner from './Spinner';
 
@@ -9,7 +9,7 @@ interface Props {
 }
 
 const CardList = ({ searchPost }: Props) => {
-	const { state } = useContext(PostContext);
+	const { state } = usePost();
 	const [filterPost, setFilterPost] = useState<IPostUser[]>(state.postAll);
 
 	useEffect(() => {
@@ -17,8 +17,12 @@ const CardList = ({ searchPost }: Props) => {
 			setFilterPost(
 				state.postAll.filter(
 					post =>
-						post.title.toLocaleLowerCase().includes(searchPost) ||
-						post.description.toLocaleLowerCase().includes(searchPost)
+						post.title
+							.toLocaleLowerCase()
+							.includes(searchPost.toLocaleLowerCase()) ||
+						post.description
+							.toLocaleLowerCase()
+							.includes(searchPost.toLocaleLowerCase())
 				)
 			);
 		} else {

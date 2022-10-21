@@ -7,20 +7,12 @@ import {
 	getPostByUserApi,
 	deletePostApi,
 } from '../../api/postApi';
-import {
-	addCommentByPostApi,
-	addReplyCommentApi,
-	deleteCommentPostApi,
-	deleteReplyApi,
-	getCommentsPostApi,
-	updateCommentPostApi,
-} from '../../api/commentApi';
-import { likeCommentApi, likePostApi, likeReplyApi } from '../../api/likeApi';
 import { IPostUser, IPostState } from '../../interface';
 import { ErrorPostResponse, IPostUpload } from '../../interface/post';
 import { PostActionType } from '../actions/post';
 import { PostContext } from './PostContext';
 import { postReducer } from './postReducer';
+import { controllerLikePost } from './utils';
 
 interface Props {
 	children: JSX.Element | JSX.Element[];
@@ -127,159 +119,9 @@ export const PostProvider = ({ children }: Props) => {
 			console.log('error', error); // change code
 		}
 	};
-	/**
-	 * GetCommentsPost is a function that takes a string as a parameter and returns a promise that
-	 * resolves to an array of comments.
-	 * @param {string} imgId - string
-	 */
-
-	const getCommentsPost = async (imgId: string) => {
-		dispatch({ type: PostActionType.LOAD_COMMENTS_POST });
-		try {
-			const response = await getCommentsPostApi(imgId);
-			if (response.data) {
-				dispatch({
-					type: PostActionType.LOAD_COMMENTS_POST_SUCCESS,
-					payload: response.data,
-				});
-			}
-		} catch (error) {
-			const err = error as any;
-			dispatch({
-				type: PostActionType.LOAD_COMMENTS_POST_ERROR,
-				payload: err.response?.data.errorMessage,
-			});
-		}
-	};
-
-	// const getCommentsPost = async (imgId: string) => {};
-
-	const addCommentByPost = async (id: string, comment: string) => {
-		dispatch({ type: PostActionType.LOAD_ADD_COMMENT_POST });
-		try {
-			const response = await addCommentByPostApi(id, comment);
-			if (response.data) {
-				dispatch({
-					type: PostActionType.LOAD_ADD_COMMENT_POST_SUCCESS,
-					payload: response.data,
-				});
-			}
-		} catch (error) {
-			console.log('catch', error);
-		}
-	};
-
-	const updateCommentPost = async (postId: string, comment: string) => {
-		dispatch({ type: PostActionType.LOAD_UPDATE_COMMENT_POST });
-		try {
-			const response = await updateCommentPostApi(postId, comment);
-			if (response.data) {
-				const updateComment = { ...response.data, comment };
-				dispatch({
-					type: PostActionType.LOAD_UPDATE_COMMENT_POST_SUCCESS,
-					payload: updateComment,
-				});
-			}
-		} catch (error) {}
-	};
-
-	const deleteCommentPost = async (id: string) => {
-		dispatch({ type: PostActionType.LOAD_DELETE_COMMENT_POST });
-		try {
-			const response = await deleteCommentPostApi(id);
-			if (response.data) {
-				console.log(response);
-				dispatch({
-					type: PostActionType.LOAD_DELETE_COMMENT_POST_SUCCESS,
-					payload: response.data._id,
-				});
-			}
-		} catch (error) {
-			console.log('error', error);
-		}
-	};
-
-	const addReplyComment = async (idComment: string, comment: string) => {
-		const response = await addReplyCommentApi(idComment, comment);
-		try {
-			console.log(response);
-			if (response.data) {
-				dispatch({
-					type: PostActionType.LOAD_REPLY_COMMENT_SUCCESS,
-					payload: { reply: response.data, idComment },
-				});
-			}
-		} catch (error) {
-			console.log(error);
-		}
-	};
 
 	const addLikePost = async (idPost: string, userIdByLike: string) => {
-		try {
-			dispatch({
-				type: PostActionType.LOAD_ADD_LIKE_POST_SUCCESS,
-				payload: { idPost, userIdByLike },
-			});
-			const response = await likePostApi(idPost);
-			console.log(response);
-		} catch (error) {
-			console.log('error', error);
-		}
-	};
-
-	const removeLikePost = async (idPost: string, userIdByLike: string) => {
-		try {
-			dispatch({
-				type: PostActionType.LOAD_REMOVE_LIKE_POST_SUCCESS,
-				payload: { idPost, userIdByLike },
-			});
-			const response = await likePostApi(idPost);
-			console.log(response);
-		} catch (error) {
-			console.log('error', error);
-		}
-	};
-
-	const addLikeComment = async (idComment: string, userIdByLike: string) => {
-		dispatch({
-			type: PostActionType.LOAD_ADD_LIKE_COMMENT_SUCCESS,
-			payload: { idComment, userIdByLike },
-		});
-		const response = await likeCommentApi(idComment);
-		console.log(response);
-	};
-
-	const removeLikeComment = async (idComment: string, userIdByLike: string) => {
-		dispatch({
-			type: PostActionType.LOAD_REMOVE_LIKE_COMMENT_SUCCESS,
-			payload: { idComment, userIdByLike },
-		});
-		const response = await likeCommentApi(idComment);
-		console.log(response);
-	};
-
-	const likeReply = async (idReply: string) => {
-		try {
-			const response = await likeReplyApi(idReply);
-			console.log(response);
-		} catch (error) {
-			console.log(error);
-		}
-	};
-
-	const deleteReply = async (idReply: string, idComment: string) => {
-		console.log(idReply, idComment);
-		try {
-			const { data } = await deleteReplyApi(idReply);
-			if (data) {
-				dispatch({
-					type: PostActionType.LOAD_DELETE_REPLY_COMMENT_SUCCESS,
-					payload: { idReply, idComment },
-				});
-			}
-		} catch (error) {
-			console.log(error);
-		}
+		controllerLikePost({ dispatch, idPost, userId: userIdByLike });
 	};
 
 	/**
@@ -311,17 +153,7 @@ export const PostProvider = ({ children }: Props) => {
 				updatePost,
 				deletePost,
 				findPostById,
-				getCommentsPost,
-				addCommentByPost,
-				updateCommentPost,
-				deleteCommentPost,
 				addLikePost,
-				removeLikePost,
-				addLikeComment,
-				removeLikeComment,
-				addReplyComment,
-				likeReply,
-				deleteReply,
 			}}
 		>
 			{children}

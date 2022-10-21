@@ -1,5 +1,6 @@
-import React, { FormEvent, useContext } from 'react';
-import { PostContext } from '../../context/post-image/PostContext';
+import { FormEvent } from 'react';
+import { useComment } from '../../hooks/useComment';
+import { usePost } from '../../hooks/usePost';
 import ButtonSpinner from '../ButtonSpinner';
 import IconSend from '../Icons/IconSend';
 
@@ -11,7 +12,7 @@ interface Props {
 }
 
 function FormComment({ handleSubmit, setComment, comment, textButton }: Props) {
-	const { state } = useContext(PostContext);
+	const { state } = useComment();
 	return (
 		<form className="mt-4" onSubmit={e => handleSubmit(e)}>
 			<label htmlFor="comment" className="block">
@@ -33,7 +34,7 @@ function FormComment({ handleSubmit, setComment, comment, textButton }: Props) {
 				className={`mt-2 bg-blue-600 disabled:opacity-75 inline-flex items-center justify-center text-gray-100 font-medium leading-nonebg-blue-600 rounded-md py-2 px-3 border border-transparent transform-gpu hover:-translate-y-0.5 transition-all ease-in duration-300 hover:text-gray-200 hover:bg-blue-700 text-sm`}
 			>
 				{textButton || 'Post comment'}
-				{state.loading ? <ButtonSpinner /> : <IconSend />}
+				{state.loading && comment.length > 0 ? <ButtonSpinner /> : <IconSend />}
 			</button>
 		</form>
 	);

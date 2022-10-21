@@ -4,6 +4,9 @@ import { AiFillEdit } from 'react-icons/ai';
 import TimeAgo from 'timeago-react';
 import { AuthContext } from '../../context/auth/AuthContext';
 import { PostContext } from '../../context/post-image/PostContext';
+import { usePost } from '../../hooks/usePost';
+import { useAuth } from '../../hooks/useAuth';
+import { useComment } from '../../hooks/useComment';
 
 interface ReplyProps {
 	idComment: string;
@@ -24,8 +27,8 @@ const ReplyComment = ({
 	likes,
 	createdAt,
 }: ReplyProps) => {
-	const { likeReply, deleteReply } = useContext(PostContext);
-	const { state } = useContext(AuthContext);
+	const { likeReply, deleteReply } = useComment();
+	const { state } = useAuth();
 
 	const handleLikeReply = () => {
 		likeReply(idReply);
