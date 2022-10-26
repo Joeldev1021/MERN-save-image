@@ -11,7 +11,7 @@ interface Props {
 const CardList = ({ searchPost }: Props) => {
 	const { state } = usePost();
 	const [filterPost, setFilterPost] = useState<IPostUser[]>(state.postAll);
-
+	// TODO: hooks
 	useEffect(() => {
 		if (searchPost.length > 0) {
 			setFilterPost(
@@ -37,7 +37,7 @@ const CardList = ({ searchPost }: Props) => {
 					Blogs that are loved by the community. Updated every hour.
 				</p>
 			</div>
-			{!state.loading ? (
+			{filterPost.length > 0 ? (
 				filterPost.map((post: IPostUser) => {
 					return (
 						<Card

@@ -86,7 +86,7 @@ export const postReducer = (state: IPostState, action: PostAction) => {
                 postsByUser: state.postsByUser.filter(
                     post => post._id !== action.payload
                 ),
-                loading: true,
+                loading: false,
                 errorMessage: null,
             };
         case PostActionType.LOAD_DELETE_POST_ERROR:

@@ -93,6 +93,7 @@ export const PostProvider = ({ children }: Props) => {
 					payload: response.data._id,
 				});
 			}
+			return response.data;
 		} catch (error) {
 			const err = error as AxiosError;
 			const data = err.response?.data as ErrorPostResponse;
